@@ -25,7 +25,11 @@ public class GameController implements InputEventListener {
             if (clearRow.getLinesRemoved() > 0) {   // if the clear row is greater than 0 (lines removed), add the score bonus
                 board.getScore().add(clearRow.getScoreBonus());
             }
-            if (board.createNewBrick()) {   // if the board unable to creates a new brick, game over
+
+            board.createNewBrick(); // Create new brick (always succeeds without checking for collision)
+            
+            // Check for game over if the new brick has reached the top of the board
+            if (((SimpleBoard) board).isGameOver()) {
                 viewGuiController.gameOver();   // tell the GUI controller to show the game over screen
             }
 

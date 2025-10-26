@@ -3,6 +3,7 @@ package com.comp2042;
 import com.comp2042.logic.bricks.Brick;
 import com.comp2042.logic.bricks.BrickGenerator;
 import com.comp2042.logic.bricks.RandomBrickGenerator;
+import com.comp2042.logic.CollisionDetector;
 
 import java.awt.*;
 
@@ -25,54 +26,36 @@ public class SimpleBoard implements Board {
         score = new Score();
     }
 
+    // Centralized method to attempt a move.
+    private boolean attemptMove(int x, int y) {
+        boolean collide = CollisionDetector.canMoveBy(currentGameMatrix, brickRotator.getCurrentShape(), currentOffset, x, y); // check if the brick can move by a specific amount
+        if (collide) {
+            return false; // return false if the brick cannot move by a specific amount
+        }
+        currentOffset.translate(x, y); // move the brick by a specific amount
+        return true; // return true if the brick can move by a specific amount
+    }
+
     @Override
     public boolean moveBrickDown() {
-        int[][] currentMatrix = MatrixOperations.copy(currentGameMatrix);
-        Point p = new Point(currentOffset);
-        p.translate(0, 1);
-        boolean conflict = MatrixOperations.intersect(currentMatrix, brickRotator.getCurrentShape(), (int) p.getX(), (int) p.getY());
-        if (conflict) {
-            return false;
-        } else {
-            currentOffset = p;
-            return true;
-        }
+        return attemptMove(0, 1);
     }
 
     @Override
     public boolean moveBrickLeft() {
-        int[][] currentMatrix = MatrixOperations.copy(currentGameMatrix);
-        Point p = new Point(currentOffset);
-        p.translate(-1, 0);
-        boolean conflict = MatrixOperations.intersect(currentMatrix, brickRotator.getCurrentShape(), (int) p.getX(), (int) p.getY());
-        if (conflict) {
-            return false;
-        } else {
-            currentOffset = p;
-            return true;
-        }
+        return attemptMove(-1, 0);
     }
 
     @Override
     public boolean moveBrickRight() {
-        int[][] currentMatrix = MatrixOperations.copy(currentGameMatrix);
-        Point p = new Point(currentOffset);
-        p.translate(1, 0);
-        boolean conflict = MatrixOperations.intersect(currentMatrix, brickRotator.getCurrentShape(), (int) p.getX(), (int) p.getY());
-        if (conflict) {
-            return false;
-        } else {
-            currentOffset = p;
-            return true;
-        }
+        return attemptMove(1, 0);
     }
 
     @Override
     public boolean rotateLeftBrick() {
-        int[][] currentMatrix = MatrixOperations.copy(currentGameMatrix);
         NextShapeInfo nextShape = brickRotator.getNextShape();
-        boolean conflict = MatrixOperations.intersect(currentMatrix, nextShape.getShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
-        if (conflict) {
+        boolean blocked = CollisionDetector.checkRotateCollision(currentGameMatrix, nextShape.getShape(), currentOffset);
+        if (blocked) {
             return false;
         } else {
             brickRotator.setCurrentShape(nextShape.getPosition());
@@ -84,8 +67,14 @@ public class SimpleBoard implements Board {
     public boolean createNewBrick() {
         Brick currentBrick = brickGenerator.getBrick();
         brickRotator.setBrick(currentBrick);
-        currentOffset = new Point(4, 0);
-        return MatrixOperations.intersect(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
+        currentOffset = new Point(4, -1); // Spawn at y=-1 so visible part appears at row 0 (first row)
+        return true; // Always return true - game over check will be handled separately
+    }
+    
+    // Check if the current brick has reached the top of the board (game over condition)
+    public boolean isGameOver() {
+        // Game over when the brick cannot be placed at the spawn position due to collision
+        return CollisionDetector.checkSpawnCollision(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY()); // return true if collision detected, false if can spawn
     }
 
     @Override

@@ -18,25 +18,26 @@ public class MatrixOperations {
 
     }
 
-    public static boolean intersect(final int[][] matrix, final int[][] brick, int x, int y) {
+    public static boolean intersect(final int[][] matrix, final int[][] brick, int targetX, int targetY) {
         for (int i = 0; i < brick.length; i++) { // Loop through brick rows
             for (int j = 0; j < brick[i].length; j++) { // Loop through brick columns
-                int targetX = x + j; // Calculate the target x position (column)
-                int targetY = y + i; // Calculate the target y position (row)
-                if (brick[i][j] != 0 && (checkOutOfBound(matrix, targetX, targetY) || matrix[targetY][targetX] != 0)) {
-                    return true; // COLLISION DETECTED: Return true if target out of bounds or target is not empty/occupied
+                if (brick[i][j] != 0) { // If brick is not empty, check if it intersects with the board
+                    int blockX = targetX + j; // Calculate the block x position (column)
+                    int blockY = targetY + i; // Calculate the block y position (row)
+                    if (checkOutOfBound(matrix, blockX, blockY) || matrix[blockY][blockX] != 0) {
+                        return true; // COLLISION DETECTED: Return true if block out of bounds or target is not empty/occupied
+                    }
                 }
             }
         }
-        return false; // Return false if the target is within the board and target is not empty/occupied
+        return false; // Return false if the block is within the board and target is not empty/occupied
     }
 
     private static boolean checkOutOfBound(int[][] matrix, int targetX, int targetY) {
-        boolean returnValue = true;
-        if (targetX >= 0 && targetY < matrix.length && targetX < matrix[targetY].length) {
-            returnValue = false;    // return false if the target is within the board
+        if (targetX < 0 || targetY < 0 || targetY >= matrix.length || targetX >= matrix[targetY].length) {
+            return true;
         }
-        return returnValue; // return true if the target is out of bounds
+        return false;
     }
 
     public static int[][] copy(int[][] original) {
