@@ -16,7 +16,33 @@ public class GameController implements InputEventListener {
     private final ScoringRules scoringRules;  // Manages scoring logic
     private final GuiController viewGuiController;  // Create a new GUI controller
 
+   
     /**
+     * Initializes the game by setting up the board, UI, and event handling.
+     */
+    private void initializeGame() {
+        gameStateController.getBoard().createNewBrick(); // Create the first falling brick
+        viewGuiController.setEventListener(this);
+        viewGuiController.initGameView(gameStateController.getBoard().getBoardMatrix(), gameStateController.getBoard().getViewData());
+        viewGuiController.bindScore(gameStateController.getBoard().getScore().scoreProperty());
+        // Initialize level and lines cleared display
+        viewGuiController.bindLevel(scoringRules.levelProperty());
+        viewGuiController.bindLinesCleared(scoringRules.linesClearedProperty());
+    }
+
+    /**
+     * Creates a new game controller and initializes the game.
+     * 
+     * @param guiController the GUI controller for UI updates
+     */
+    public GameController(GuiController guiController) {
+        this.gameStateController = new GameStateController();
+        this.scoringRules = new ScoringRules(gameStateController.getBoard().getScore());
+        this.viewGuiController = guiController;
+        initializeGame();
+    }
+
+     /**
      * Handles when a brick has landed and cannot move further.
      * 
      * @param event the move event
@@ -27,9 +53,8 @@ public class GameController implements InputEventListener {
         ClearRow clearRow = gameStateController.getBoard().clearRows();
         
         if (clearRow.getLinesRemoved() > 0) {
-         
             scoringRules.add_LineCleared_Points(clearRow.getLinesRemoved());
-           
+         
         }
         
         gameStateController.getBoard().createNewBrick();
@@ -51,33 +76,10 @@ public class GameController implements InputEventListener {
      */
     private DownData handleBrickMoved(MoveEvent event) {
         if (event.getEventSource() == EventSource.USER) {
-            scoringRules.add_MoveDown_Points();  // Use ScoringRules instead of direct score
+            scoringRules.add_MoveDown_Points();  // Add points for soft drop
         }
         return new DownData(null, gameStateController.getBoard().getViewData());
     }
-
-    /**
-     * Initializes the game by setting up the board, UI, and event handling.
-     */
-    private void initializeGame() {
-        gameStateController.getBoard().createNewBrick(); // Create the first falling brick
-        viewGuiController.setEventListener(this);
-        viewGuiController.initGameView(gameStateController.getBoard().getBoardMatrix(), gameStateController.getBoard().getViewData());
-        viewGuiController.bindScore(gameStateController.getBoard().getScore().scoreProperty());
-    }
-
-    /**
-     * Creates a new game controller and initializes the game.
-     * 
-     * @param guiController the GUI controller for UI updates
-     */
-    public GameController(GuiController guiController) {
-        this.gameStateController = new GameStateController();
-        this.scoringRules = new ScoringRules(gameStateController.getBoard().getScore());
-        this.viewGuiController = guiController;
-        initializeGame();
-    }
-    
 
     /**
      * Handles the down movement event (brick falling).

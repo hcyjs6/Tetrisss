@@ -15,6 +15,18 @@
                 <GridPane fx:id="gamePanel" hgap="0" vgap="0" layoutY="0" layoutX="0"/>
             </center>
         </BorderPane>
+        
+        <!-- Score Display Panel -->
+        <VBox fx:id="scorePanel" layoutX="500" layoutY="20" spacing="10">
+            <Label text="SCORE" styleClass="scoreClass"/>
+            <Label fx:id="scoreLabel" text="0" styleClass="scoreClass"/>
+            
+            <Label text="LEVEL" styleClass="scoreClass"/>
+            <Label fx:id="levelLabel" text="1" styleClass="scoreClass"/>
+            
+            <Label text="LINES" styleClass="scoreClass"/>
+            <Label fx:id="linesLabel" text="0" styleClass="scoreClass"/>
+        </VBox>
         <Group fx:id="groupNotification" layoutX="14" layoutY="203">
             <children>
                 <VBox alignment="CENTER">

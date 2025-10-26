@@ -13,8 +13,10 @@ import javafx.scene.Group;
 import javafx.scene.effect.Reflection;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -42,6 +44,18 @@ public class GuiController implements Initializable {
 
     @FXML
     private BorderPane gameBoard;
+
+    @FXML
+    private VBox scorePanel;
+
+    @FXML
+    private Label scoreLabel;
+
+    @FXML
+    private Label levelLabel;
+
+    @FXML
+    private Label linesLabel;
 
     private Rectangle[][] displayMatrix;
 
@@ -129,7 +143,7 @@ public class GuiController implements Initializable {
 
         timeLine = new Timeline(new KeyFrame(
                 Duration.millis(800),
-                ae -> moveDown(new MoveEvent(EventType.DOWN, EventSource.THREAD))
+                _ -> moveDown(new MoveEvent(EventType.DOWN, EventSource.THREAD))
         ));
         timeLine.setCycleCount(Timeline.INDEFINITE);
         timeLine.play();
@@ -238,6 +252,15 @@ public class GuiController implements Initializable {
     }
 
     public void bindScore(IntegerProperty integerProperty) {
+        scoreLabel.textProperty().bind(integerProperty.asString());
+    }
+    
+    public void bindLevel(IntegerProperty integerProperty) {
+        levelLabel.textProperty().bind(integerProperty.asString());
+    }
+    
+    public void bindLinesCleared(IntegerProperty integerProperty) {
+        linesLabel.textProperty().bind(integerProperty.asString());
     }
 
     public void gameOver() {

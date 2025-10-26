@@ -1,5 +1,6 @@
 package com.comp2042.logic;
-
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import com.comp2042.GameScore;
 
 /**
@@ -9,19 +10,37 @@ import com.comp2042.GameScore;
 public class ScoringRules {
     
     private final GameScore score;
-    private int totalLinesCleared;
-    private int currentLevel;
+
+  
     
     // Scoring constants
     private static final int points_per_move = 1;
     private static final int points_per_lineCleared = 50;
     private static final int levelUpLines = 10;
     private static final int MAX_LEVEL = 100;
+
+    private final IntegerProperty currentLevel = new SimpleIntegerProperty(1); // Create a new integer property with initial value 0
+    private final IntegerProperty totalLinesCleared = new SimpleIntegerProperty(0); // Create a new integer property with initial value 0
     
     public ScoringRules(GameScore score) {
         this.score = score;
-        this.totalLinesCleared = 0;
-        this.currentLevel = 1;
+  
+    }
+
+    public IntegerProperty levelProperty() {
+        return currentLevel;
+    }
+
+    public IntegerProperty linesClearedProperty() {
+        return totalLinesCleared;
+    }
+
+    public int getTotalLinesCleared() {
+        return totalLinesCleared.getValue();
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel.getValue();
     }
     
     /**
@@ -52,7 +71,8 @@ public class ScoringRules {
         int totalPoints = basePoints * levelMultiplier;
         
         score.addPoints(totalPoints);
-        totalLinesCleared += linesCleared;
+        totalLinesCleared.setValue(totalLinesCleared.getValue() + linesCleared);
+        
         
         // Check for level up
         updateLevel();
@@ -89,17 +109,26 @@ public class ScoringRules {
      * @return the current level multiplier
      */
     private int calculateLevelBonus() {
-        return currentLevel;
+        return currentLevel.getValue();
     }
     
     /**
      * Updates the level based on lines cleared.
      */
     private void updateLevel() {
-        int newLevel = currentLevel + (totalLinesCleared / levelUpLines); // update the current level based on the total lines cleared
-        if (newLevel > currentLevel && newLevel <= MAX_LEVEL) {
-            currentLevel = newLevel;
+        int newLevel = currentLevel.getValue() + (totalLinesCleared.getValue() / levelUpLines); // update the current level based on the total lines cleared
+        if (newLevel > currentLevel.getValue() && newLevel <= MAX_LEVEL) {
+            currentLevel.setValue(newLevel);
+            
         }
+    }
+
+    public void resetLinesCleared() {
+        totalLinesCleared.setValue(0);
+    }
+
+    public void resetLevel() {
+        currentLevel.setValue(1);
     }
     
     /**
@@ -107,25 +136,11 @@ public class ScoringRules {
      */
     public void reset() {
         score.resetScore();
-        totalLinesCleared = 0;
-        currentLevel = 1;
+        resetLinesCleared();
+        resetLevel();
+       
     }
     
-    /**
-     * Gets the current level.
-     * @return the current level
-     */
-    public int getCurrentLevel() {
-        return currentLevel;
-    }
-    
-    /**
-     * Gets the total lines cleared.
-     * @return the total lines cleared
-     */
-    public int getTotalLinesCleared() {
-        return totalLinesCleared;
-    }
     
     /**
      * Gets the current score.
