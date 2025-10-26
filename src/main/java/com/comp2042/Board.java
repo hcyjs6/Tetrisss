@@ -21,7 +21,7 @@ public interface Board {
 
     ClearRow clearRows();
 
-    Score getScore();
+    GameScore getScore();
 
     void newGame();
 }

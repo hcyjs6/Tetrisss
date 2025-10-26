@@ -4,10 +4,10 @@ import com.comp2042.Board;
 import com.comp2042.SimpleBoard;
 
 /**
- * Manages the overall game state and coordinates between different game components.
+ * Controls the overall game state and coordinates between different game components.
  * This class centralizes game state management for better maintainability.
  */
-public class GameStateManager {
+public class GameStateController {
     
     private final Board board;
     private GameState currentState;
@@ -18,7 +18,7 @@ public class GameStateManager {
         PLAYING, PAUSED, GAME_OVER, MENU
     }
     
-    public GameStateManager() {
+    public GameStateController() {
         this.board = new SimpleBoard(20, 10);
         this.currentState = GameState.PLAYING;
         this.currentLevel = 1;

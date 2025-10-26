@@ -4,12 +4,13 @@ import javafx.beans.property.IntegerProperty; // Import for JavaFX integer prope
 import javafx.beans.property.SimpleIntegerProperty;  // Import for creating integer properties
 
 /**
- * The Score class manages the player's score in the Tetris game.
+ * The GameScore class manages the player's score for the game.
+ * This is a simple data container that works with JavaFX properties for UI binding.
  * 
  * @author Sek Joe Rin
  * @version 1.0
  */
-public final class Score {
+public final class GameScore {
 
     private final IntegerProperty score = new SimpleIntegerProperty(0); // Create a new integer property with initial value 0
 

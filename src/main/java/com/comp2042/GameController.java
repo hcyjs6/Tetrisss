@@ -1,6 +1,7 @@
 package com.comp2042;
 
-import com.comp2042.logic.GameStateManager;
+import com.comp2042.logic.GameStateController;
+import com.comp2042.logic.ScoringRules;
 
 /**
  * The GameController class coordinates between the game board and UI.
@@ -11,52 +12,10 @@ import com.comp2042.logic.GameStateManager;
  */
 public class GameController implements InputEventListener {
 
-    private final GameStateManager gameStateManager;  // Manages game state
+    private final GameStateController gameStateController;  // Controls game state
+    private final ScoringRules scoringRules;  // Manages scoring logic
     private final GuiController viewGuiController;  // Create a new GUI controller
 
-    /**
-     * Creates a new game controller and initializes the game.
-     * 
-     * @param guiController the GUI controller for UI updates
-     */
-    public GameController(GuiController guiController) {
-        this.gameStateManager = new GameStateManager();
-        this.viewGuiController = guiController;
-        initializeGame();
-    }
-    
-    /**
-     * Initializes the game by setting up the board, UI, and event handling.
-     */
-    private void initializeGame() {
-        gameStateManager.getBoard().createNewBrick(); // Create the first falling brick
-        viewGuiController.setEventListener(this);
-        viewGuiController.initGameView(gameStateManager.getBoard().getBoardMatrix(), gameStateManager.getBoard().getViewData());
-        viewGuiController.bindScore(gameStateManager.getBoard().getScore().scoreProperty());
-    }
-
-    /**
-     * Handles the down movement event (brick falling).
-     * 
-     * @param event the move event
-     * @return data about the move result including any cleared rows and the view data
-     */
-    @Override
-    public DownData onDownEvent(MoveEvent event) {
-        // Only process if game is playing
-        if (!gameStateManager.isPlaying()) {
-            return new DownData(null, gameStateManager.getBoard().getViewData());
-        }
-        
-        boolean canMove = gameStateManager.getBoard().moveBrickDown();
-        
-        if (!canMove) {
-            return handleBrickLanded(event);
-        } else {
-            return handleBrickMoved(event);
-        }
-    }
-    
     /**
      * Handles when a brick has landed and cannot move further.
      * 
@@ -64,23 +23,24 @@ public class GameController implements InputEventListener {
      * @return data about the result including cleared rows
      */
     private DownData handleBrickLanded(MoveEvent event) {
-        gameStateManager.getBoard().mergeBrickToBackground();
-        ClearRow clearRow = gameStateManager.getBoard().clearRows();
+        gameStateController.getBoard().mergeBrickToBackground();
+        ClearRow clearRow = gameStateController.getBoard().clearRows();
         
         if (clearRow.getLinesRemoved() > 0) {
-            gameStateManager.getBoard().getScore().addPoints(clearRow.getScoreBonus());
-            gameStateManager.totalLinesCleared(clearRow.getLinesRemoved());
+         
+            scoringRules.add_LineCleared_Points(clearRow.getLinesRemoved());
+           
         }
         
-        gameStateManager.getBoard().createNewBrick();
+        gameStateController.getBoard().createNewBrick();
         
-        if (((SimpleBoard) gameStateManager.getBoard()).isGameOver()) {
-            gameStateManager.setGameState(GameStateManager.GameState.GAME_OVER);
+        if (((SimpleBoard) gameStateController.getBoard()).isGameOver()) {
+            gameStateController.setGameState(GameStateController.GameState.GAME_OVER);
             viewGuiController.gameOver();
         }
         
-        viewGuiController.refreshGameBackground(gameStateManager.getBoard().getBoardMatrix());
-        return new DownData(clearRow, gameStateManager.getBoard().getViewData());
+        viewGuiController.refreshGameBackground(gameStateController.getBoard().getBoardMatrix());
+        return new DownData(clearRow, gameStateController.getBoard().getViewData());
     }
     
     /**
@@ -91,11 +51,57 @@ public class GameController implements InputEventListener {
      */
     private DownData handleBrickMoved(MoveEvent event) {
         if (event.getEventSource() == EventSource.USER) {
-            gameStateManager.getBoard().getScore().addPoints(1);
+            scoringRules.add_MoveDown_Points();  // Use ScoringRules instead of direct score
         }
-        return new DownData(null, gameStateManager.getBoard().getViewData());
+        return new DownData(null, gameStateController.getBoard().getViewData());
     }
 
+    /**
+     * Initializes the game by setting up the board, UI, and event handling.
+     */
+    private void initializeGame() {
+        gameStateController.getBoard().createNewBrick(); // Create the first falling brick
+        viewGuiController.setEventListener(this);
+        viewGuiController.initGameView(gameStateController.getBoard().getBoardMatrix(), gameStateController.getBoard().getViewData());
+        viewGuiController.bindScore(gameStateController.getBoard().getScore().scoreProperty());
+    }
+
+    /**
+     * Creates a new game controller and initializes the game.
+     * 
+     * @param guiController the GUI controller for UI updates
+     */
+    public GameController(GuiController guiController) {
+        this.gameStateController = new GameStateController();
+        this.scoringRules = new ScoringRules(gameStateController.getBoard().getScore());
+        this.viewGuiController = guiController;
+        initializeGame();
+    }
+    
+
+    /**
+     * Handles the down movement event (brick falling).
+     * 
+     * @param event the move event
+     * @return data about the move result including any cleared rows and the view data
+     */
+    @Override
+    public DownData onDownEvent(MoveEvent event) {
+        // Only process if game is playing
+        if (!gameStateController.isPlaying()) {
+            return new DownData(null, gameStateController.getBoard().getViewData());
+        }
+        
+        boolean canMove = gameStateController.getBoard().moveBrickDown();
+        
+        if (!canMove) {
+            return handleBrickLanded(event);
+        } else {
+            return handleBrickMoved(event);
+        }
+    }
+    
+    
     /**
      * Handles the left movement event.
      * 
@@ -104,11 +110,11 @@ public class GameController implements InputEventListener {
      */
     @Override
     public ViewData onLeftEvent(MoveEvent event) {
-        if (!gameStateManager.isPlaying()) {
-            return gameStateManager.getBoard().getViewData();
+        if (!gameStateController.isPlaying()) {
+            return gameStateController.getBoard().getViewData();
         }
-        gameStateManager.getBoard().moveBrickLeft();
-        return gameStateManager.getBoard().getViewData();
+        gameStateController.getBoard().moveBrickLeft();
+        return gameStateController.getBoard().getViewData();
     }
 
     /**
@@ -119,11 +125,11 @@ public class GameController implements InputEventListener {
      */
     @Override
     public ViewData onRightEvent(MoveEvent event) {
-        if (!gameStateManager.isPlaying()) {
-            return gameStateManager.getBoard().getViewData();
+        if (!gameStateController.isPlaying()) {
+            return gameStateController.getBoard().getViewData();
         }
-        gameStateManager.getBoard().moveBrickRight();
-        return gameStateManager.getBoard().getViewData();
+        gameStateController.getBoard().moveBrickRight();
+        return gameStateController.getBoard().getViewData();
     }
 
     /**
@@ -134,11 +140,11 @@ public class GameController implements InputEventListener {
      */
     @Override
     public ViewData onRotateEvent(MoveEvent event) {
-        if (!gameStateManager.isPlaying()) {
-            return gameStateManager.getBoard().getViewData();
+        if (!gameStateController.isPlaying()) {
+            return gameStateController.getBoard().getViewData();
         }
-        gameStateManager.getBoard().rotateLeftBrick();
-        return gameStateManager.getBoard().getViewData();
+        gameStateController.getBoard().rotateLeftBrick();
+        return gameStateController.getBoard().getViewData();
     }
 
     /**
@@ -146,24 +152,38 @@ public class GameController implements InputEventListener {
      */
     @Override
     public void createNewGame() {
-        gameStateManager.startNewGame();
-        viewGuiController.refreshGameBackground(gameStateManager.getBoard().getBoardMatrix());
+        gameStateController.startNewGame();
+        scoringRules.reset();  // Reset scoring system for new game
+        viewGuiController.refreshGameBackground(gameStateController.getBoard().getBoardMatrix());
     }
 
     // Game state controls 
     public void pauseGame() {
-        gameStateManager.pauseGame();
+        gameStateController.pauseGame();
     }
 
     public void resumeGame() {
-        gameStateManager.resumeGame();
+        gameStateController.resumeGame();
     }
 
     public void togglePause() {
-        if (gameStateManager.isPaused()) {
-            gameStateManager.resumeGame();
-        } else if (gameStateManager.isPlaying()) {
-            gameStateManager.pauseGame();
+        if (gameStateController.isPaused()) {
+            gameStateController.resumeGame();
+        } else if (gameStateController.isPlaying()) {
+            gameStateController.pauseGame();
         }
+    }
+    
+    // Scoring information for UI display
+    public int getCurrentLevel() {
+        return scoringRules.getCurrentLevel();
+    }
+    
+    public int getTotalLinesCleared() {
+        return scoringRules.getTotalLinesCleared();
+    }
+    
+    public int getCurrentScore() {
+        return scoringRules.getCurrentScore();
     }
 }
