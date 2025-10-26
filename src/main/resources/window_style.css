@@ -9,9 +9,9 @@
 }
 
 .gameBoard {
-    -fx-border-color: linear-gradient(#2A5058, #61a2b1);
-    -fx-border-width: 12px;
-    -fx-border-radius: 12px;
+    -fx-border-color: black;
+    -fx-border-width: 10px;
+    -fx-border-radius: 8px;
 }
 
 .nextBrickLabel {
@@ -69,4 +69,10 @@
     -fx-font-size: 38;
     -fx-fill: yellow;
     -fx-text-fill: yellow;
+}
+
+.grid-cell {
+    -fx-stroke: #666666;
+    -fx-stroke-width: 0.5;
+    -fx-stroke-type: inside;
 }

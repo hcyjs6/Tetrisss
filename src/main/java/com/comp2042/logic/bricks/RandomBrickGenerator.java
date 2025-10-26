@@ -6,6 +6,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+// This class generates random Tetris pieces
 public class RandomBrickGenerator implements BrickGenerator {
 
     private final List<Brick> brickList;

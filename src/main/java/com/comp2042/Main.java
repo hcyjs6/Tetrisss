@@ -21,14 +21,15 @@ public class Main extends Application {
         GuiController c = fxmlLoader.getController();
 
         primaryStage.setTitle("TetrisJFX");
-        Scene scene = new Scene(root, 300, 510);
+        Scene scene = new Scene(root, 800, 600);
+        primaryStage.setResizable(false);
         primaryStage.setScene(scene);
-        primaryStage.show();
+        primaryStage.show(); // Display the primary stage to user
         new GameController(c);
     }
 
 
     public static void main(String[] args) {
-        launch(args);
+        launch(args); // Start the JavaFX application
     }
 }

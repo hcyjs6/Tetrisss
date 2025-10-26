@@ -2,6 +2,8 @@ package com.comp2042;
 
 import com.comp2042.logic.bricks.Brick;
 
+// You need to handle brick rotation before implementing the full board.
+// This class handles the rotation of the brick.
 public class BrickRotator {
 
     private Brick brick;

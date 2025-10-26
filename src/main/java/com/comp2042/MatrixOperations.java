@@ -6,6 +6,10 @@ import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// This is the MOST CRITICAL utility class. 
+//Everything else depends on it for collision detection, matrix operations, and line clearing.
+// It contains methods to check if a brick intersects with the board, to merge a brick with the board, and to check if a line is clear.
+
 public class MatrixOperations {
 
 
@@ -15,24 +19,24 @@ public class MatrixOperations {
     }
 
     public static boolean intersect(final int[][] matrix, final int[][] brick, int x, int y) {
-        for (int i = 0; i < brick.length; i++) {
-            for (int j = 0; j < brick[i].length; j++) {
-                int targetX = x + i;
-                int targetY = y + j;
-                if (brick[j][i] != 0 && (checkOutOfBound(matrix, targetX, targetY) || matrix[targetY][targetX] != 0)) {
-                    return true;
+        for (int i = 0; i < brick.length; i++) { // Loop through brick rows
+            for (int j = 0; j < brick[i].length; j++) { // Loop through brick columns
+                int targetX = x + j; // Calculate the target x position (column)
+                int targetY = y + i; // Calculate the target y position (row)
+                if (brick[i][j] != 0 && (checkOutOfBound(matrix, targetX, targetY) || matrix[targetY][targetX] != 0)) {
+                    return true; // COLLISION DETECTED: Return true if target out of bounds or target is not empty/occupied
                 }
             }
         }
-        return false;
+        return false; // Return false if the target is within the board and target is not empty/occupied
     }
 
     private static boolean checkOutOfBound(int[][] matrix, int targetX, int targetY) {
         boolean returnValue = true;
         if (targetX >= 0 && targetY < matrix.length && targetX < matrix[targetY].length) {
-            returnValue = false;
+            returnValue = false;    // return false if the target is within the board
         }
-        return returnValue;
+        return returnValue; // return true if the target is out of bounds
     }
 
     public static int[][] copy(int[][] original) {
@@ -50,10 +54,10 @@ public class MatrixOperations {
         int[][] copy = copy(filledFields);
         for (int i = 0; i < brick.length; i++) {
             for (int j = 0; j < brick[i].length; j++) {
-                int targetX = x + i;
-                int targetY = y + j;
-                if (brick[j][i] != 0) {
-                    copy[targetY][targetX] = brick[j][i];
+                int targetX = x + j; // Calculate the target x position (column)
+                int targetY = y + i; // Calculate the target y position (row)
+                if (brick[i][j] != 0) {
+                    copy[targetY][targetX] = brick[i][j];
                 }
             }
         }
