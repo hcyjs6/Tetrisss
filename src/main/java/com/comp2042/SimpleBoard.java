@@ -7,6 +7,13 @@ import com.comp2042.logic.CollisionDetector;
 
 import java.awt.*;
 
+/**
+ * SimpleBoard class represents the game board for the Tetris game.
+ * Manages the game matrix, brick placement, and basic game state.
+ * 
+ * @author Sek Joe Rin
+ * @version 1.0
+ */
 public class SimpleBoard implements Board {
 
     private final int width;    // columns of the board
@@ -67,7 +74,7 @@ public class SimpleBoard implements Board {
     public boolean createNewBrick() {
         Brick currentBrick = brickGenerator.getBrick();
         brickRotator.setBrick(currentBrick);
-        currentOffset = new Point(4, -1); // Spawn at y=-1 so visible part appears at row 0 (first row)
+        currentOffset = new Point(4, -1); // Spawn at y=-1 so visible part appears at row 0
         return true; // Always return true - game over check will be handled separately
     }
     
@@ -109,7 +116,7 @@ public class SimpleBoard implements Board {
     @Override
     public void newGame() {
         currentGameMatrix = new int[width][height];
-        score.reset();
+        score.resetScore();
         createNewBrick();
     }
 }
