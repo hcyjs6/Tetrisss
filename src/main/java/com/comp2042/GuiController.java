@@ -90,8 +90,14 @@ public class GuiController implements Initializable {
                         refreshBrick(eventListener.onRotateEvent(new MoveEvent(EventType.ROTATE, EventSource.USER)));
                         keyEvent.consume();
                     }
-                    if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) {
-                        moveDown(new MoveEvent(EventType.DOWN, EventSource.USER));
+                    if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) { // Soft drop
+                        // Soft drop: move down one step
+                        moveDown(new MoveEvent(EventType.SOFT_DROP, EventSource.USER));
+                        keyEvent.consume();
+                    }
+                    if (keyEvent.getCode() == KeyCode.SPACE) { // Hard drop
+                        // Hard drop: drop to bottom instantly
+                        moveDown(new MoveEvent(EventType.HARD_DROP, EventSource.USER));
                         keyEvent.consume();
                     }
                 }
@@ -143,7 +149,7 @@ public class GuiController implements Initializable {
 
         timeLine = new Timeline(new KeyFrame(
                 Duration.millis(800),
-                _ -> moveDown(new MoveEvent(EventType.DOWN, EventSource.THREAD))
+                _ -> moveDown(new MoveEvent(EventType.SOFT_DROP, EventSource.THREAD))
         ));
         timeLine.setCycleCount(Timeline.INDEFINITE);
         timeLine.play();
@@ -236,9 +242,21 @@ public class GuiController implements Initializable {
 
     private void moveDown(MoveEvent event) {
         if (isPause.getValue() == Boolean.FALSE) {
-            DownData downData = eventListener.onDownEvent(event);
+            DownData downData;
+            
+            // Handle drop types only
+            if (event.getEventType() == EventType.SOFT_DROP) {
+                downData = eventListener.onSoftDropEvent(event);
+            } else if (event.getEventType() == EventType.HARD_DROP) {
+                downData = eventListener.onHardDropEvent(event);
+            } else {
+                // No other down events handled
+                return;
+            } 
+            
             if (downData.getClearRow() != null && downData.getClearRow().getLinesRemoved() > 0) {
-                NotificationPanel notificationPanel = new NotificationPanel("+" + downData.getClearRow().getScoreBonus());
+                String summary = "Lines cleared: " + downData.getClearRow().getLinesRemoved() + " (+" + downData.getClearRow().getScoreBonus() + " points)";
+                NotificationPanel notificationPanel = new NotificationPanel(summary);
                 groupNotification.getChildren().add(notificationPanel);
                 notificationPanel.showScore(groupNotification.getChildren());
             }

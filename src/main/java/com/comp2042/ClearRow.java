@@ -23,4 +23,5 @@ public final class ClearRow {
     public int getScoreBonus() {
         return scoreBonus;
     }
+
 }

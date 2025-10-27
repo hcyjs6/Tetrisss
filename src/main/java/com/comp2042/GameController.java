@@ -53,8 +53,9 @@ public class GameController implements InputEventListener {
         ClearRow clearRow = gameStateController.getBoard().clearRows();
         
         if (clearRow.getLinesRemoved() > 0) {
-            scoringRules.add_LineCleared_Points(clearRow.getLinesRemoved());
-         
+            int pointsAwarded = scoringRules.add_LineCleared_Points(clearRow.getLinesRemoved());
+            // Update the ClearRow with actual points for notification
+            clearRow = new ClearRow(clearRow.getLinesRemoved(), clearRow.getNewMatrix(), pointsAwarded);
         }
         
         gameStateController.getBoard().createNewBrick();
@@ -74,35 +75,56 @@ public class GameController implements InputEventListener {
      * @param event the move event
      * @return data about the move result and the view data
      */
-    private DownData handleBrickMoved(MoveEvent event) {
+    private DownData handleBrickMoved(MoveEvent event, int dropOffset) {
         if (event.getEventSource() == EventSource.USER) {
-            scoringRules.add_MoveDown_Points();  // Add points for soft drop
+            scoringRules.add_MoveDown_Points(event.getEventType(), dropOffset);  // Add points for drop
         }
         return new DownData(null, gameStateController.getBoard().getViewData());
     }
-
+    
     /**
-     * Handles the down movement event (brick falling).
+     * Handles the soft drop event (piece moves down one step).
      * 
      * @param event the move event
      * @return data about the move result including any cleared rows and the view data
      */
     @Override
-    public DownData onDownEvent(MoveEvent event) {
+    public DownData onSoftDropEvent(MoveEvent event) {
         // Only process if game is playing
         if (!gameStateController.isPlaying()) {
             return new DownData(null, gameStateController.getBoard().getViewData());
         }
         
-        boolean canMove = gameStateController.getBoard().moveBrickDown();
+        int dropOffset = gameStateController.getBoard().softDrop();
         
-        if (!canMove) {
+        if (dropOffset == 0) {
             return handleBrickLanded(event);
         } else {
-            return handleBrickMoved(event);
+            return handleBrickMoved(event, dropOffset);
         }
     }
-    
+
+    /**
+     * Handles the hard drop event (piece drops to bottom instantly).
+     * 
+     * @param event the move event
+     * @return data about the move result including any cleared rows and the view data
+     */
+    @Override
+    public DownData onHardDropEvent(MoveEvent event) {
+        // Only process if game is playing
+        if (!gameStateController.isPlaying()) {
+            return new DownData(null, gameStateController.getBoard().getViewData());
+        }
+        
+        int dropOffset = gameStateController.getBoard().hardDrop();
+        
+        if (dropOffset == 0) {
+            return handleBrickLanded(event);
+        } else {
+            return handleBrickMoved(event, dropOffset);
+        }
+    }
     
     /**
      * Handles the left movement event.
@@ -148,6 +170,7 @@ public class GameController implements InputEventListener {
         gameStateController.getBoard().rotateLeftBrick();
         return gameStateController.getBoard().getViewData();
     }
+
 
     /**
      * Starts a new game by resetting the board and UI.

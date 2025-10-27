@@ -1,8 +1,6 @@
 package com.comp2042;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,35 +64,48 @@ public class MatrixOperations {
     }
 
     public static ClearRow checkRemoving(final int[][] matrix) {
-        int[][] tmp = new int[matrix.length][matrix[0].length];
-        Deque<int[]> newRows = new ArrayDeque<>();
-        List<Integer> clearedRows = new ArrayList<>();
-
+        int[][] temporaryMatrix = new int[matrix.length][matrix[0].length]; // create a temporary matrix(same size as the original matrix) to store the new matrix after clearing rows
+        List<Integer> clearedRows = new ArrayList<>(); // list to remember the indices of rows to be cleared
+        
+        //Identify which rows need to be cleared
         for (int i = 0; i < matrix.length; i++) {
-            int[] tmpRow = new int[matrix[i].length];
             boolean rowToClear = true;
             for (int j = 0; j < matrix[0].length; j++) {
                 if (matrix[i][j] == 0) {
-                    rowToClear = false;
+                    rowToClear = false; // false if the row is not full
+                    break;
                 }
-                tmpRow[j] = matrix[i][j];
             }
+            
             if (rowToClear) {
                 clearedRows.add(i);
-            } else {
-                newRows.add(tmpRow);
             }
         }
+        
+        // If no rows to clear, return original matrix
+        if (clearedRows.isEmpty()) {
+            return new ClearRow(0, MatrixOperations.copy(matrix), 0);
+        }
+            
+        // Copy non-cleared rows from bottom to top
+        int pasteRow = matrix.length - 1; 
+        
         for (int i = matrix.length - 1; i >= 0; i--) {
-            int[] row = newRows.pollLast();
-            if (row != null) {
-                tmp[i] = row;
-            } else {
-                break;
+            if (!clearedRows.contains(i)) {
+                // This row is not cleared, copy it to the new position
+                System.arraycopy(matrix[i], 0, temporaryMatrix[pasteRow], 0, matrix[i].length);
+                pasteRow--; // Move up one position for next row
             }
         }
-        int scoreBonus = 50 * clearedRows.size() * clearedRows.size();
-        return new ClearRow(clearedRows.size(), tmp, scoreBonus);
+        
+        // Fill remaining rows at the top with zeros
+        for (int i = 0; i <= pasteRow; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                temporaryMatrix[i][j] = 0;
+            }
+        }
+        
+        return new ClearRow(clearedRows.size(), temporaryMatrix, 0);
     }
 
     public static List<int[][]> deepCopyList(List<int[][]> list){

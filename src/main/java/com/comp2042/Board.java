@@ -3,7 +3,9 @@ package com.comp2042;
 // Define what a game board can do before you implement it.
 public interface Board {
 
-    boolean moveBrickDown();
+    int softDrop();
+
+    int hardDrop();
 
     boolean moveBrickLeft();
 

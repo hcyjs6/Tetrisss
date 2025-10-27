@@ -44,8 +44,22 @@ public class SimpleBoard implements Board {
     }
 
     @Override
-    public boolean moveBrickDown() {
-        return attemptMove(0, 1);
+    public int softDrop() {
+        // Move down one cell at a time
+        if (attemptMove(0, 1)) {
+            return 1; // Return 1 if successful (moved 1 cell)
+        } else {
+            return 0; // Return 0 if blocked
+        }
+    }
+
+    @Override
+    public int hardDrop() {
+        int dropDistance = 0;
+        while (attemptMove(0, 1)) {  // Move down as far as possible in one move
+            dropDistance++;
+        }
+        return dropDistance; // Return the actual distance dropped
     }
 
     @Override
@@ -69,6 +83,7 @@ public class SimpleBoard implements Board {
             return true;
         }
     }
+
 
     @Override
     public boolean createNewBrick() {
