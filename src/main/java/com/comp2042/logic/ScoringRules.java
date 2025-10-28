@@ -17,12 +17,15 @@ public class ScoringRules {
     private final LevelControls levelControls;
     private final MoveDownScoring moveDownScoring;
     private final LineTracker lineTracker;
+    private final ComboSystem comboSystem;
+
     public ScoringRules(GameScore score) {
         this.score = score;
         this.lineClearScoring = new LineClearScoring();
         this.levelControls = new LevelControls();
         this.moveDownScoring = new MoveDownScoring();
         this.lineTracker = new LineTracker();
+        this.comboSystem = new ComboSystem();
     }
 
     public IntegerProperty levelProperty() {
@@ -47,6 +50,13 @@ public class ScoringRules {
      */
     public int getCurrentScore() {
         return score.getCurrentScore();
+    }
+
+    /**
+     * Resets the combo system.
+     */
+    public void resetCombo() {
+        comboSystem.resetCombo();
     }
     
     /**
@@ -76,8 +86,9 @@ public class ScoringRules {
         }
         
         int levelMultiplier = levelControls.getCurrentLevel();
-        int pointsAwarded = lineClearScoring.calculatePoints(linesCleared, levelMultiplier);
-        score.addPoints(pointsAwarded);
+        int totalComboBonus = comboSystem.getComboBonus() * comboSystem.getComboMultiplier();
+        int totalPointsAwarded = lineClearScoring.calculatePoints(linesCleared, levelMultiplier) + totalComboBonus;
+        score.addPoints(totalPointsAwarded);
         
         // Update line tracking and level progression
         lineTracker.addLinesCleared(linesCleared);
@@ -86,7 +97,9 @@ public class ScoringRules {
         int totalLinesCleared = lineTracker.getTotalLinesCleared();
         levelControls.updateLevel(totalLinesCleared);
         
-        return pointsAwarded;
+        comboSystem.incrementCombo();
+
+        return totalPointsAwarded;
     }
     
     /**

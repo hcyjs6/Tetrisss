@@ -52,12 +52,18 @@ public class GameController implements InputEventListener {
         gameStateController.getBoard().mergeBrickToBackground();
         ClearRow clearRow = gameStateController.getBoard().clearRows();
         
+
         if (clearRow.getLinesRemoved() > 0) {
+            
             int pointsAwarded = scoringRules.add_LineCleared_Points(clearRow.getLinesRemoved());
             // Update the ClearRow with actual points for notification
             clearRow = new ClearRow(clearRow.getLinesRemoved(), clearRow.getNewMatrix(), pointsAwarded);
-        }
         
+        }else{
+            // Reset the combo system if no lines were cleared
+            scoringRules.resetCombo();
+        }
+            
         gameStateController.getBoard().createNewBrick();
         
         if (((SimpleBoard) gameStateController.getBoard()).isGameOver()) {
