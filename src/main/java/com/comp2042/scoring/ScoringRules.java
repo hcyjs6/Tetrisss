@@ -1,7 +1,7 @@
-package com.comp2042.logic;
+package com.comp2042.scoring;
+
 import com.comp2042.EventType;
 import javafx.beans.property.IntegerProperty;
-import com.comp2042.GameScore;
 
 /**
  * Coordinates all scoring logic for the Tetris game.

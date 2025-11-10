@@ -1,7 +1,7 @@
 package com.comp2042;
 
 import com.comp2042.logic.GameStateController;
-import com.comp2042.logic.ScoringRules;
+import com.comp2042.scoring.ScoringRules;
 
 /**
  * The GameController class coordinates between the game board and UI.

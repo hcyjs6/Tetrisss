@@ -1,4 +1,4 @@
-package com.comp2042;
+package com.comp2042.scoring;
 
 import javafx.beans.property.IntegerProperty; // Import for JavaFX integer property
 import javafx.beans.property.SimpleIntegerProperty;  // Import for creating integer properties
