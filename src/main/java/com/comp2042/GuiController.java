@@ -1,5 +1,6 @@
 package com.comp2042;
 
+import com.comp2042.ghostpieces.GhostPieceRenderer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
@@ -40,6 +41,9 @@ public class GuiController implements Initializable {
     private GridPane brickPanel;
 
     @FXML
+    private GridPane ghostPanel;
+
+    @FXML
     private BorderPane gameOverPanel;
 
     @FXML
@@ -62,6 +66,10 @@ public class GuiController implements Initializable {
     private InputEventListener eventListener;
 
     private Rectangle[][] rectangles;
+
+    private Rectangle[][] ghostRectangles;
+
+    private ViewData currentPieceData; // Store current piece data for ghost comparison
 
     private Timeline timeLine;
 
@@ -133,10 +141,12 @@ public class GuiController implements Initializable {
                 rectangle.setFill(getFillColor(brick.getBrickData()[i][j]));
                 // Only add borders to non-empty blocks
                 if (brick.getBrickData()[i][j] != 0) {
+                    rectangle.setOpacity(1.0); // Ensure falling blocks are fully opaque and vibrant
                     rectangle.setStroke(Color.BLACK);
-                    rectangle.setStrokeWidth(0.5);
+                    rectangle.setStrokeWidth(0.8);
                     rectangle.setStrokeType(javafx.scene.shape.StrokeType.INSIDE);
                 } else {
+                    rectangle.setOpacity(0.0); // Make empty parts of falling block transparent
                     rectangle.setStroke(null);
                 }
                 rectangles[i][j] = rectangle;
@@ -153,6 +163,14 @@ public class GuiController implements Initializable {
         ));
         timeLine.setCycleCount(Timeline.INDEFINITE);
         timeLine.play();
+        currentPieceData = brick;
+
+        if (ghostRectangles == null) {
+            initGhostPiece();
+        }
+        if (eventListener != null) {
+            refreshGhostPiece(eventListener.getGhostPieceData());
+        }
     }
 
     private Paint getFillColor(int i) {
@@ -162,28 +180,28 @@ public class GuiController implements Initializable {
                 returnPaint = Color.TRANSPARENT;
                 break;
             case 1:
-                returnPaint = Color.AQUA;
+                returnPaint = Color.web("#FFB6C1"); // Light Pink
                 break;
             case 2:
-                returnPaint = Color.BLUEVIOLET;
+                returnPaint = Color.web("#DDA0DD"); // Plum
                 break;
             case 3:
-                returnPaint = Color.DARKGREEN;
+                returnPaint = Color.web("#E0FFE0"); // Light Mint Green
                 break;
             case 4:
-                returnPaint = Color.YELLOW;
+                returnPaint = Color.web("#FFFACD"); // Lemon Chiffon
                 break;
             case 5:
-                returnPaint = Color.RED;
+                returnPaint = Color.web("#FFDAB9"); // Peach Puff
                 break;
             case 6:
-                returnPaint = Color.BEIGE;
+                returnPaint = Color.web("#B0E0E6"); // Powder Blue
                 break;
             case 7:
-                returnPaint = Color.BURLYWOOD;
+                returnPaint = Color.web("#DA70D6"); // Orchid
                 break;
             default:
-                returnPaint = Color.WHITE;
+                returnPaint = Color.web("#FFC0CB"); // Pink
                 break;
         }
         return returnPaint;
@@ -192,24 +210,40 @@ public class GuiController implements Initializable {
 
     private void refreshBrick(ViewData brick) {
         if (isPause.getValue() == Boolean.FALSE) {
+            currentPieceData = brick;
+            
             brickPanel.setLayoutX(gameBoard.getLayoutX() + 10 + brick.getxPosition() * BRICK_SIZE);
             brickPanel.setLayoutY(gameBoard.getLayoutY() + 10 + brick.getyPosition() * BRICK_SIZE);
+            
             for (int i = 0; i < brick.getBrickData().length; i++) {
                 for (int j = 0; j < brick.getBrickData()[i].length; j++) {
                     rectangles[i][j].setFill(getFillColor(brick.getBrickData()[i][j]));
-                    rectangles[i][j].setArcHeight(9);
-                    rectangles[i][j].setArcWidth(9);
-                    // Only add borders to non-empty blocks
                     if (brick.getBrickData()[i][j] != 0) {
+                        rectangles[i][j].setOpacity(1.0);
                         rectangles[i][j].setStroke(Color.BLACK);
-                        rectangles[i][j].setStrokeWidth(0.5);
+                        rectangles[i][j].setStrokeWidth(0.8);
                         rectangles[i][j].setStrokeType(javafx.scene.shape.StrokeType.INSIDE);
                     } else {
+                        rectangles[i][j].setOpacity(0.0);
                         rectangles[i][j].setStroke(null);
                     }
                 }
             }
+            
+            if (eventListener != null) {
+                refreshGhostPiece(eventListener.getGhostPieceData());
+            }
         }
+    }
+
+    // Initialize the ghost piece
+    private void initGhostPiece() {
+        ghostRectangles = GhostPieceRenderer.initGhostPiece(ghostPanel, BRICK_SIZE);
+    }
+    
+    // Refresh the ghost piece
+    private void refreshGhostPiece(ViewData ghostData) {
+        GhostPieceRenderer.refreshGhostPiece(ghostData, currentPieceData, ghostRectangles, ghostPanel, gameBoard, BRICK_SIZE);
     }
 
     public void refreshGameBackground(int[][] board) {
@@ -222,19 +256,21 @@ public class GuiController implements Initializable {
 
     private void setRectangleData(int color, Rectangle rectangle) {
         rectangle.setFill(getFillColor(color));
-        rectangle.setArcHeight(9);
-        rectangle.setArcWidth(9);
+       
         
-        // Use a very light background for empty cells instead of borders
+        // Use soft pink background for empty cells to create subtle contrast
         if (color == 0) {
-            rectangle.setFill(Color.LIGHTGRAY);
-            rectangle.setOpacity(0.3);
-            rectangle.setStroke(null);
+            rectangle.setFill(Color.BLACK); // Misty Rose - soft pink for contrast
+            rectangle.setOpacity(1);
+            // Add borders to empty cells to create grid
+            rectangle.setStroke(Color.GREY); // Light pink border
+            rectangle.setStrokeWidth(0.2);
+            rectangle.setStrokeType(javafx.scene.shape.StrokeType.INSIDE);
         } else {
             rectangle.setOpacity(1.0);
             // Add borders to placed blocks
             rectangle.setStroke(Color.BLACK);
-            rectangle.setStrokeWidth(0.5);
+            rectangle.setStrokeWidth(0.8);
             rectangle.setStrokeType(javafx.scene.shape.StrokeType.INSIDE);
         }
     }

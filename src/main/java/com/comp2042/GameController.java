@@ -46,9 +46,16 @@ public class GameController implements InputEventListener {
      * Handles when a brick has landed and cannot move further.
      * 
      * @param event the move event
+     * @param dropOffset optional drop distance for awarding drop points (used for hard drops)
      * @return data about the result including cleared rows
      */
-    private DownData handleBrickLanded(MoveEvent event) {
+    private DownData handleBrickLanded(MoveEvent event, int dropOffset) {
+        // Award drop points if this is a hard drop with a valid drop distance
+        if (dropOffset > 0 && event.getEventSource() == EventSource.USER && 
+            event.getEventType() == EventType.HARD_DROP) {
+            scoringRules.add_MoveDown_Points(event.getEventType(), dropOffset);
+        }
+        
         gameStateController.getBoard().mergeBrickToBackground();
         ClearRow clearRow = gameStateController.getBoard().clearRows();
         
@@ -104,7 +111,7 @@ public class GameController implements InputEventListener {
         int dropOffset = gameStateController.getBoard().softDrop();
         
         if (dropOffset == 0) {
-            return handleBrickLanded(event);
+            return handleBrickLanded(event, dropOffset);
         } else {
             return handleBrickMoved(event, dropOffset);
         }
@@ -125,11 +132,9 @@ public class GameController implements InputEventListener {
         
         int dropOffset = gameStateController.getBoard().hardDrop();
         
-        if (dropOffset == 0) {
-            return handleBrickLanded(event);
-        } else {
-            return handleBrickMoved(event, dropOffset);
-        }
+        // After hard drop, the block is always at the bottom and can't move down anymore
+        // Pass dropOffset to handleBrickLanded so it can award drop points and lock the block
+        return handleBrickLanded(event, dropOffset);
     }
     
     /**
@@ -175,6 +180,11 @@ public class GameController implements InputEventListener {
         }
         gameStateController.getBoard().rotateLeftBrick();
         return gameStateController.getBoard().getViewData();
+    }
+
+    @Override
+    public ViewData getGhostPieceData() { // get the ghost piece data for the current brick
+        return gameStateController.getBoard().getGhostPieceViewData();
     }
 
 

@@ -1,17 +1,17 @@
 .root {
-    -fx-background-image: url("background_image.png");
+    -fx-background-color: #ffd5d8; /* Soft pink background */
 }
 
 .nextBrick {
     -fx-border-width: 2px;
     -fx-border-color: whitesmoke;
+    -fx-border-color: #DDA0DD; /* Lavender border */
     -fx-border-radius: 17px;
 }
 
 .gameBoard {
-    -fx-border-color: black;
+    -fx-border-color: #ff8d9e; /* Light pink border */
     -fx-border-width: 10px;
-    -fx-border-radius: 8px;
 }
 
 .nextBrickLabel {
@@ -19,6 +19,7 @@
     -fx-padding: 20px 0 0 0;
     -fx-font-size: 16px;
     -fx-text-fill: yellow;
+    -fx-text-fill: #FF69B4; /* Hot pink text */
 }
 
 .ipad-dark-grey {
@@ -66,13 +67,57 @@
 
 .scoreClass{
     -fx-font-family: "Let's go Digital";
-    -fx-font-size: 38;
+    -fx-font-size: 24;
     -fx-fill: yellow;
     -fx-text-fill: yellow;
+    -fx-fill: #DA70D6; /* Orchid text */
+    -fx-text-fill: #DA70D6; /* Orchid text */
+    -fx-font-weight: bold;
+}
+
+.scoreValue{
+    -fx-font-family: "Let's go Digital";
+    -fx-font-size: 32;
+    -fx-fill: white;
+    -fx-text-fill: white;
+    -fx-fill: #8B008B; /* Dark magenta text */
+    -fx-text-fill: #8B008B; /* Dark magenta text */
+    -fx-font-weight: bold;
+    -fx-background-color: rgba(255, 182, 193, 0.3); /* Light pink background */
+    -fx-padding: 5 10 5 10;
+    -fx-background-radius: 5;
+}
+
+.scorePanelBox {
+    -fx-background-color: rgba(255, 192, 203, 1); /* Light pink with transparency */
+    -fx-background-radius: 10;
+    -fx-padding: 15;
+    -fx-border-color: #FFB6C1; /* Light pink border */
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
 }
 
 .grid-cell {
     -fx-stroke: #666666;
     -fx-stroke-width: 0.5;
     -fx-stroke-type: inside;
+}
+
+/* Info boxes for Scene Builder visualization */
+.infoBox {
+    -fx-background-color: rgba(200,200,200,0.1);
+    -fx-border-color: #666666;
+    -fx-border-width: 1;
+    -fx-padding: 5;
+}
+
+.infoTitle {
+    -fx-text-fill: #333333;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.infoText {
+    -fx-text-fill: #666666;
+    -fx-font-size: 10px;
 }

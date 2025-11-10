@@ -1,5 +1,6 @@
 package com.comp2042;
 
+import com.comp2042.ghostpieces.GhostPieceLogic;
 import com.comp2042.logic.bricks.Brick;
 import com.comp2042.logic.bricks.BrickGenerator;
 import com.comp2042.logic.bricks.RandomBrickGenerator;
@@ -107,6 +108,16 @@ public class SimpleBoard implements Board {
     @Override
     public ViewData getViewData() {
         return new ViewData(brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY(), brickGenerator.getNextBrick().getShapeMatrix().get(0));
+    }
+    
+    public ViewData getGhostPieceViewData() {
+        int ghostY = getGhostPieceY();
+        return GhostPieceLogic.createGhostPieceViewData(brickRotator.getCurrentShape(), currentOffset, ghostY, brickGenerator.getNextBrick().getShapeMatrix().get(0));
+    }
+    
+    @Override
+    public int getGhostPieceY() {
+        return GhostPieceLogic.calculateGhostPieceY(currentGameMatrix, brickRotator.getCurrentShape(), currentOffset);
     }
 
     @Override

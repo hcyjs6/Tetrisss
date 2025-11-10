@@ -41,7 +41,7 @@ public class LevelControls {
      * @param totalLinesCleared the total number of lines cleared in the game
      */
     public void updateLevel(int totalLinesCleared) {
-        int newLevel = currentLevel.getValue() + (totalLinesCleared / LINES_PER_LEVEL);
+        int newLevel = currentLevel.getValue() + (totalLinesCleared / (currentLevel.getValue() * LINES_PER_LEVEL));
         if (newLevel > currentLevel.getValue() && newLevel <= MAX_LEVEL) {
             currentLevel.setValue(newLevel);
         }

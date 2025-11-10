@@ -1,3 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleButton?>
@@ -5,27 +13,51 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <?import java.net.URL?>
-<Pane fx:controller="com.comp2042.GuiController"
-      xmlns:fx="http://javafx.com/fxml">
+
+<Pane prefHeight="580.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.comp2042.GuiController">
     <children>
-        <GridPane fx:id="brickPanel" vgap="0" hgap="0"/>  <!-- Hold the current falling piece -->
-        <BorderPane styleClass="gameBoard" fx:id="gameBoard" layoutX="60" layoutY="10"
-                   prefWidth="250" prefHeight="500">
+        <BorderPane fx:id="gameBoard" layoutX="250.0" prefHeight="560.0" prefWidth="280.0" styleClass="gameBoard">
             <center>
-                <GridPane fx:id="gamePanel" hgap="0" vgap="0" layoutY="0" layoutX="0"/>
+                <GridPane fx:id="gamePanel" hgap="0" layoutX="0" layoutY="0" prefHeight="560.0" prefWidth="280.0" vgap="0" />
             </center>
+         <effect>
+            <InnerShadow>
+               <input>
+                  <InnerShadow />
+               </input>
+            </InnerShadow>
+         </effect>
         </BorderPane>
+        <GridPane fx:id="ghostPanel" hgap="0" prefHeight="580.0" prefWidth="800.0" vgap="0" />  <!-- Ghost piece - shows where piece will land -->
+        <GridPane fx:id="brickPanel" hgap="0" prefHeight="580.0" prefWidth="800.0" vgap="0" />  <!-- Hold the current falling piece - must be after gameBoard to render on top -->
         
-        <!-- Score Display Panel -->
-        <VBox fx:id="scorePanel" layoutX="500" layoutY="20" spacing="10">
-            <Label text="SCORE" styleClass="scoreClass"/>
-            <Label fx:id="scoreLabel" text="0" styleClass="scoreClass"/>
-            
-            <Label text="LEVEL" styleClass="scoreClass"/>
-            <Label fx:id="levelLabel" text="1" styleClass="scoreClass"/>
-            
-            <Label text="LINES" styleClass="scoreClass"/>
-            <Label fx:id="linesLabel" text="0" styleClass="scoreClass"/>
+              <!-- Score Display Panel -->
+        <VBox fx:id="scorePanel" alignment="CENTER_LEFT" layoutX="600.0" layoutY="20.0" prefWidth="180" spacing="20">
+           <children>
+               <!-- Score Section -->
+               <VBox alignment="CENTER_LEFT" spacing="5">
+                   <children>
+                       <Label styleClass="scoreClass" text="SCORE" />
+                       <Label fx:id="scoreLabel" styleClass="scoreValue" text="0" />
+                   </children>
+               </VBox>
+               
+               <!-- Level Section -->
+               <VBox alignment="CENTER_LEFT" spacing="5">
+                   <children>
+                       <Label styleClass="scoreClass" text="LEVEL" />
+                       <Label fx:id="levelLabel" styleClass="scoreValue" text="1" />
+                   </children>
+               </VBox>
+               
+               <!-- Lines Section -->
+               <VBox alignment="CENTER_LEFT" spacing="5">
+                   <children>
+                       <Label styleClass="scoreClass" text="LINES" />
+                       <Label fx:id="linesLabel" styleClass="scoreValue" text="0" />
+                   </children>
+               </VBox>
+           </children>
         </VBox>
         <Group fx:id="groupNotification" layoutX="14" layoutY="203">
             <children>
@@ -34,7 +66,7 @@
                         <!-- GameOverPanel replaced with BorderPane for Scene Builder compatibility -->
                         <BorderPane fx:id="gameOverPanel" styleClass="gameOverStyle">
                             <center>
-                                <Label text="GAME OVER" styleClass="gameOverStyle"/>
+                                <Label styleClass="gameOverStyle" text="GAME OVER" />
                             </center>
                         </BorderPane>
                     </children>
@@ -43,6 +75,6 @@
         </Group>
     </children>
     <stylesheets>
-        <URL value="@window_style.css"/>
+        <URL value="@window_style.css" />
     </stylesheets>
 </Pane>
