@@ -32,7 +32,7 @@
         <GridPane fx:id="brickPanel" hgap="0" prefHeight="580.0" prefWidth="800.0" vgap="0" />  <!-- Hold the current falling piece - must be after gameBoard to render on top -->
         
               <!-- Score Display Panel -->
-        <VBox fx:id="scorePanel" alignment="CENTER_LEFT" layoutX="600.0" layoutY="20.0" prefWidth="180" spacing="20">
+        <VBox fx:id="scorePanel" alignment="CENTER_LEFT" layoutX="170.0" layoutY="270.0" prefWidth="80.0" spacing="38.0">
            <children>
                <!-- Score Section -->
                <VBox alignment="CENTER_LEFT" spacing="5">
@@ -73,6 +73,14 @@
                 </VBox>
             </children>
         </Group>
+
+        <!-- Next Brick Preview Panel -->
+        <VBox fx:id="nextPanel" alignment="TOP_CENTER" layoutX="600.0" layoutY="70.0" prefHeight="200.0" prefWidth="170.0" spacing="10.0">
+            <children>
+                <Label styleClass="scoreClass" text="NEXT BRICK" />
+                <GridPane fx:id="nextBrickPanel" alignment="CENTER"  hgap="0" prefHeight="200.0" prefWidth="150.0" styleClass="nextBrickPanel" vgap="0" />
+            </children>
+        </VBox>
     </children>
     <stylesheets>
         <URL value="@window_style.css" />

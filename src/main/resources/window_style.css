@@ -103,6 +103,13 @@
     -fx-stroke-type: inside;
 }
 
+.nextBrickPanel {
+    -fx-padding: 10;
+    -fx-background-color: rgba(255, 240, 245, 0.4); /* Lavender blush */
+    -fx-border-color: #FFB6C1; /* Light pink border */
+    -fx-border-width: 5;
+}
+
 /* Info boxes for Scene Builder visualization */
 .infoBox {
     -fx-background-color: rgba(200,200,200,0.1);

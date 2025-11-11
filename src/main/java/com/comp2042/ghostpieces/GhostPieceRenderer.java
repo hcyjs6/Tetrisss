@@ -24,7 +24,7 @@ public final class GhostPieceRenderer {
                 Rectangle ghostGrid = new Rectangle(brickSize, brickSize);
                 ghostGrid.setFill(Color.TRANSPARENT);
                 ghostGrid.setStroke(Color.WHITE);
-                ghostGrid.setStrokeWidth(3.5);
+                ghostGrid.setStrokeWidth(3);
                 ghostGrid.setStrokeType(javafx.scene.shape.StrokeType.INSIDE);
                 ghostRectangles[i][j] = ghostGrid;
                 ghostPanel.add(ghostGrid, j, i);

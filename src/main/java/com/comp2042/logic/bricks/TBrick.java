@@ -18,7 +18,7 @@ final class TBrick implements Brick {
         });
         brickMatrix.add(new int[][]{
                 {0, 6, 0, 0},
-                {0, 6, 6, 0},
+                {6, 6, 0, 0},
                 {0, 6, 0, 0},
                 {0, 0, 0, 0}
         });
@@ -30,7 +30,7 @@ final class TBrick implements Brick {
         });
         brickMatrix.add(new int[][]{
                 {0, 6, 0, 0},
-                {6, 6, 0, 0},
+                {0, 6, 6, 0},
                 {0, 6, 0, 0},
                 {0, 0, 0, 0}
         });

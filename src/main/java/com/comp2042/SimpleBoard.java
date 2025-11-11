@@ -85,6 +85,7 @@ public class SimpleBoard implements Board {
             int[][] kickOffsets = new int[][]{
                 {1, 0},   // shift right
                 {-1, 0},  // shift left
+                {0, 1},  // shift down
                 {2, 0},   // wider shift right
                 {-2, 0}   // wider shift left
             };
@@ -115,7 +116,7 @@ public class SimpleBoard implements Board {
     public boolean createNewBrick() {
         Brick currentBrick = brickGenerator.getBrick();
         brickRotator.setBrick(currentBrick);
-        currentOffset = new Point(4, -1); // Spawn at y=-1 so visible part appears at row 0
+        currentOffset = new Point(3, -1); // Spawn at y=-1 so visible part appears at row 0
         return true; // Always return true - game over check will be handled separately
     }
     
