@@ -13,7 +13,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class LevelControls {
     
     private static final int LINES_PER_LEVEL = 10;
-    private static final int MAX_LEVEL = 100;
     
     private final IntegerProperty currentLevel = new SimpleIntegerProperty(1);
     
@@ -42,7 +41,7 @@ public class LevelControls {
      */
     public void updateLevel(int totalLinesCleared) {
         int newLevel = currentLevel.getValue() + (totalLinesCleared / (currentLevel.getValue() * LINES_PER_LEVEL));
-        if (newLevel > currentLevel.getValue() && newLevel <= MAX_LEVEL) {
+        if (newLevel > currentLevel.getValue()) {
             currentLevel.setValue(newLevel);
         }
     }

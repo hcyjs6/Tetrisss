@@ -2,7 +2,7 @@ package com.comp2042;
 
 import com.comp2042.displayNextBrick.NextBrickRenderer;
 import com.comp2042.ghostpieces.GhostPieceRenderer;
-import javafx.animation.KeyFrame;
+import com.comp2042.speed.DropSpeedController;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -22,7 +22,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -72,10 +71,9 @@ public class GuiController implements Initializable {
 
     private Rectangle[][] ghostRectangles;
 
-    private Rectangle[][] nextBrickRectangles;
-
     private ViewData currentPieceData; // Store current piece data for ghost comparison
 
+    private DropSpeedController dropSpeedController;
     private Timeline timeLine;
 
     private final BooleanProperty isPause = new SimpleBooleanProperty();
@@ -162,14 +160,12 @@ public class GuiController implements Initializable {
         brickPanel.setLayoutX(gameBoard.getLayoutX() + 10 + brick.getxPosition() * BRICK_SIZE);
         brickPanel.setLayoutY(gameBoard.getLayoutY() + 10 + brick.getyPosition() * BRICK_SIZE);
 
-        nextBrickRectangles = NextBrickRenderer.initNextBrick(nextBrickPanel, brick.getNextBrickData());
+        NextBrickRenderer.initNextBrick(nextBrickPanel, brick.getNextBrickData());
 
-        timeLine = new Timeline(new KeyFrame(
-                Duration.millis(800),
-                _ -> moveDown(new MoveEvent(EventType.SOFT_DROP, EventSource.THREAD))
-        ));
-        timeLine.setCycleCount(Timeline.INDEFINITE);
-        timeLine.play();
+        dropSpeedController = new DropSpeedController(() -> moveDown(new MoveEvent(EventType.SOFT_DROP, EventSource.THREAD)));
+        timeLine = dropSpeedController.getTimeline();
+        dropSpeedController.updateSpeed(1);
+        
         currentPieceData = brick;
 
         if (ghostRectangles == null) {
@@ -206,7 +202,7 @@ public class GuiController implements Initializable {
                 refreshGhostPiece(eventListener.getGhostPieceData());
             }
 
-            nextBrickRectangles = NextBrickRenderer.refreshNextBrick(nextBrickPanel, nextBrickRectangles, brick.getNextBrickData());
+            NextBrickRenderer.initNextBrick(nextBrickPanel, brick.getNextBrickData());
         }
     }
 
@@ -285,6 +281,9 @@ public class GuiController implements Initializable {
     
     public void bindLevel(IntegerProperty integerProperty) {
         levelLabel.textProperty().bind(integerProperty.asString());
+        if (dropSpeedController != null) {
+            dropSpeedController.bindLevel(integerProperty);
+        }
     }
     
     public void bindLinesCleared(IntegerProperty integerProperty) {
