@@ -78,14 +78,14 @@ public class SimpleBoard implements Board {
 
     @Override
     public boolean rotateLeftBrick() {
-        NextShapeInfo nextShape = brickRotator.getClockwiseNextShape();
+        NextShapeInfo nextShape = brickRotator.getAnticlockwiseNextShape();
         return kickOffsets(nextShape);
    
     }
 
     @Override
     public boolean rotateRightBrick() {
-        NextShapeInfo nextShape = brickRotator.getAnticlockwiseNextShape();
+        NextShapeInfo nextShape = brickRotator.getClockwiseNextShape();
         return kickOffsets(nextShape);
     }
 

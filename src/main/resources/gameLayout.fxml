@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.shape.*?>
 <?import java.lang.*?>
@@ -31,13 +32,13 @@
         <GridPane fx:id="ghostPanel" hgap="0" prefHeight="580.0" prefWidth="800.0" vgap="0" />  <!-- Ghost piece - shows where piece will land -->
         <GridPane fx:id="brickPanel" hgap="0" prefHeight="580.0" prefWidth="800.0" vgap="0" />  <!-- Hold the current falling piece - must be after gameBoard to render on top -->
         
-              <!-- Score Display Panel -->
-        <VBox fx:id="scorePanel" alignment="CENTER_LEFT" layoutX="570.0" layoutY="290.0" prefWidth="200.0" spacing="25.0">
+        <!-- Score Display Panel -->
+        <VBox fx:id="scorePanel" alignment="CENTER_LEFT" layoutX="573.0" layoutY="355.0" prefWidth="120.0" spacing="28.0">
            <children>
                <!-- Score Section -->
                <VBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="5">
                    <children>
-                       <Label styleClass="scoreClass" text="SCORE" />
+                       <Label styleClass="scoreLabel" text="Score" />
                        <Label fx:id="scoreLabel" styleClass="scoreValue" text="0" />
                    </children>
                </VBox>
@@ -45,7 +46,7 @@
                <!-- Level Section -->
                <VBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="5">
                    <children>
-                       <Label styleClass="scoreClass" text="LEVEL" />
+                       <Label styleClass="scoreLabel" text="Level" />
                        <Label fx:id="levelLabel" styleClass="scoreValue" text="1" />
                    </children>
                </VBox>
@@ -53,12 +54,13 @@
                <!-- Lines Section -->
                <VBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="5">
                    <children>
-                       <Label styleClass="scoreClass" text="LINES" />
+                       <Label styleClass="scoreLabel" text="Lines" />
                        <Label fx:id="linesLabel" styleClass="scoreValue" text="0" />
                    </children>
                </VBox>
            </children>
         </VBox>
+
         <Group fx:id="groupNotification" layoutX="14" layoutY="203">
             <children>
                 <VBox alignment="CENTER">
@@ -77,8 +79,60 @@
         <!-- Next Brick Preview Panel -->
         <VBox fx:id="nextPanel" alignment="TOP_CENTER" layoutX="600.0" layoutY="20.0" prefHeight="200.0" prefWidth="155.0" spacing="10.0">
             <children>
-                <Label styleClass="scoreClass" text="NEXT BRICK" />
+                <Label styleClass="nextBrickTitle" text="NEXT BRICK" />
                 <GridPane fx:id="nextBrickPanel" alignment="CENTER" hgap="0" prefHeight="200.0" prefWidth="112.0" styleClass="nextBrickPanel" vgap="0" />
+            </children>
+        </VBox>
+
+        <!-- Controls Panel -->
+        <VBox alignment="TOP_LEFT" layoutX="10.0" layoutY="60.0" prefHeight="400.0" prefWidth="215.0" spacing="17.0" styleClass="controlsPanel">
+            <children>
+                <Label styleClass="controlTitle" text="CONTROLS" />
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                   <children>
+                       <Label styleClass="controlKey" text="LEFT ARROW" />
+                       <Label styleClass="controlDescription" text="Move Left" />
+                   </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                   <children>
+                       <Label styleClass="controlKey" text="RIGHT ARROW" />
+                       <Label styleClass="controlDescription" text="Move Right" />
+                   </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                   <children>
+                       <Label styleClass="controlKey" text="UP ARROW" />
+                       <Label styleClass="controlDescription" text="Rotate Right" />
+                   </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                   <children>
+                       <Label styleClass="controlKey" text="Z" />
+                       <Label styleClass="controlDescription" text="Rotate Left" />
+                   </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                   <children>
+                       <Label styleClass="controlKey" text="DOWN ARROW" />
+                       <Label styleClass="controlDescription" text="Soft Drop" />
+                   </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                   <children>
+                       <Label styleClass="controlKey" text="SPACE" />
+                       <Label styleClass="controlDescription" text="Hard Drop" />
+                   </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                   <children>
+                       <Label styleClass="controlKey" text="ESC" />
+                       <Label styleClass="controlDescription" text="Pause" />
+                   </children>
+               <padding>
+                  <Insets top="40.0" />
+               </padding>
+                </HBox>
             </children>
         </VBox>
     </children>

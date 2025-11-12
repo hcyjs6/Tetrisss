@@ -2,51 +2,83 @@
     -fx-background-color: #ffd5d8; /* Soft pink background */
 }
 
-.nextBrick {
-    -fx-border-width: 2px;
-    -fx-border-color: whitesmoke;
-    -fx-border-color: #DDA0DD; /* Lavender border */
-    -fx-border-radius: 17px;
-}
-
+/* Game Board */
 .gameBoard {
     -fx-border-color: #ff8d9e; /* Light pink border */
     -fx-border-width: 10px;
 }
 
-.nextBrickLabel {
-    -fx-font-family: "Let's go Digital";
-    -fx-padding: 20px 0 0 0;
-    -fx-font-size: 16px;
-    -fx-text-fill: yellow;
-    -fx-text-fill: #FF69B4; /* Hot pink text */
+
+/* Next Brick Panel */
+.nextBrickPanel {
+    -fx-padding: 10;
+    -fx-background-color: rgba(255, 240, 245, 0.4); /* Lavender blush */
+    -fx-border-color: #FFB6C1; /* Light pink border */
+    -fx-border-width: 5;
 }
 
-.ipad-dark-grey {
-    -fx-background-color: linear-gradient(#686868 0%, #232723 25%, #373837 75%, #757575 100%),
-    linear-gradient(#020b02, #3a3a3a),
-    linear-gradient(#9d9e9d 0%, #6b6a6b 20%, #343534 80%, #242424 100%),
-    linear-gradient(#8a8a8a 0%, #6b6a6b 20%, #343534 80%, #262626 100%),
-    linear-gradient(#777777 0%, #606060 50%, #505250 51%, #2a2b2a 100%);
-    -fx-background-insets: 0, 1, 4, 5, 6;
-    -fx-background-radius: 9, 8, 5, 4, 3;
-    -fx-padding: 8;
-    /*-fx-font-family: "Helvetica";*/
-    -fx-font-family: "Let's go Digital";
-    -fx-font-size: 22px;
+.nextBrickTitle {
+    -fx-font-family: "Impact";
+    -fx-font-size: 24px;
+    -fx-text-fill: #ac008c; /* Hot pink text */
+    
+}
+
+/* Controls Panel */
+.controlsPanel {
+    -fx-background-color: rgba(255, 240, 245, 0.6);
+    -fx-border-color: #FFB6C1;
+    -fx-border-width: 5;
+    -fx-padding: 12;
+}
+
+.controlTitle {
+    -fx-font-family: "Impact";
+    -fx-font-size: 20px;
+    -fx-text-fill: #C71585;
     -fx-font-weight: bold;
-    -fx-text-fill: white;
-    -fx-effect: dropshadow(three-pass-box, rgba(255, 255, 255, 0.2), 1, 0.0, 0, 1);
 }
 
-.rectangleStyle {
-    -fx-fill: linear-gradient(from 41px 34px to 50px 50px, reflect, #ff7f50 30%, #faebd7 47%);
+.controlKey {
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-size: 13px;
+    -fx-text-fill: #8B008B;
+    -fx-background-color: rgba(255, 182, 193, 0.4);
+    -fx-padding: 3 8 3 8;
+    -fx-background-radius: 6;
+    -fx-font-weight: bold;
 }
 
-.vbox {
-    -fx-spacing: 12;
+.controlDescription {
+    -fx-font-family: "Trebuchet MS";
+    -fx-font-style: italic;
+    -fx-font-size: 13px;
+    -fx-text-fill: #f776bd;
 }
 
+
+/* Score Panel */
+.scorePanelBox {
+    -fx-background-color: rgba(255, 255, 255, 0.158); /* Light pink with transparency */
+    -fx-background-radius: 5;
+    -fx-padding: 7;
+    
+}
+
+.scoreLabel{
+    -fx-font-family: "Impact";
+    -fx-font-size: 18;
+    -fx-text-fill: #9b027a;
+}
+
+.scoreValue{
+    -fx-font-family: "Impact";
+    -fx-font-size: 18;
+    -fx-text-fill: #6c646c; /* Dark magenta text */
+}
+
+
+ /**/
 .helpInfo {
     -fx-fill: white;
     -fx-alignment: center-left;
@@ -63,68 +95,4 @@
     -fx-font-family: "Let's go Digital";
     -fx-font-size: 48;
     -fx-background-color: red;
-}
-
-.scoreClass{
-    -fx-font-family: "Let's go Digital";
-    -fx-font-size: 24;
-    -fx-fill: yellow;
-    -fx-text-fill: yellow;
-    -fx-fill: #DA70D6; /* Orchid text */
-    -fx-text-fill: #DA70D6; /* Orchid text */
-    -fx-font-weight: bold;
-}
-
-.scoreValue{
-    -fx-font-family: "Let's go Digital";
-    -fx-font-size: 32;
-    -fx-fill: white;
-    -fx-text-fill: white;
-    -fx-fill: #8B008B; /* Dark magenta text */
-    -fx-text-fill: #8B008B; /* Dark magenta text */
-    -fx-font-weight: bold;
-    -fx-background-color: rgba(255, 182, 193, 0.3); /* Light pink background */
-    -fx-padding: 5 10 5 10;
-    -fx-background-radius: 5;
-}
-
-.scorePanelBox {
-    -fx-background-color: rgba(255, 192, 203, 1); /* Light pink with transparency */
-    -fx-background-radius: 10;
-    -fx-padding: 15;
-    -fx-border-color: #FFB6C1; /* Light pink border */
-    -fx-border-width: 2;
-    -fx-border-radius: 10;
-}
-
-.grid-cell {
-    -fx-stroke: #666666;
-    -fx-stroke-width: 0.5;
-    -fx-stroke-type: inside;
-}
-
-.nextBrickPanel {
-    -fx-padding: 10;
-    -fx-background-color: rgba(255, 240, 245, 0.4); /* Lavender blush */
-    -fx-border-color: #FFB6C1; /* Light pink border */
-    -fx-border-width: 5;
-}
-
-/* Info boxes for Scene Builder visualization */
-.infoBox {
-    -fx-background-color: rgba(200,200,200,0.1);
-    -fx-border-color: #666666;
-    -fx-border-width: 1;
-    -fx-padding: 5;
-}
-
-.infoTitle {
-    -fx-text-fill: #333333;
-    -fx-font-weight: bold;
-    -fx-font-size: 12px;
-}
-
-.infoText {
-    -fx-text-fill: #666666;
-    -fx-font-size: 10px;
 }
