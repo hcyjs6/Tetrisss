@@ -11,8 +11,8 @@ import javafx.util.Duration;
 public class DropSpeedController {
 
     private static final double STARTING_DELAY = 800.0;
-    private static final double MIN_DELAY = 60.0;
-    private static final double DELAY_STEP = 60.0;
+    private static final double MIN_DELAY = 10.0;
+    private static final double DELAY_STEP = 80.0;
 
     private final Timeline timeline;
     private final Runnable dropTask;

@@ -1,6 +1,10 @@
 package com.comp2042;
 
 import com.comp2042.displayNextBrick.NextBrickRenderer;
+import com.comp2042.event.EventSource;
+import com.comp2042.event.EventType;
+import com.comp2042.event.MoveEvent;
+import com.comp2042.event.InputEventListener;
 import com.comp2042.ghostpieces.GhostPieceRenderer;
 import com.comp2042.speed.DropSpeedController;
 import javafx.animation.Timeline;
@@ -99,7 +103,11 @@ public class GuiController implements Initializable {
                         keyEvent.consume();
                     }
                     if (keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.W) {
-                        refreshBrick(eventListener.onRotateEvent(new MoveEvent(EventType.ROTATE, EventSource.USER)));
+                        refreshBrick(eventListener.onRotateLeftEvent(new MoveEvent(EventType.ROTATE_LEFT, EventSource.USER)));
+                        keyEvent.consume();
+                    }
+                    if (keyEvent.getCode() == KeyCode.E || keyEvent.getCode() == KeyCode.X) {
+                        refreshBrick(eventListener.onRotateRightEvent(new MoveEvent(EventType.ROTATE_RIGHT, EventSource.USER)));
                         keyEvent.consume();
                     }
                     if (keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S) { // Soft drop

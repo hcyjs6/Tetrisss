@@ -1,4 +1,7 @@
-package com.comp2042;
+package com.comp2042.event;
+
+import com.comp2042.DownData;
+import com.comp2042.ViewData;
 
 public interface InputEventListener {
 
@@ -10,7 +13,9 @@ public interface InputEventListener {
 
     ViewData onRightEvent(MoveEvent event);
 
-    ViewData onRotateEvent(MoveEvent event);
+    ViewData onRotateLeftEvent(MoveEvent event);
+
+    ViewData onRotateRightEvent(MoveEvent event);
 
     ViewData getGhostPieceData();
 

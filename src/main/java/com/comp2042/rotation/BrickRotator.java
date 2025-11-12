@@ -1,4 +1,4 @@
-package com.comp2042;
+package com.comp2042.rotation;
 
 import com.comp2042.logic.bricks.Brick;
 
@@ -9,10 +9,17 @@ public class BrickRotator {
     private Brick brick;
     private int currentShape = 0;
 
-    public NextShapeInfo getNextShape() {
+    public NextShapeInfo getClockwiseNextShape() {
         int nextShape = currentShape;
         nextShape = (++nextShape) % brick.getShapeMatrix().size();
         return new NextShapeInfo(brick.getShapeMatrix().get(nextShape), nextShape);
+    }
+
+    public NextShapeInfo getAnticlockwiseNextShape() {
+        int size = brick.getShapeMatrix().size();
+        int previousShape = currentShape;
+        previousShape = (--previousShape + size) % size;
+        return new NextShapeInfo(brick.getShapeMatrix().get(previousShape), previousShape);
     }
 
     public int[][] getCurrentShape() {

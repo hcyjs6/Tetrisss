@@ -1,6 +1,6 @@
 package com.comp2042.scoring;
 
-import com.comp2042.EventType;
+import com.comp2042.event.EventType;
 import javafx.beans.property.IntegerProperty;
 
 /**

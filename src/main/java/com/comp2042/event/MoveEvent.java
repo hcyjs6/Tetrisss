@@ -1,4 +1,4 @@
-package com.comp2042;
+package com.comp2042.event;
 // This is a class that represents an event/actions that occurs when a user or automatic timer moves the brick
 // Package the event type(what happened) and event source (who caused the event) into a single object
 

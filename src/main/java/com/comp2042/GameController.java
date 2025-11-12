@@ -1,5 +1,9 @@
 package com.comp2042;
 
+import com.comp2042.event.EventSource;
+import com.comp2042.event.EventType;
+import com.comp2042.event.InputEventListener;
+import com.comp2042.event.MoveEvent;
 import com.comp2042.logic.GameStateController;
 import com.comp2042.scoring.ScoringRules;
 
@@ -168,17 +172,32 @@ public class GameController implements InputEventListener {
     }
 
     /**
-     * Handles the rotation event.
-     * 
+     * Handles the rotation event (counter-clockwise).
+     *
      * @param event the move event
      * @return updated view data
      */
     @Override
-    public ViewData onRotateEvent(MoveEvent event) {
+    public ViewData onRotateLeftEvent(MoveEvent event) {
         if (!gameStateController.isPlaying()) {
             return gameStateController.getBoard().getViewData();
         }
         gameStateController.getBoard().rotateLeftBrick();
+        return gameStateController.getBoard().getViewData();
+    }
+
+    /**
+     * Handles the rotation event (clockwise).
+     *
+     * @param event the move event
+     * @return updated view data
+     */
+    @Override
+    public ViewData onRotateRightEvent(MoveEvent event) {
+        if (!gameStateController.isPlaying()) {
+            return gameStateController.getBoard().getViewData();
+        }
+        gameStateController.getBoard().rotateRightBrick();
         return gameStateController.getBoard().getViewData();
     }
 

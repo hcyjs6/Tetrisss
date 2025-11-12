@@ -32,10 +32,10 @@
         <GridPane fx:id="brickPanel" hgap="0" prefHeight="580.0" prefWidth="800.0" vgap="0" />  <!-- Hold the current falling piece - must be after gameBoard to render on top -->
         
               <!-- Score Display Panel -->
-        <VBox fx:id="scorePanel" alignment="CENTER_LEFT" layoutX="570.0" layoutY="290.0" prefWidth="80.0" spacing="25.0">
+        <VBox fx:id="scorePanel" alignment="CENTER_LEFT" layoutX="570.0" layoutY="290.0" prefWidth="200.0" spacing="25.0">
            <children>
                <!-- Score Section -->
-               <VBox alignment="CENTER_LEFT" spacing="5">
+               <VBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="5">
                    <children>
                        <Label styleClass="scoreClass" text="SCORE" />
                        <Label fx:id="scoreLabel" styleClass="scoreValue" text="0" />
@@ -43,7 +43,7 @@
                </VBox>
                
                <!-- Level Section -->
-               <VBox alignment="CENTER_LEFT" spacing="5">
+               <VBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="5">
                    <children>
                        <Label styleClass="scoreClass" text="LEVEL" />
                        <Label fx:id="levelLabel" styleClass="scoreValue" text="1" />
@@ -51,7 +51,7 @@
                </VBox>
                
                <!-- Lines Section -->
-               <VBox alignment="CENTER_LEFT" spacing="5">
+               <VBox alignment="CENTER_LEFT" prefWidth="200.0" spacing="5">
                    <children>
                        <Label styleClass="scoreClass" text="LINES" />
                        <Label fx:id="linesLabel" styleClass="scoreValue" text="0" />
@@ -78,7 +78,7 @@
         <VBox fx:id="nextPanel" alignment="TOP_CENTER" layoutX="600.0" layoutY="20.0" prefHeight="200.0" prefWidth="155.0" spacing="10.0">
             <children>
                 <Label styleClass="scoreClass" text="NEXT BRICK" />
-                <GridPane fx:id="nextBrickPanel" alignment="CENTER" hgap="0" prefHeight="200.0" prefWidth="155.0" styleClass="nextBrickPanel" vgap="0" />
+                <GridPane fx:id="nextBrickPanel" alignment="CENTER" hgap="0" prefHeight="200.0" prefWidth="112.0" styleClass="nextBrickPanel" vgap="0" />
             </children>
         </VBox>
     </children>

@@ -1,6 +1,8 @@
 package com.comp2042;
 
 import com.comp2042.ghostpieces.GhostPieceLogic;
+import com.comp2042.rotation.BrickRotator;
+import com.comp2042.rotation.NextShapeInfo;
 import com.comp2042.scoring.GameScore;
 import com.comp2042.logic.bricks.Brick;
 import com.comp2042.logic.bricks.BrickGenerator;
@@ -76,18 +78,28 @@ public class SimpleBoard implements Board {
 
     @Override
     public boolean rotateLeftBrick() {
-        NextShapeInfo nextShape = brickRotator.getNextShape();
+        NextShapeInfo nextShape = brickRotator.getClockwiseNextShape();
+        return kickOffsets(nextShape);
+   
+    }
+
+    @Override
+    public boolean rotateRightBrick() {
+        NextShapeInfo nextShape = brickRotator.getAnticlockwiseNextShape();
+        return kickOffsets(nextShape);
+    }
+
+    // Kick offsets when collision detected
+    private boolean kickOffsets(NextShapeInfo nextShape) {
         boolean blocked = CollisionDetector.checkRotateCollision(currentGameMatrix, nextShape.getShape(), currentOffset);
 
-        
         if (blocked) {
-            // Bounce when collision detected 
             int[][] kickOffsets = new int[][]{
-                {1, 0},   // shift right
-                {-1, 0},  // shift left
-                {0, 1},  // shift down
-                {2, 0},   // wider shift right
-                {-2, 0}   // wider shift left
+                {1, 0},
+                {-1, 0},
+                {0, 1},
+                {2, 0},
+                {-2, 0}
             };
 
             for (int[] offset : kickOffsets) {
@@ -108,7 +120,6 @@ public class SimpleBoard implements Board {
             brickRotator.setCurrentShape(nextShape.getPosition());
             return true;
         }
-   
     }
 
 
