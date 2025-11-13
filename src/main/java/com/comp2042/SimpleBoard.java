@@ -3,7 +3,6 @@ package com.comp2042;
 import com.comp2042.ghostpieces.GhostPieceLogic;
 import com.comp2042.rotation.BrickRotator;
 import com.comp2042.rotation.NextShapeInfo;
-import com.comp2042.scoring.GameScore;
 import com.comp2042.logic.bricks.Brick;
 import com.comp2042.logic.bricks.BrickGenerator;
 import com.comp2042.logic.bricks.RandomBrickGenerator;
@@ -26,7 +25,6 @@ public class SimpleBoard implements Board {
     private final BrickRotator brickRotator;
     private int[][] currentGameMatrix;
     private Point currentOffset;
-    private final GameScore score;
 
     public SimpleBoard(int width, int height) {
         this.width = width;
@@ -34,7 +32,6 @@ public class SimpleBoard implements Board {
         currentGameMatrix = new int[width][height];
         brickGenerator = new RandomBrickGenerator();
         brickRotator = new BrickRotator();
-        score = new GameScore();
     }
 
     // Centralized method to attempt a move.
@@ -171,15 +168,19 @@ public class SimpleBoard implements Board {
     }
 
     @Override
-    public GameScore getScore() {
-        return score;
+    public SimpleBoard getBoard() {
+        return this;
     }
 
-
+    /** 
+     * Resets the game board to a new game state.
+     */
     @Override
-    public void newGame() {
+    public void resetBoard() {
         currentGameMatrix = new int[width][height];
-        score.resetScore();
+        // Reset the brick generator to start fresh
+        brickGenerator.resetBrickGenerator();
+        
         createNewBrick();
     }
 }

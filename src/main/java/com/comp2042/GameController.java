@@ -6,7 +6,8 @@ import com.comp2042.event.InputEventListener;
 import com.comp2042.event.MoveEvent;
 import com.comp2042.logic.GameStateController;
 import com.comp2042.scoring.ScoringRules;
-
+import com.comp2042.scoring.GameScore;
+import com.comp2042.speed.DropSpeedController;
 /**
  * The GameController class coordinates between the game board and UI.
  * Handles input events and manages the game flow.
@@ -19,16 +20,17 @@ public class GameController implements InputEventListener {
     private final GameStateController gameStateController;  // Controls game state
     private final ScoringRules scoringRules;  // Manages scoring logic
     private final GuiController viewGuiController;  // Create a new GUI controller
-
+    private final Board board;
+    private final GameScore gameScore;
    
     /**
      * Initializes the game by setting up the board, UI, and event handling.
      */
     private void initializeGame() {
-        gameStateController.getBoard().createNewBrick(); // Create the first falling brick
+        board.createNewBrick(); // Create the first falling brick
         viewGuiController.setEventListener(this);
-        viewGuiController.initGameView(gameStateController.getBoard().getBoardMatrix(), gameStateController.getBoard().getViewData());
-        viewGuiController.bindScore(gameStateController.getBoard().getScore().scoreProperty());
+        viewGuiController.initGameView(board.getBoardMatrix(), board.getViewData());
+        viewGuiController.bindScore(gameScore.scoreProperty());
         // Initialize level and lines cleared display
         viewGuiController.bindLevel(scoringRules.levelProperty());
         viewGuiController.bindLinesCleared(scoringRules.linesClearedProperty());
@@ -41,7 +43,9 @@ public class GameController implements InputEventListener {
      */
     public GameController(GuiController guiController) {
         this.gameStateController = new GameStateController();
-        this.scoringRules = new ScoringRules(gameStateController.getBoard().getScore());
+        this.board = new SimpleBoard(20, 10);
+        this.gameScore = new GameScore();
+        this.scoringRules = new ScoringRules(gameScore);
         this.viewGuiController = guiController;
         initializeGame();
     }
@@ -60,30 +64,29 @@ public class GameController implements InputEventListener {
             scoringRules.add_MoveDown_Points(event.getEventType(), dropOffset);
         }
         
-        gameStateController.getBoard().mergeBrickToBackground();
-        ClearRow clearRow = gameStateController.getBoard().clearRows();
+        // Use the board field directly
         
+        board.mergeBrickToBackground();
+        ClearRow clearRow = board.clearRows();
 
         if (clearRow.getLinesRemoved() > 0) {
-            
             int pointsAwarded = scoringRules.add_LineCleared_Points(clearRow.getLinesRemoved());
             // Update the ClearRow with actual points for notification
             clearRow = new ClearRow(clearRow.getLinesRemoved(), clearRow.getNewMatrix(), pointsAwarded);
-        
-        }else{
+        } else {
             // Reset the combo system if no lines were cleared
             scoringRules.resetCombo();
         }
             
-        gameStateController.getBoard().createNewBrick();
+        board.createNewBrick();
         
-        if (((SimpleBoard) gameStateController.getBoard()).isGameOver()) {
+        if (((SimpleBoard) board).isGameOver()) {
             gameStateController.setGameState(GameStateController.GameState.GAME_OVER);
             viewGuiController.gameOver();
         }
         
-        viewGuiController.refreshGameBackground(gameStateController.getBoard().getBoardMatrix());
-        return new DownData(clearRow, gameStateController.getBoard().getViewData());
+        viewGuiController.refreshGameBackground(board.getBoardMatrix());
+        return new DownData(clearRow, board.getViewData());
     }
     
     /**
@@ -96,7 +99,7 @@ public class GameController implements InputEventListener {
         if (event.getEventSource() == EventSource.USER) {
             scoringRules.add_MoveDown_Points(event.getEventType(), dropOffset);  // Add points for drop
         }
-        return new DownData(null, gameStateController.getBoard().getViewData());
+        return new DownData(null, board.getViewData());
     }
     
     /**
@@ -109,10 +112,10 @@ public class GameController implements InputEventListener {
     public DownData onSoftDropEvent(MoveEvent event) {
         // Only process if game is playing
         if (!gameStateController.isPlaying()) {
-            return new DownData(null, gameStateController.getBoard().getViewData());
+            return new DownData(null, board.getViewData());
         }
         
-        int dropOffset = gameStateController.getBoard().softDrop();
+        int dropOffset = board.softDrop();
         
         if (dropOffset == 0) {
             return handleBrickLanded(event, dropOffset);
@@ -131,10 +134,10 @@ public class GameController implements InputEventListener {
     public DownData onHardDropEvent(MoveEvent event) {
         // Only process if game is playing
         if (!gameStateController.isPlaying()) {
-            return new DownData(null, gameStateController.getBoard().getViewData());
+            return new DownData(null, board.getViewData());
         }
         
-        int dropOffset = gameStateController.getBoard().hardDrop();
+        int dropOffset = board.hardDrop();
         
         // After hard drop, the block is always at the bottom and can't move down anymore
         // Pass dropOffset to handleBrickLanded so it can award drop points and lock the block
@@ -150,10 +153,10 @@ public class GameController implements InputEventListener {
     @Override
     public ViewData onLeftEvent(MoveEvent event) {
         if (!gameStateController.isPlaying()) {
-            return gameStateController.getBoard().getViewData();
+            return board.getViewData();
         }
-        gameStateController.getBoard().moveBrickLeft();
-        return gameStateController.getBoard().getViewData();
+        board.moveBrickLeft();
+        return board.getViewData();
     }
 
     /**
@@ -165,10 +168,10 @@ public class GameController implements InputEventListener {
     @Override
     public ViewData onRightEvent(MoveEvent event) {
         if (!gameStateController.isPlaying()) {
-            return gameStateController.getBoard().getViewData();
+            return board.getViewData();
         }
-        gameStateController.getBoard().moveBrickRight();
-        return gameStateController.getBoard().getViewData();
+        board.moveBrickRight();
+        return board.getViewData();
     }
 
     /**
@@ -180,10 +183,10 @@ public class GameController implements InputEventListener {
     @Override
     public ViewData onRotateLeftEvent(MoveEvent event) {
         if (!gameStateController.isPlaying()) {
-            return gameStateController.getBoard().getViewData();
+            return board.getViewData();
         }
-        gameStateController.getBoard().rotateLeftBrick();
-        return gameStateController.getBoard().getViewData();
+        board.rotateLeftBrick();
+        return board.getViewData();
     }
 
     /**
@@ -195,27 +198,57 @@ public class GameController implements InputEventListener {
     @Override
     public ViewData onRotateRightEvent(MoveEvent event) {
         if (!gameStateController.isPlaying()) {
-            return gameStateController.getBoard().getViewData();
+            return board.getViewData();
         }
-        gameStateController.getBoard().rotateRightBrick();
-        return gameStateController.getBoard().getViewData();
+        board.rotateRightBrick();
+        return board.getViewData();
     }
 
     @Override
     public ViewData getGhostPieceData() { // get the ghost piece data for the current brick
-        return gameStateController.getBoard().getGhostPieceViewData();
+        return board.getGhostPieceViewData();
     }
 
 
     /**
-     * Starts a new game by resetting the board and UI.
+     * Starts a new game by resetting all game state and UI.
+     * This method handles the complete game reset including:
+     * - Game state and board
+     * - Scoring system
+     * - Brick generation
+     * - UI displays
+     * - Drop speed
      */
     @Override
     public void createNewGame() {
-        gameStateController.startNewGame();
-        scoringRules.reset();  // Reset scoring system for new game
-        viewGuiController.refreshGameBackground(gameStateController.getBoard().getBoardMatrix());
+        
+        gameStateController.resetGameState(); // RESET the game state to playing
+        board.resetBoard(); // RESET the board to a new game state (RESET the brick generator and create a new brick)
+        scoringRules.reset(); // RESET the scoring system (RESET the score, level, and lines cleared)
+        
+        // Reset drop speed to level 1 - get it from GuiController
+        resetSpeedController();
+        
+        // Create first brick and update UI
+        resetGameUI();
     }
+
+    public void resetSpeedController() {
+        DropSpeedController speedController = viewGuiController.getDropSpeedController();
+        if (speedController != null) {
+            speedController.resetSpeed();
+        }
+    }
+    
+    
+    /**
+     * Refreshes all game displays (background, falling brick, next brick).
+     */
+    private void resetGameUI() {
+        viewGuiController.refreshGameBackground(board.getBoardMatrix()); 
+        viewGuiController.refreshBrick(board.getViewData());
+    }
+    
 
     // Game state controls 
     public void pauseGame() {

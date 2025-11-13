@@ -61,20 +61,8 @@
            </children>
         </VBox>
 
-        <Group fx:id="groupNotification" layoutX="14" layoutY="203">
-            <children>
-                <VBox alignment="CENTER">
-                    <children>
-                        <!-- GameOverPanel replaced with BorderPane for Scene Builder compatibility -->
-                        <BorderPane fx:id="gameOverPanel" styleClass="gameOverStyle">
-                            <center>
-                                <Label styleClass="gameOverStyle" text="GAME OVER" />
-                            </center>
-                        </BorderPane>
-                    </children>
-                </VBox>
-            </children>
-        </Group>
+        <!-- Notification Group for score notifications during gameplay -->
+        <Group fx:id="groupNotification" />
 
         <!-- Next Brick Preview Panel -->
         <VBox fx:id="nextPanel" alignment="TOP_CENTER" layoutX="600.0" layoutY="20.0" prefHeight="200.0" prefWidth="155.0" spacing="10.0">
@@ -132,6 +120,20 @@
                <padding>
                   <Insets top="40.0" />
                </padding>
+                </HBox>
+            </children>
+        </VBox>
+        
+        <!-- Game Over Panel - positioned last so it appears on top of everything -->
+        <VBox fx:id="gameOverPanel" alignment="CENTER" layoutX="200.0" layoutY="90.0" prefHeight="400.0" prefWidth="400.0" spacing="30.0" styleClass="gameOverPanel">
+            <children>
+                <Label styleClass="gameOverTitle" text="GAME OVER" />
+                <Label styleClass="gameOverQuestion" text="Oopsie daisy! One more try?" />
+                <HBox alignment="CENTER" spacing="20.0">
+                    <children>
+                        <Button onAction="#newGame" styleClass="restartButton" text="Yes" />
+                        <Button onAction="#exitGame" styleClass="exitButton" text="Nope, I want to leave" />
+                    </children>
                 </HBox>
             </children>
         </VBox>

@@ -50,6 +50,10 @@ public class DropSpeedController {
         timeline.play();
     }
 
+    public void resetSpeed() {
+        updateSpeed(1);
+    }
+
     public void stop() {
         timeline.stop();
     }

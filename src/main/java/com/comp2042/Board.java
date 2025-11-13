@@ -1,7 +1,5 @@
 package com.comp2042;
 
-import com.comp2042.scoring.GameScore;
-
 // Define what a game board can do before you implement it.
 public interface Board {
 
@@ -31,7 +29,7 @@ public interface Board {
 
     ClearRow clearRows();
 
-    GameScore getScore();
+    SimpleBoard getBoard();
 
-    void newGame();
+    void resetBoard();
 }

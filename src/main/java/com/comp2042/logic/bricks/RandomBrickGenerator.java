@@ -31,11 +31,21 @@ public class RandomBrickGenerator implements BrickGenerator {
         if (nextBricks.size() <= 1) {
             nextBricks.add(brickList.get(ThreadLocalRandom.current().nextInt(brickList.size())));
         }
-        return nextBricks.poll();
+        return nextBricks.poll(); //remove the first brick from the queue and return it
     }
 
     @Override
     public Brick getNextBrick() {
         return nextBricks.peek();
+    }
+    
+    /**
+     * Resets the generator by clearing the queue and reinitializing it with new random bricks.
+     */
+    @Override
+    public void resetBrickGenerator() {
+        nextBricks.clear();
+        nextBricks.add(brickList.get(ThreadLocalRandom.current().nextInt(brickList.size())));
+        nextBricks.add(brickList.get(ThreadLocalRandom.current().nextInt(brickList.size())));
     }
 }

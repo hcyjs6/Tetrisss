@@ -8,6 +8,7 @@ import com.comp2042.event.InputEventListener;
 import com.comp2042.ghostpieces.GhostPieceRenderer;
 import com.comp2042.speed.DropSpeedController;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -50,7 +51,7 @@ public class GuiController implements Initializable {
     private GridPane nextBrickPanel;
 
     @FXML
-    private BorderPane gameOverPanel;
+    private VBox gameOverPanel;
 
     @FXML
     private BorderPane gameBoard;
@@ -120,6 +121,7 @@ public class GuiController implements Initializable {
                         moveDown(new MoveEvent(EventType.HARD_DROP, EventSource.USER));
                         keyEvent.consume();
                     }
+                    
                 }
                 if (keyEvent.getCode() == KeyCode.N) {
                     newGame(null);
@@ -184,7 +186,7 @@ public class GuiController implements Initializable {
         }
     }
 
-    private void refreshBrick(ViewData brick) {
+    public void refreshBrick(ViewData brick) {
         if (isPause.getValue() == Boolean.FALSE) {
             currentPieceData = brick;
             
@@ -293,25 +295,39 @@ public class GuiController implements Initializable {
             dropSpeedController.bindLevel(integerProperty);
         }
     }
+  
     
     public void bindLinesCleared(IntegerProperty integerProperty) {
         linesLabel.textProperty().bind(integerProperty.asString());
+    }
+    
+    public DropSpeedController getDropSpeedController() {
+        return dropSpeedController;
     }
 
     public void gameOver() {
         timeLine.stop();
         gameOverPanel.setVisible(true);
-        isGameOver.setValue(Boolean.TRUE);
+        isGameOver.setValue(Boolean.TRUE);                                                  
     }
 
+    /**
+     * Handles the restart button click event.
+     * Resets UI state and delegates game logic reset to GameController.
+     */
     public void newGame(ActionEvent actionEvent) {
         timeLine.stop();
         gameOverPanel.setVisible(false);
+        isPause.setValue(Boolean.FALSE);
+        isGameOver.setValue(Boolean.FALSE);
         eventListener.createNewGame();
         gamePanel.requestFocus();
         timeLine.play();
-        isPause.setValue(Boolean.FALSE);
-        isGameOver.setValue(Boolean.FALSE);
+        
+    }
+
+    public void exitGame(ActionEvent actionEvent) {
+        Platform.exit();
     }
 
     public void pauseGame(ActionEvent actionEvent) {

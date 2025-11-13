@@ -1,28 +1,20 @@
 package com.comp2042.logic;
 
-import com.comp2042.Board;
-import com.comp2042.SimpleBoard;
-
 /**
  * Controls the overall game state and coordinates between different game components.
- * This class centralizes game state management for better maintainability.
+ * This class centralizes game state management for the game.
  */
 public class GameStateController {
     
-    private final Board board;
     private GameState currentState;
-    private int currentLevel;
-    private int linesCleared;
-    
+
     public enum GameState {
         PLAYING, PAUSED, GAME_OVER, MENU
     }
     
     public GameStateController() {
-        this.board = new SimpleBoard(20, 10);
         this.currentState = GameState.PLAYING;
-        this.currentLevel = 1;
-        this.linesCleared = 0;
+     
     }
     
     /**
@@ -40,8 +32,9 @@ public class GameStateController {
     public void setGameState(GameState state) {
         this.currentState = state;
     }
-    
-    /**
+
+   
+     /**
      * This method checks if the game is currently playing.
      * @return true if game is playing
      */
@@ -82,45 +75,11 @@ public class GameStateController {
             currentState = GameState.PLAYING;
         }
     }
-    
-    /**
-     * This method starts a new game.
-     */
-    public void startNewGame() {
-        board.newGame();
+
+    public void resetGameState() {
         currentState = GameState.PLAYING;
-        currentLevel = 1;
-        linesCleared = 0;
     }
     
-    /**
-     * This method handles total lines cleared when new lines are cleared and updates the current level.
-     * @param linesRemoved the number of lines cleared
-     */
-    public void totalLinesCleared(int linesRemoved) {
-        linesCleared += linesRemoved;
-        updateLevel();
-    }
+
     
-    /**
-     * This method updates the current level based on lines cleared.
-     */
-    private void updateLevel() {
-        int newLevel = (linesCleared / 10) + 1;
-        if (newLevel > currentLevel) {
-            currentLevel = newLevel;
-        }
-    }
-    
-    public Board getBoard() {
-        return board;
-    }
-    
-    public int getCurrentLevel() {
-        return currentLevel;
-    }
-    
-    public int getLinesCleared() {
-        return linesCleared;
-    }
 }
