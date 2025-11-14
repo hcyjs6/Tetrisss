@@ -119,6 +119,7 @@
    
 }
 
+/* Restart Button for Game Over Panel */
 .restartButton {
     -fx-font-family: "Open Sans";
     -fx-font-size: 18px;
@@ -142,6 +143,7 @@
     -fx-scale-y: 0.95;
 }
 
+/* Exit Button for Game Over Panel */
 .exitButton {
     -fx-font-family: "Open Sans";
     -fx-font-size: 18px;
@@ -164,3 +166,186 @@
     -fx-scale-x: 0.95;
     -fx-scale-y: 0.95;
 }
+
+/* Pause Button */
+.pauseButton {
+    -fx-font-family: "Open Sans";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #e75a82, #ff5b89;
+    -fx-background-insets: 0, 3;
+    -fx-background-radius: 8, 6;
+    -fx-padding: 4 16 4 16;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+
+.pauseButton:hover {
+    -fx-background-color: #dc4d76, #e75a82;
+}
+
+.pauseButton:pressed {
+    -fx-background-color: #dc4d76, #e75a82;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+/* Pause Panel */
+.pausePanel {
+    -fx-background-color: #f9dbdb;
+    -fx-border-color: #ff5b89;
+    -fx-border-width: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 10, 0, 0, 2);
+}
+
+.pauseTitle {
+    -fx-font-family: "Impact";
+    -fx-font-size: 54px;
+    -fx-text-fill: #ff4b7e;
+    -fx-font-weight: bold;
+   
+}
+
+/* Resume Button for Pause Panel */
+.resumeButton {
+    -fx-font-family: "Open Sans";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ef8aaa;
+    -fx-background-color: #ef8aaa, #fff2d1;
+    -fx-background-insets: 0, 3;
+    -fx-background-radius: 12, 9;
+    -fx-padding: 6 26 6 26;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+
+.resumeButton:hover {
+    -fx-background-color: #ef7fa2, #ffecbb;
+}
+
+.resumeButton:pressed {
+    -fx-background-color: #ec628e, #ffecbb;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+/* Restart Button for Pause Panel */
+.restartButton2 {
+    -fx-font-family: "Open Sans";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ef8aaa;
+    -fx-background-color: #ef8aaa, #fff2d1;
+    -fx-background-insets: 0, 3;
+    -fx-background-radius: 12, 9;
+    -fx-padding: 6 26 6 26;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+
+.restartButton2:hover {
+    -fx-background-color: #ec628e, #ffecbb;
+}
+
+.restartButton2:pressed {
+    -fx-background-color: #ec628e, #ffecbb;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+/* Show Control Keys Button for Pause Panel */
+.showControlKeysButton {
+    -fx-font-family: "Open Sans";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ef8aaa;
+    -fx-background-color: #ef8aaa, #fff2d1;
+    -fx-background-insets: 0, 3;
+    -fx-background-radius: 12, 9;
+    -fx-padding: 6 26 6 26;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+
+.showControlKeysButton:hover {
+    -fx-background-color: #ec628e, #ffecbb;
+}
+
+.showControlKeysButton:pressed {
+    -fx-background-color: #ec628e, #ffecbb;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+/* Exit Button for Pause Panel */
+.exitButton2 {
+    -fx-font-family: "Open Sans";
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ef8aaa;
+    -fx-background-color: #ef8aaa, #fff2d1;
+    -fx-background-insets: 0, 3;
+    -fx-background-radius: 12, 9;
+    -fx-padding: 6 26 6 26;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+
+.exitButton2:hover {
+    -fx-background-color: #ec628e, #ffecbb;
+}
+
+.exitButton2:pressed {
+    -fx-background-color: #ec628e, #ffecbb;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+
+.controlsPanel2 {
+    -fx-background-color: rgb(255, 163, 193);
+    -fx-border-color: #000000;
+    -fx-border-width: 5;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 10, 0, 0, 2);
+    
+}
+
+.controlImage {
+    -fx-image: url("/Controls.png");
+    -fx-fit-height: 430px;
+    -fx-fit-width: 550px;
+}
+
+.crossButton {
+    -fx-font-family: "Open Sans";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff3f7c;
+    -fx-background-color:  transparent;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    
+}
+
+.crossButton:hover {
+    -fx-text-fill: #a2244c;
+    
+}
+
+.crossButton:pressed {
+    fx-text-fill: #a2244c;
+}
+
+/* Dark Overlay for Pause , Game Over and Control Panel */
+.overlay {
+    -fx-background-color: rgba(0, 0, 0, 0.6);
+}
+
+
+
+
+
+

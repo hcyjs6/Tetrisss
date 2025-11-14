@@ -21,12 +21,14 @@ import javafx.scene.effect.Reflection;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -51,7 +53,13 @@ public class GuiController implements Initializable {
     private GridPane nextBrickPanel;
 
     @FXML
+    private VBox pausePanel;
+
+    @FXML
     private VBox gameOverPanel;
+
+    @FXML
+    private Pane darkOverlay;
 
     @FXML
     private BorderPane gameBoard;
@@ -67,6 +75,13 @@ public class GuiController implements Initializable {
 
     @FXML
     private Label linesLabel;
+
+    @FXML
+    private Pane controlPanel;
+
+    @FXML
+    private Button pauseButton;
+
 
     private Rectangle[][] displayMatrix;
 
@@ -121,14 +136,19 @@ public class GuiController implements Initializable {
                         moveDown(new MoveEvent(EventType.HARD_DROP, EventSource.USER));
                         keyEvent.consume();
                     }
+                    if (keyEvent.getCode() == KeyCode.ESCAPE) { // Toggle Pause
+                        pauseGame(null);
+                        keyEvent.consume();
+                    }
                     
                 }
-                if (keyEvent.getCode() == KeyCode.N) {
-                    newGame(null);
-                }
+              
             }
         });
         gameOverPanel.setVisible(false);
+        pausePanel.setVisible(false); // Initially hide the pause panel
+        controlPanel.setVisible(false); // Initially hide the control panel
+        darkOverlay.setVisible(false); // Initially hide the dark overlay
 
         final Reflection reflection = new Reflection();
         reflection.setFraction(0.8);
@@ -307,30 +327,85 @@ public class GuiController implements Initializable {
 
     public void gameOver() {
         timeLine.stop();
+        darkOverlay.setVisible(true);
         gameOverPanel.setVisible(true);
         isGameOver.setValue(Boolean.TRUE);                                                  
+        pauseButton.setDisable(true); // Disable button when game over
     }
 
     /**
      * Handles the restart button click event.
      * Resets UI state and delegates game logic reset to GameController.
      */
-    public void newGame(ActionEvent actionEvent) {
+    public void newGame(ActionEvent buttonEvent) {
         timeLine.stop();
+        darkOverlay.setVisible(false);
         gameOverPanel.setVisible(false);
+        pausePanel.setVisible(false);
         isPause.setValue(Boolean.FALSE);
         isGameOver.setValue(Boolean.FALSE);
         eventListener.createNewGame();
         gamePanel.requestFocus();
         timeLine.play();
-        
+        pauseButton.setDisable(false); // Re-enable button for new game
     }
 
-    public void exitGame(ActionEvent actionEvent) {
+    /**
+     * Handles the exit button click event.
+     * Exits the game.
+     * @param buttonEvent the action event
+     */
+    public void exitGame(ActionEvent buttonEvent) {
         Platform.exit();
     }
 
-    public void pauseGame(ActionEvent actionEvent) {
+    /**
+     * Handles the ESC key press and pause button click event.
+     * Pauses the game and shows the pause panel.
+     * @param buttonEvent the action event
+     */
+    public void pauseGame(ActionEvent buttonEvent) {
+        timeLine.stop();
+        isPause.setValue(Boolean.TRUE);
+        darkOverlay.setVisible(true);
+        pausePanel.setVisible(true);
+        pauseButton.setDisable(true); // Disable button when paused
         gamePanel.requestFocus();
+    }
+    
+    /**
+     * Handles the resume button click event.
+     * Resumes the game and hides the pause panel.
+     * @param actionEvent the action event
+     */
+    public void resumeGame(ActionEvent actionEvent) {
+        darkOverlay.setVisible(false);
+        pausePanel.setVisible(false);
+        isPause.setValue(Boolean.FALSE);
+        pauseButton.setDisable(false); // Re-enable button when resuming
+        timeLine.play();
+        gamePanel.requestFocus();
+    }
+
+    public void showControlKeys(ActionEvent buttonEvent) {
+        timeLine.stop();
+        isPause.setValue(Boolean.TRUE);
+        darkOverlay.setVisible(true);
+        pausePanel.setVisible(false); // Hide pause panel when showing controls
+        controlPanel.setVisible(true);
+        pauseButton.setDisable(true); // Disable button when showing controls
+          
+        gamePanel.requestFocus();
+    }
+
+    public void closeControlPanel(ActionEvent buttonEvent) {
+        controlPanel.setVisible(false);
+        timeLine.stop();
+        darkOverlay.setVisible(true);
+        isPause.setValue(Boolean.TRUE);
+        pausePanel.setVisible(true);
+        gamePanel.requestFocus();
+        pauseButton.setDisable(true);
+
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.shape.*?>
@@ -31,7 +32,7 @@
         </BorderPane>
         <GridPane fx:id="ghostPanel" hgap="0" prefHeight="580.0" prefWidth="800.0" vgap="0" />  <!-- Ghost piece - shows where piece will land -->
         <GridPane fx:id="brickPanel" hgap="0" prefHeight="580.0" prefWidth="800.0" vgap="0" />  <!-- Hold the current falling piece - must be after gameBoard to render on top -->
-        
+
         <!-- Score Display Panel -->
         <VBox fx:id="scorePanel" alignment="CENTER_LEFT" layoutX="573.0" layoutY="355.0" prefWidth="120.0" spacing="28.0">
            <children>
@@ -137,6 +138,42 @@
                 </HBox>
             </children>
         </VBox>
+
+        <!-- Dark Overlay for Pause , Game Over and Control Panel -->
+        <Pane fx:id="darkOverlay" layoutX="0" layoutY="0" prefHeight="580.0" prefWidth="800.0" styleClass="overlay" />
+        <!-- Pause Panel -->
+        <VBox fx:id="pausePanel" alignment="CENTER" layoutX="225.0" layoutY="40.0" prefHeight="500.0" prefWidth="350.0" spacing="30.0" styleClass="pausePanel">
+            <children>
+                <Label alignment="CENTER" prefWidth="400.0" styleClass="pauseTitle" text="PAUSED">
+               <padding>
+                  <Insets bottom="40.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></Label>
+                <VBox alignment="CENTER" spacing="20.0">
+                    <children>
+                        <Button onAction="#resumeGame" styleClass="resumeButton" text="Resume" />
+                        <Button onAction="#newGame" styleClass="restartButton2" text="Restart" />
+                        <Button onAction="#showControlKeys" styleClass="showControlKeysButton" text="Show Control Keys" /> 
+                        <Button onAction="#exitGame" styleClass="exitButton2" text="Exit Game" />
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+        <!-- Pause Button -->
+        <Button fx:id="pauseButton" layoutX="637.0" layoutY="230.0" mnemonicParsing="false" onAction="#pauseGame" styleClass="pauseButton" text="PAUSE" />
+      <Pane fx:id="controlPanel" layoutX="100.0" layoutY="30.0" prefHeight="520.0" prefWidth="600.0" styleClass="controlsPanel2">
+         <children>
+            <ImageView fitHeight="430.0" fitWidth="550.0" layoutX="25.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" styleClass="controlImage" />
+                <Label alignment="CENTER" layoutX="100.0" prefWidth="400.0" styleClass="controlTitle" text="CONTROLS">
+               <padding>
+                  <Insets top="30.0" />
+               </padding>
+                </Label>
+            <Button onAction="#closeControlPanel" alignment="TOP_RIGHT" layoutX="552.0" layoutY="3.0" mnemonicParsing="false" styleClass="crossButton" text="X" />
+         </children>
+      </Pane>
     </children>
     <stylesheets>
         <URL value="@window_style.css" />
