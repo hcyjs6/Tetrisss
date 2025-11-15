@@ -62,9 +62,6 @@
            </children>
         </VBox>
 
-        <!-- Notification Group for score notifications during gameplay -->
-        <Group fx:id="groupNotification" />
-
         <!-- Next Brick Preview Panel -->
         <VBox fx:id="nextPanel" alignment="TOP_CENTER" layoutX="600.0" layoutY="20.0" prefHeight="200.0" prefWidth="155.0" spacing="10.0">
             <children>
@@ -163,7 +160,7 @@
         </VBox>
         <!-- Pause Button -->
         <Button fx:id="pauseButton" layoutX="637.0" layoutY="230.0" mnemonicParsing="false" onAction="#pauseGame" styleClass="pauseButton" text="PAUSE" />
-      <Pane fx:id="controlPanel" layoutX="100.0" layoutY="30.0" prefHeight="520.0" prefWidth="600.0" styleClass="controlsPanel2">
+        <Pane fx:id="controlPanel" layoutX="100.0" layoutY="30.0" prefHeight="520.0" prefWidth="600.0" styleClass="controlsPanel2">
          <children>
             <ImageView fitHeight="430.0" fitWidth="550.0" layoutX="25.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" styleClass="controlImage" />
                 <Label alignment="CENTER" layoutX="100.0" prefWidth="400.0" styleClass="controlTitle" text="CONTROLS">
@@ -171,9 +168,11 @@
                   <Insets top="30.0" />
                </padding>
                 </Label>
-            <Button onAction="#closeControlPanel" alignment="TOP_RIGHT" layoutX="552.0" layoutY="3.0" mnemonicParsing="false" styleClass="crossButton" text="X" />
+            <Button alignment="TOP_RIGHT" layoutX="552.0" layoutY="3.0" mnemonicParsing="false" onAction="#closeControlPanel" styleClass="crossButton" text="X" />
          </children>
       </Pane>
+        <!-- Notification overlay positioned above the board -->
+        <StackPane fx:id="groupNotification" layoutY="0.0" mouseTransparent="true" prefHeight="580.0" prefWidth="800.0" />
     </children>
     <stylesheets>
         <URL value="@window_style.css" />

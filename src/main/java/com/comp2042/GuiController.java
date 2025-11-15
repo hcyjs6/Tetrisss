@@ -16,7 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
+import javafx.geometry.Pos;
 import javafx.scene.effect.Reflection;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -25,6 +25,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -41,7 +42,7 @@ public class GuiController implements Initializable {
     private GridPane gamePanel;
 
     @FXML
-    private Group groupNotification;
+    private StackPane groupNotification;
 
     @FXML
     private GridPane brickPanel;
@@ -81,6 +82,7 @@ public class GuiController implements Initializable {
 
     @FXML
     private Button pauseButton;
+
 
 
     private Rectangle[][] displayMatrix;
@@ -291,8 +293,9 @@ public class GuiController implements Initializable {
             } 
             
             if (downData.getClearRow() != null && downData.getClearRow().getLinesRemoved() > 0) {
-                String summary = "Lines cleared: " + downData.getClearRow().getLinesRemoved() + " (+" + downData.getClearRow().getScoreBonus() + " points)";
-                NotificationPanel notificationPanel = new NotificationPanel(summary);
+                String notificationText = "Lines cleared: " + downData.getClearRow().getLinesRemoved() + " (+" + downData.getClearRow().getScoreBonus() + " points)";
+                NotificationPanel notificationPanel = new NotificationPanel(notificationText);
+                StackPane.setAlignment(notificationPanel, Pos.CENTER);
                 groupNotification.getChildren().add(notificationPanel);
                 notificationPanel.showScore(groupNotification.getChildren());
             }
