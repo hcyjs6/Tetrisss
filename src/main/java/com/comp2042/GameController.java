@@ -22,7 +22,6 @@ public class GameController implements InputEventListener {
     private final GuiController viewGuiController;  // Create a new GUI controller
     private final Board board;
     private final GameScore gameScore;
-   
     /**
      * Initializes the game by setting up the board, UI, and event handling.
      */
@@ -70,9 +69,12 @@ public class GameController implements InputEventListener {
         ClearRow clearRow = board.clearRows();
 
         if (clearRow.getLinesRemoved() > 0) {
+
+            int totalComboBonus = scoringRules.getTotalComboBonus();
+           
             int pointsAwarded = scoringRules.add_LineCleared_Points(clearRow.getLinesRemoved());
             // Update the ClearRow with actual points for notification
-            clearRow = new ClearRow(clearRow.getLinesRemoved(), clearRow.getNewMatrix(), pointsAwarded);
+            clearRow = new ClearRow(clearRow.getLinesRemoved(), clearRow.getNewMatrix(), pointsAwarded, totalComboBonus);
         } else {
             // Reset the combo system if no lines were cleared
             scoringRules.resetCombo();
@@ -224,7 +226,7 @@ public class GameController implements InputEventListener {
         
         gameStateController.resetGameState(); // RESET the game state to playing
         board.resetBoard(); // RESET the board to a new game state (RESET the brick generator and create a new brick)
-        scoringRules.reset(); // RESET the scoring system (RESET the score, level, and lines cleared)
+        scoringRules.resetAchievements(); // RESET the scoring system (RESET the score, level, and lines cleared)
         
         // Reset drop speed to level 1 - get it from GuiController
         resetSpeedController();

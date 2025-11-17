@@ -1,3 +1,4 @@
+// Basic line cleared tracking system
 package com.comp2042.scoring;
 
 import javafx.beans.property.IntegerProperty;

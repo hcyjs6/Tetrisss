@@ -8,7 +8,6 @@ public class ComboSystem {
     private final IntegerProperty baseComboBonus = new SimpleIntegerProperty(50);
     private final IntegerProperty comboMultiplier = new SimpleIntegerProperty(0);
 
-
     public IntegerProperty linesClearedProperty() {
         return baseComboBonus;
     }
@@ -25,14 +24,12 @@ public class ComboSystem {
         comboMultiplier.setValue(0);
     }
 
-    public int getComboBonus() {
+    public int getBaseComboBonus() {
         return baseComboBonus.getValue();
     }
 
     public int getComboMultiplier() {
         return comboMultiplier.getValue();
     }
-
-     
-    
+  
 }

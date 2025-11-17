@@ -293,7 +293,17 @@ public class GuiController implements Initializable {
             } 
             
             if (downData.getClearRow() != null && downData.getClearRow().getLinesRemoved() > 0) {
-                String notificationText = "Lines cleared: " + downData.getClearRow().getLinesRemoved() + " (+" + downData.getClearRow().getScoreBonus() + " points)";
+                int linesCleared = downData.getClearRow().getLinesRemoved();
+                int totalPoints = downData.getClearRow().getTotalPointsAwarded();
+                int comboBonus = downData.getClearRow().getTotalComboBonus();
+                int basePoints = totalPoints - comboBonus;
+                String lineLabel;
+                if (linesCleared == 1) {
+                    lineLabel = "line";
+                } else {
+                    lineLabel = "lines";
+                }
+                String notificationText = linesCleared + " " + lineLabel + " cleared: +" + basePoints + " points (+ " + comboBonus + " combo bonus)";
                 NotificationPanel notificationPanel = new NotificationPanel(notificationText);
                 StackPane.setAlignment(notificationPanel, Pos.CENTER);
                 groupNotification.getChildren().add(notificationPanel);

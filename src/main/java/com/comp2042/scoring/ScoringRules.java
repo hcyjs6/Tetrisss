@@ -52,12 +52,6 @@ public class ScoringRules {
         return score.getCurrentScore();
     }
 
-    /**
-     * Resets the combo system.
-     */
-    public void resetCombo() {
-        comboSystem.resetCombo();
-    }
     
     /**
      * Adds points for a successful move down with level bonus.
@@ -86,11 +80,11 @@ public class ScoringRules {
         }
         
         int levelMultiplier = levelControls.getCurrentLevel();
-        int totalComboBonus = comboSystem.getComboBonus() * comboSystem.getComboMultiplier();
-        int totalPointsAwarded = lineClearScoring.calculatePoints(linesCleared, levelMultiplier) + totalComboBonus;
+        int totalComboBonus = getTotalComboBonus(); // total combo bonus
+        int totalPointsAwarded = lineClearScoring.calculatePoints(linesCleared, levelMultiplier) + totalComboBonus; // total points with combo bonus
         score.addPoints(totalPointsAwarded);
         
-        // Update line tracking and level progression
+        // Update line tracking
         lineTracker.addLinesCleared(linesCleared);
 
         // Update level progression
@@ -101,11 +95,26 @@ public class ScoringRules {
 
         return totalPointsAwarded;
     }
+
+    /**
+     * Gets the total combo bonus.
+     * @return the total combo bonus
+     */
+    public int getTotalComboBonus() {
+        return comboSystem.getBaseComboBonus() * comboSystem.getComboMultiplier();
+    }
+    
+    /**
+     * Resets the combo system.
+     */
+    public void resetCombo() {
+        comboSystem.resetCombo();
+    }
     
     /**
      * Resets the scoring system for a new game.
      */
-    public void reset() {
+    public void resetAchievements() {
         score.resetScore();
         levelControls.resetLevel();
         lineTracker.resetLineTracker();

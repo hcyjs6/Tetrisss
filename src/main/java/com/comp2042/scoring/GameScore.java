@@ -1,3 +1,4 @@
+// Basic score management system
 package com.comp2042.scoring;
 
 import javafx.beans.property.IntegerProperty; // Import for JavaFX integer property

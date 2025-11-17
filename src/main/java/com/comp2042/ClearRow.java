@@ -4,12 +4,14 @@ public final class ClearRow {
 
     private final int linesRemoved;
     private final int[][] newMatrix;
-    private final int scoreBonus;
+    private final int totalPointsAwarded;
+    private final int totalComboBonus;
 
-    public ClearRow(int linesRemoved, int[][] newMatrix, int scoreBonus) {
+    public ClearRow(int linesRemoved, int[][] newMatrix, int totalPointsAwarded, int totalComboBonus) {
         this.linesRemoved = linesRemoved;
         this.newMatrix = newMatrix;
-        this.scoreBonus = scoreBonus;
+        this.totalPointsAwarded = totalPointsAwarded;
+        this.totalComboBonus = totalComboBonus;
     }
 
     public int getLinesRemoved() {
@@ -20,7 +22,13 @@ public final class ClearRow {
         return MatrixOperations.copy(newMatrix);
     }
 
-    public int getScoreBonus() {
-        return scoreBonus;
+    public int getTotalPointsAwarded() {
+        return totalPointsAwarded;
+    }
+
+    public int getTotalComboBonus() {
+        return totalComboBonus;
+
     }
 }
+

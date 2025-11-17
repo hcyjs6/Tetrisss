@@ -9,7 +9,7 @@ package com.comp2042.scoring;
  */
 public class LineClearScoring {
     
-    private static final int points_per_lineCleared = 50;
+    private static final int points_per_lineCleared = 40;
     
     /**
      * Calculates points for clearing lines with level multiplier.
@@ -36,17 +36,17 @@ public class LineClearScoring {
     private int calculateLineClearedPoints(int linesCleared) {
         switch (linesCleared) {
             case 1:
-                return points_per_lineCleared;           // 50 points
+                return points_per_lineCleared;           // 40 points
             case 2:
-                return points_per_lineCleared * 3;       // 150 points
+                return points_per_lineCleared * 3;       // 120 points
             case 3:
-                return points_per_lineCleared * 5;       // 250 points
+                return points_per_lineCleared * 5;       // 200 points
             case 4:
-                return points_per_lineCleared * 8;       // 400 points 
+                return points_per_lineCleared * 8;       // 320 points 
             case 5:
-                return points_per_lineCleared * 12;      // 600 points 
+                return points_per_lineCleared * 12;      // 480 points 
             case 6:
-                return points_per_lineCleared * 16;      // 800 points 
+                return points_per_lineCleared * 16;      // 640 points 
             default:
                 return points_per_lineCleared * (8 + (linesCleared - 4) * 4);
         }
