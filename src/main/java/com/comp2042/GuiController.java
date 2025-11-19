@@ -8,6 +8,9 @@ import com.comp2042.event.InputEventListener;
 import com.comp2042.ghostpieces.GhostPieceRenderer;
 import com.comp2042.speed.DropSpeedController;
 import javafx.animation.Timeline;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.util.Duration;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -33,6 +36,8 @@ import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.List;
+import java.util.ArrayList;
 
 public class GuiController implements Initializable {
 
@@ -293,25 +298,60 @@ public class GuiController implements Initializable {
             } 
             
             if (downData.getClearRow() != null && downData.getClearRow().getLinesRemoved() > 0) {
-                int linesCleared = downData.getClearRow().getLinesRemoved();
-                int totalPoints = downData.getClearRow().getTotalPointsAwarded();
-                int comboBonus = downData.getClearRow().getTotalComboBonus();
-                int basePoints = totalPoints - comboBonus;
-                String lineLabel;
-                if (linesCleared == 1) {
-                    lineLabel = "line";
-                } else {
-                    lineLabel = "lines";
-                }
-                String notificationText = linesCleared + " " + lineLabel + " cleared: +" + basePoints + " points (+ " + comboBonus + " combo bonus)";
-                NotificationPanel notificationPanel = new NotificationPanel(notificationText);
-                StackPane.setAlignment(notificationPanel, Pos.CENTER);
-                groupNotification.getChildren().add(notificationPanel);
-                notificationPanel.showScore(groupNotification.getChildren());
+                // Fade out the cleared rows
+                fadeEffect(downData.getClearRow(), downData);
+            } else {
+                refreshBrick(downData.getViewData());
             }
-            refreshBrick(downData.getViewData());
         }
         gamePanel.requestFocus();
+    }
+
+    private void fadeEffect(ClearRow clearRow, DownData downData) {
+        List<Integer> clearedRowIndex = clearRow.getClearedRowIndex();
+        
+        // Create fade transitions for all rectangles in the cleared rows
+        List<FadeTransition> fadeTransitions = new ArrayList<>();
+        
+        for (Integer rowIndex : clearedRowIndex) {
+            if (rowIndex >= 0 && rowIndex < displayMatrix.length) {
+                for (int columnIndex = 0; columnIndex < displayMatrix[rowIndex].length; columnIndex++) {
+                    Rectangle rectangle = displayMatrix[rowIndex][columnIndex];
+                    FadeTransition fade = new FadeTransition(Duration.millis(100), rectangle);
+                    fade.setFromValue(1.0);
+                    fade.setToValue(0.7);
+                    fade.setCycleCount(4);
+                    fadeTransitions.add(fade);
+                }
+            }
+        }
+
+        // Create a parallel transition to fade all rows simultaneously
+        ParallelTransition parallelFade = new ParallelTransition();
+        parallelFade.getChildren().addAll(fadeTransitions);
+        
+        // After fade completes, refresh the background and brick
+        parallelFade.setOnFinished(e -> {
+            // Update the board with cleared rows
+            refreshGameBackground(clearRow.getNewMatrix());
+            
+            // Show notification
+            int totalPoints = clearRow.getTotalPointsAwarded();
+            int comboBonus = clearRow.getTotalComboBonus();
+            int basePoints = totalPoints - comboBonus;
+            
+            String notificationText = " + " + basePoints + "points (+ " + comboBonus + " combo bonus)";
+            NotificationPanel notificationPanel = new NotificationPanel(notificationText);
+            StackPane.setAlignment(notificationPanel, Pos.CENTER);
+            groupNotification.getChildren().add(notificationPanel);
+            notificationPanel.showScore(groupNotification.getChildren());
+            
+            // Refresh the brick display
+            refreshBrick(downData.getViewData());
+        });
+        
+        // Start the fade animation
+        parallelFade.play();
     }
 
     public void setEventListener(InputEventListener eventListener) {

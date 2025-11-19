@@ -24,6 +24,14 @@
     
 }
 
+/* Hold Brick Panel */
+.holdBrickPanel {
+    -fx-padding: 10;
+    -fx-background-color: rgba(255, 240, 245, 0.308); /* Lavender blush */
+    -fx-border-color: #f692a1; /* Light pink border */
+    -fx-border-width: 5;
+}
+
 /* Controls Panel */
 .controlsPanel {
     -fx-background-color: rgba(255, 240, 245, 0.6);
@@ -41,18 +49,18 @@
 
 .controlKey {
     -fx-font-family: "Trebuchet MS";
-    -fx-font-size: 13px;
+    -fx-font-size: 12px;
     -fx-text-fill: #8B008B;
     -fx-background-color: rgba(255, 182, 193, 0.4);
-    -fx-padding: 3 8 3 8;
-    -fx-background-radius: 6;
+    -fx-padding: 2 4 2 4;
+    -fx-background-radius: 3;
     -fx-font-weight: bold;
 }
 
 .controlDescription {
     -fx-font-family: "Trebuchet MS";
     -fx-font-style: italic;
-    -fx-font-size: 13px;
+    -fx-font-size: 12px;
     -fx-text-fill: #f776bd;
 }
 
@@ -80,7 +88,7 @@
 
 /* Notification Panel */
 .notificationStyle {
-    -fx-font-size: 20px;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
 }
 

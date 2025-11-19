@@ -74,7 +74,7 @@ public class GameController implements InputEventListener {
            
             int pointsAwarded = scoringRules.add_LineCleared_Points(clearRow.getLinesRemoved());
             // Update the ClearRow with actual points for notification
-            clearRow = new ClearRow(clearRow.getLinesRemoved(), clearRow.getNewMatrix(), pointsAwarded, totalComboBonus);
+            clearRow = new ClearRow(clearRow.getLinesRemoved(), clearRow.getNewMatrix(), pointsAwarded, totalComboBonus, clearRow.getClearedRowIndex());
         } else {
             // Reset the combo system if no lines were cleared
             scoringRules.resetCombo();
@@ -87,7 +87,11 @@ public class GameController implements InputEventListener {
             viewGuiController.gameOver();
         }
         
-        viewGuiController.refreshGameBackground(board.getBoardMatrix());
+        // Only refresh background immediately if no rows were cleared
+        // If rows were cleared, the fade animation will handle the refresh after it completes
+        if (clearRow.getLinesRemoved() == 0) {
+            viewGuiController.refreshGameBackground(board.getBoardMatrix());
+        }
         return new DownData(clearRow, board.getViewData());
     }
     
