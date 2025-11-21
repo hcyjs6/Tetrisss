@@ -9,7 +9,7 @@ public class GameStateController {
     private GameState currentState;
 
     public enum GameState {
-        PLAYING, PAUSED, GAME_OVER, MENU
+        PLAYING, PAUSED, GAME_OVER
     }
     
     public GameStateController() {
@@ -61,7 +61,7 @@ public class GameStateController {
     /**
      * This method pauses the game.
      */
-    public void pauseGame() {
+    public void pauseGame() { 
         if (currentState == GameState.PLAYING) {
             currentState = GameState.PAUSED;
         }
@@ -70,13 +70,13 @@ public class GameStateController {
     /**
      * This method resumes the game.
      */
-    public void resumeGame() {
+    public void resumeGame() { 
         if (currentState == GameState.PAUSED) {
             currentState = GameState.PLAYING;
         }
     }
 
-    public void resetGameState() {
+    public void resetGameState() { 
         currentState = GameState.PLAYING;
     }
     

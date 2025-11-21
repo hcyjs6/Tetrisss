@@ -16,8 +16,4 @@ public interface InputEventListener {
     ViewData onRotateLeftEvent(MoveEvent event);
 
     ViewData onRotateRightEvent(MoveEvent event);
-
-    ViewData getGhostPieceData();
-
-    void createNewGame();
 }

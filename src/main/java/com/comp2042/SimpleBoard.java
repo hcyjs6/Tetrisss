@@ -19,6 +19,9 @@ import java.awt.*;
  */
 public class SimpleBoard implements Board {
 
+    private static final int SPAWN_X = 3;
+    private static final int SPAWN_Y = -1; // Spawn at y=-1 so visible part appears at row 0
+    
     private final int width;    // columns of the board
     private final int height;    // rows of the board
     private final BrickGenerator brickGenerator;
@@ -87,7 +90,8 @@ public class SimpleBoard implements Board {
     }
 
     // Kick offsets when collision detected
-    private boolean kickOffsets(NextShapeInfo nextShape) {
+    @Override
+    public boolean kickOffsets(NextShapeInfo nextShape) {
         boolean blocked = CollisionDetector.checkRotateCollision(currentGameMatrix, nextShape.getShape(), currentOffset);
 
         if (blocked) {
@@ -124,14 +128,14 @@ public class SimpleBoard implements Board {
     public boolean createNewBrick() {
         Brick currentBrick = brickGenerator.getBrick();
         brickRotator.setBrick(currentBrick);
-        currentOffset = new Point(3, -1); // Spawn at y=-1 so visible part appears at row 0
+        currentOffset = new Point(SPAWN_X, SPAWN_Y);
         return true; // Always return true - game over check will be handled separately
     }
     
-    // Check if the current brick has reached the top of the board (game over condition)
+   
+    @Override
     public boolean isGameOver() {
-        // Game over when the brick cannot be placed at the spawn position due to collision
-        return CollisionDetector.checkSpawnCollision(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY()); // return true if collision detected, false if can spawn
+        return CollisionDetector.checkSpawnCollision(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
     }
 
     @Override
@@ -144,6 +148,7 @@ public class SimpleBoard implements Board {
         return new ViewData(brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY(), brickGenerator.getNextBrick().getShapeMatrix().get(0));
     }
     
+    @Override
     public ViewData getGhostPieceViewData() {
         int ghostY = getGhostPieceY();
         return GhostPieceLogic.createGhostPieceViewData(brickRotator.getCurrentShape(), currentOffset, ghostY, brickGenerator.getNextBrick().getShapeMatrix().get(0));
@@ -165,11 +170,6 @@ public class SimpleBoard implements Board {
         currentGameMatrix = clearRow.getNewMatrix();
         return clearRow;
 
-    }
-
-    @Override
-    public SimpleBoard getBoard() {
-        return this;
     }
 
     /** 

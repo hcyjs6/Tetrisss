@@ -21,17 +21,19 @@ public final class NextBrickRenderer {
 
         for (int i = 0; i < nextBrickData.length; i++) {
             for (int j = 0; j < nextBrickData[i].length; j++) {
-               
-                Rectangle rectangle = new Rectangle(NEXT_BRICK_SIZE, NEXT_BRICK_SIZE);
-                rectangle.setFill(BrickColour.getFillColor(nextBrickData[i][j]));
-                rectangle.setOpacity(1.0);
-                rectangle.setStroke(Color.BLACK);
-                rectangle.setStrokeWidth(1.0);
-                rectangle.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
-
-                if (nextBrickData[i][j] != 0) {
+                int colorValue = nextBrickData[i][j];
+                
+                // Only create and style rectangles for non-empty cells (color != 0)
+                if (colorValue != 0) {
+                    Rectangle rectangle = new Rectangle(NEXT_BRICK_SIZE, NEXT_BRICK_SIZE);
+                    rectangle.setFill(BrickColour.getFillColor(colorValue));
+                    rectangle.setOpacity(1.0);
+                    rectangle.setStroke(Color.BLACK);
+                    rectangle.setStrokeWidth(1.0);
+                    rectangle.setStrokeType(javafx.scene.shape.StrokeType.OUTSIDE);
                     nextBrickPanel.add(rectangle, j, i);
-                } 
+                }
+               
             }
         }
     }    

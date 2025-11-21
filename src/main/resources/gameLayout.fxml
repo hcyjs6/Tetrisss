@@ -63,10 +63,24 @@
         </VBox>
 
         <!-- Next Brick Preview Panel -->
-        <VBox fx:id="nextPanel" alignment="TOP_CENTER" layoutX="600.0" layoutY="20.0" prefHeight="200.0" prefWidth="155.0" spacing="10.0">
+        <VBox fx:id="nextPanelBoard" alignment="TOP_CENTER" layoutX="600.0" layoutY="20.0" prefHeight="200.0" prefWidth="155.0" spacing="10.0">
             <children>
                 <Label styleClass="nextBrickTitle" text="NEXT BRICK" />
-                <GridPane fx:id="nextBrickPanel" alignment="CENTER" hgap="0" prefHeight="200.0" prefWidth="112.0" styleClass="nextBrickPanel" vgap="0" />
+                <GridPane fx:id="nextBrickPanelBoard" alignment="CENTER" hgap="0" prefHeight="200.0" prefWidth="112.0" styleClass="nextBrickPanel" vgap="0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></GridPane>
+                
+            </children>
+        </VBox>
+
+        <VBox fx:id="nextPanel" alignment="TOP_CENTER" layoutX="600.0" layoutY="20.0" prefHeight="200.0" prefWidth="155.0" spacing="10.0">
+            <children>
+              
+                <GridPane fx:id="nextBrickPanel" alignment="CENTER" prefHeight="112.0" prefWidth="112.0" vgap="0">
+               <VBox.margin>
+                  <Insets top="65.0" />
+               </VBox.margin></GridPane>
             </children>
         </VBox>
 
@@ -130,11 +144,14 @@
             </children>
         </VBox> 
 
+         <!-- Pause Button -->
+        <Button fx:id="pauseButton" layoutX="637.0" layoutY="230.0" mnemonicParsing="false" onAction="#pauseGame" styleClass="pauseButton" text="PAUSE" />
+
          <!-- Dark Overlay for Pause , Game Over and Control Panel -->
-        <Pane fx:id="darkOverlay" layoutX="0" layoutY="0" prefHeight="580.0" prefWidth="800.0" styleClass="overlay" />
+        <Pane fx:id="darkOverlay" layoutX="0" layoutY="0" prefHeight="580.0" prefWidth="800.0" mouseTransparent="false" styleClass="overlay" />
         
         <!-- Game Over Panel - positioned last so it appears on top of everything -->
-        <VBox fx:id="gameOverPanel" alignment="CENTER" layoutX="200.0" layoutY="90.0" prefHeight="400.0" prefWidth="400.0" spacing="30.0" styleClass="gameOverPanel">
+        <VBox fx:id="gameOverPanel" alignment="CENTER" layoutX="200.0" layoutY="90.0" prefHeight="400.0" prefWidth="400.0" spacing="30.0" mouseTransparent="false" styleClass="gameOverPanel">
             <children>
                 <Label styleClass="gameOverTitle" text="GAME OVER" />
                 <Label styleClass="gameOverQuestion" text="Oopsie daisy! One more try?" />
@@ -149,7 +166,7 @@
 
        
         <!-- Pause Panel -->
-        <VBox fx:id="pausePanel" alignment="CENTER" layoutX="225.0" layoutY="40.0" prefHeight="500.0" prefWidth="350.0" spacing="30.0" styleClass="pausePanel">
+        <VBox fx:id="pausePanel" alignment="CENTER" layoutX="225.0" layoutY="40.0" prefHeight="500.0" prefWidth="350.0" spacing="30.0" mouseTransparent="false" styleClass="pausePanel">
             <children>
                 <Label alignment="CENTER" prefWidth="400.0" styleClass="pauseTitle" text="PAUSED">
                <padding>
@@ -168,8 +185,7 @@
                 </VBox>
             </children>
         </VBox>
-        <!-- Pause Button -->
-        <Button fx:id="pauseButton" layoutX="637.0" layoutY="230.0" mnemonicParsing="false" onAction="#pauseGame" styleClass="pauseButton" text="PAUSE" />
+       
         <Pane fx:id="controlPanel" layoutX="100.0" layoutY="30.0" prefHeight="520.0" prefWidth="600.0" styleClass="controlsPanel2">
          <children>
             <ImageView fitHeight="430.0" fitWidth="550.0" layoutX="25.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" styleClass="controlImage" />
@@ -183,6 +199,13 @@
       </Pane>
         <!-- Notification overlay positioned above the board -->
         <StackPane fx:id="groupNotification" layoutY="0.0" mouseTransparent="true" prefHeight="580.0" prefWidth="800.0" />
+        
+        <!-- Countdown overlay -->
+        <StackPane fx:id="countdownOverlay" alignment="CENTER" layoutY="0.0" mouseTransparent="false" prefHeight="580.0" prefWidth="800.0" styleClass="countdownOverlay" >
+            <children>
+                <Label fx:id="countdownLabel" styleClass="countdownLabel" text="" />
+            </children>
+        </StackPane>
     </children>
     <stylesheets>
         <URL value="@window_style.css" />

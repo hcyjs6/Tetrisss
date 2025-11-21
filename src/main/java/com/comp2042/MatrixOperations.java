@@ -16,6 +16,7 @@ public class MatrixOperations {
 
     }
 
+    // Returns true if collision detected, false if move is safe
     public static boolean intersect(final int[][] matrix, final int[][] brick, int targetX, int targetY) {
         for (int i = 0; i < brick.length; i++) { // Loop through brick rows
             for (int j = 0; j < brick[i].length; j++) { // Loop through brick columns
@@ -28,15 +29,16 @@ public class MatrixOperations {
                 }
             }
         }
-        return false; // Return false if the block is within the board and target is not empty/occupied
+        return false; // Return false if the block is within the board and target is empty
     }
 
     private static boolean checkOutOfBound(int[][] matrix, int targetX, int targetY) {
         if (targetX < 0 || targetY < 0 || targetY >= matrix.length || targetX >= matrix[targetY].length) {
-            return true;
+            return true; // Return true if block out of bounds
         }
-        return false;
+        return false; // Return false if block is within bounds
     }
+
 
     public static int[][] copy(int[][] original) {
         int[][] myInt = new int[original.length][];
@@ -63,6 +65,7 @@ public class MatrixOperations {
         return copy;
     }
 
+    // Check if a row is full and remove it if it is
     public static ClearRow checkRemoving(final int[][] matrix) {
         int[][] temporaryMatrix = new int[matrix.length][matrix[0].length]; // create a temporary matrix(same size as the original matrix) to store the new matrix after clearing rows
         List<Integer> clearedRows = new ArrayList<>(); // list to remember the indices of rows to be cleared

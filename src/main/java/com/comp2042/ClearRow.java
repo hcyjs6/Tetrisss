@@ -13,11 +13,11 @@ public final class ClearRow {
 
 
     public ClearRow(int linesRemoved, int[][] newMatrix, int totalPointsAwarded, int totalComboBonus, List<Integer> clearedRowIndex) {
-        this.linesRemoved = linesRemoved;
-        this.newMatrix = newMatrix;
-        this.totalPointsAwarded = totalPointsAwarded;
-        this.totalComboBonus = totalComboBonus;
-        this.clearedRowIndex = new ArrayList<>(clearedRowIndex);
+        this.linesRemoved = linesRemoved; // number of rows removed
+        this.newMatrix = newMatrix; // new matrix after clearing rows
+        this.totalPointsAwarded = totalPointsAwarded; // total points awarded
+        this.totalComboBonus = totalComboBonus; // total combo bonus
+        this.clearedRowIndex = new ArrayList<>(clearedRowIndex); // list of indices of rows removed
       
     }
 

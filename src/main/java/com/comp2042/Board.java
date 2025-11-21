@@ -1,5 +1,7 @@
 package com.comp2042;
 
+import com.comp2042.rotation.NextShapeInfo;
+
 // Define what a game board can do before you implement it.
 public interface Board {
 
@@ -15,6 +17,8 @@ public interface Board {
 
     boolean rotateRightBrick();
 
+    boolean kickOffsets(NextShapeInfo nextShape);
+
     boolean createNewBrick();
 
     int[][] getBoardMatrix();
@@ -29,7 +33,7 @@ public interface Board {
 
     ClearRow clearRows();
 
-    SimpleBoard getBoard();
+    boolean isGameOver();
 
     void resetBoard();
 }

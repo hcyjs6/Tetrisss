@@ -223,7 +223,7 @@
 }
 
 .resumeButton:hover {
-    -fx-background-color: #ef7fa2, #ffecbb;
+    -fx-background-color: #ec628e, #ffecbb;
 }
 
 .resumeButton:pressed {
@@ -343,6 +343,17 @@
 /* Dark Overlay for Pause , Game Over and Control Panel */
 .overlay {
     -fx-background-color: rgba(0, 0, 0, 0.6);
+}
+
+.countdownOverlay {
+    -fx-background-color: rgba(0, 0, 0, 0.55);
+}
+
+.countdownLabel {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 96px;
+    -fx-font-weight: bold;
+    
 }
 
 
