@@ -1,6 +1,5 @@
 package com.comp2042.logic;
 
-import com.comp2042.MatrixOperations;
 import java.awt.Point;
 
 //Handles all collision detection logic for the Tetris game.

@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Text?>
 <?import java.net.URL?>
 
-<Pane prefHeight="580.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.comp2042.GuiController">
+<Pane prefHeight="580.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.comp2042.gui.GuiController">
     <children>
         <BorderPane fx:id="gameBoard" layoutX="250.0" prefHeight="560.0" prefWidth="280.0" styleClass="gameBoard">
             <center>
@@ -62,7 +62,7 @@
            </children>
         </VBox>
 
-        <!-- Next Brick Preview Panel -->
+        <!-- Next Brick Preview Panel Board -->
         <VBox fx:id="nextPanelBoard" alignment="TOP_CENTER" layoutX="600.0" layoutY="20.0" prefHeight="200.0" prefWidth="155.0" spacing="10.0">
             <children>
                 <Label styleClass="nextBrickTitle" text="NEXT BRICK" />
@@ -74,6 +74,7 @@
             </children>
         </VBox>
 
+        <!-- Next Brick Preview Panel -->
         <VBox fx:id="nextPanel" alignment="TOP_CENTER" layoutX="600.0" layoutY="20.0" prefHeight="200.0" prefWidth="155.0" spacing="10.0">
             <children>
               
@@ -84,11 +85,22 @@
             </children>
         </VBox>
 
+        <!-- Hold Brick Preview Panel Board -->
+        <VBox fx:id="holdPanelBoard" alignment="TOP_CENTER" layoutX="45.0" layoutY="20.0" prefHeight="200.0" prefWidth="155.0" spacing="10.0">
+            <children>
+                <Label styleClass="nextBrickTitle" text="HOLD" />
+                <GridPane fx:id="holdBrickPanelBoard" alignment="CENTER" hgap="0" prefHeight="200.0" prefWidth="112.0" styleClass="holdBrickPanel" vgap="0" />
+            </children>
+        </VBox>
+
         <!-- Hold Brick Preview Panel -->
         <VBox fx:id="holdPanel" alignment="TOP_CENTER" layoutX="45.0" layoutY="20.0" prefHeight="200.0" prefWidth="155.0" spacing="10.0">
             <children>
-                <Label styleClass="nextBrickTitle" text="HOLD" />
-                <GridPane fx:id="holdBrickPanel" alignment="CENTER" hgap="0" prefHeight="200.0" prefWidth="112.0" styleClass="holdBrickPanel" vgap="0" />
+                <GridPane fx:id="holdBrickPanel" alignment="CENTER" hgap="0" prefHeight="112.0" prefWidth="112.0" vgap="0">
+                <VBox.margin>
+                    <Insets top="65.0" />
+                </VBox.margin>
+                </GridPane>
             </children>
         </VBox>
 
@@ -134,6 +146,12 @@
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="8.0">
                    <children>
+                       <Label styleClass="controlKey" text="C" />
+                       <Label styleClass="controlDescription" text="Hold" />
+                   </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="8.0">
+                   <children>
                        <Label styleClass="controlKey" text="ESC" />
                        <Label styleClass="controlDescription" text="Pause" />
                    </children>
@@ -148,10 +166,10 @@
         <Button fx:id="pauseButton" layoutX="637.0" layoutY="230.0" mnemonicParsing="false" onAction="#pauseGame" styleClass="pauseButton" text="PAUSE" />
 
          <!-- Dark Overlay for Pause , Game Over and Control Panel -->
-        <Pane fx:id="darkOverlay" layoutX="0" layoutY="0" prefHeight="580.0" prefWidth="800.0" mouseTransparent="false" styleClass="overlay" />
+        <Pane fx:id="darkOverlay" layoutX="0" layoutY="0" mouseTransparent="false" prefHeight="580.0" prefWidth="800.0" styleClass="overlay" />
         
         <!-- Game Over Panel - positioned last so it appears on top of everything -->
-        <VBox fx:id="gameOverPanel" alignment="CENTER" layoutX="200.0" layoutY="90.0" prefHeight="400.0" prefWidth="400.0" spacing="30.0" mouseTransparent="false" styleClass="gameOverPanel">
+        <VBox fx:id="gameOverPanel" alignment="CENTER" layoutX="200.0" layoutY="90.0" mouseTransparent="false" prefHeight="400.0" prefWidth="400.0" spacing="30.0" styleClass="gameOverPanel">
             <children>
                 <Label styleClass="gameOverTitle" text="GAME OVER" />
                 <Label styleClass="gameOverQuestion" text="Oopsie daisy! One more try?" />
@@ -166,7 +184,7 @@
 
        
         <!-- Pause Panel -->
-        <VBox fx:id="pausePanel" alignment="CENTER" layoutX="225.0" layoutY="40.0" prefHeight="500.0" prefWidth="350.0" spacing="30.0" mouseTransparent="false" styleClass="pausePanel">
+        <VBox fx:id="pausePanel" alignment="CENTER" layoutX="225.0" layoutY="40.0" mouseTransparent="false" prefHeight="500.0" prefWidth="350.0" spacing="30.0" styleClass="pausePanel">
             <children>
                 <Label alignment="CENTER" prefWidth="400.0" styleClass="pauseTitle" text="PAUSED">
                <padding>
@@ -201,11 +219,13 @@
         <StackPane fx:id="groupNotification" layoutY="0.0" mouseTransparent="true" prefHeight="580.0" prefWidth="800.0" />
         
         <!-- Countdown overlay -->
-        <StackPane fx:id="countdownOverlay" alignment="CENTER" layoutY="0.0" mouseTransparent="false" prefHeight="580.0" prefWidth="800.0" styleClass="countdownOverlay" >
+        <StackPane fx:id="countdownOverlay" alignment="CENTER" layoutY="0.0" mouseTransparent="false" prefHeight="580.0" prefWidth="800.0" styleClass="countdownOverlay">
             <children>
                 <Label fx:id="countdownLabel" styleClass="countdownLabel" text="" />
             </children>
         </StackPane>
+
+        
     </children>
     <stylesheets>
         <URL value="@window_style.css" />
