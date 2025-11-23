@@ -534,6 +534,8 @@ public class GuiController implements Initializable {
         Platform.exit();
     }
 
+    
+
     /**
      * Handles the ESC key press and pause button click event.
      * Pauses the game and shows the pause panel.

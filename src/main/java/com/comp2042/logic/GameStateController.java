@@ -9,7 +9,7 @@ public class GameStateController {
     private GameState currentState;
 
     public enum GameState {
-        PLAYING, PAUSED, GAME_OVER
+        PLAYING, PAUSED, GAME_OVER, MAIN_MENU
     }
     
     public GameStateController() {
@@ -40,6 +40,10 @@ public class GameStateController {
      */
     public boolean isPlaying() {
         return currentState == GameState.PLAYING;
+    }
+
+    public boolean isMainMenu() {
+        return currentState == GameState.MAIN_MENU;
     }
     
     /**

@@ -20,7 +20,7 @@
     <children>
         <BorderPane fx:id="gameBoard" layoutX="250.0" prefHeight="560.0" prefWidth="280.0" styleClass="gameBoard">
             <center>
-                <GridPane fx:id="gamePanel" hgap="0" layoutX="0" layoutY="0" prefHeight="560.0" prefWidth="280.0" vgap="0" />
+                <GridPane fx:id="gamePanel" hgap="0" layoutX="0" layoutY="0" prefHeight="560.0" prefWidth="280.0" vgap="0"/>
             </center>
          <effect>
             <InnerShadow>

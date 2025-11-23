@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import java.net.URL?>
+
+<Pane prefHeight="580.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.comp2042.gui.MenuController">
+    <children>
+        <!-- Background -->
+        <ImageView fitHeight="580.0" fitWidth="800.0" layoutX="0.0" layoutY="0.0" nodeOrientation="INHERIT" preserveRatio="true">
+         <image>
+            <Image url="@bunny1.png" />
+         </image></ImageView>
+        
+        <!-- Title -->
+        <VBox alignment="TOP_CENTER" layoutX="0.0" layoutY="40.0" prefHeight="100.0" prefWidth="800.0">
+            <children>
+            <Text fill="#ffc6c6" stroke="#545050" strokeLineJoin="BEVEL" strokeType="OUTSIDE" strokeWidth="20.0" text="TETRIS">
+               <font>
+                  <Font name="Gill Sans Ultra Bold" size="110.0" />
+               </font>
+            </Text>
+            </children>
+        </VBox>
+        
+        <!-- Menu Buttons -->
+        <VBox alignment="CENTER" layoutX="0.0" layoutY="340.0" prefHeight="200.0" prefWidth="800.0" spacing="25.0">
+            <children>
+                <Button onAction="#startGame" prefHeight="50.0" prefWidth="300.0" styleClass="menuButton" text="PLAY" />
+                <Button onAction="#showControlKeys" prefHeight="50.0" prefWidth="300.0" styleClass="menuButton" text="SHOW CONTROL &amp; SCORES" />
+                <Button onAction="#exitGame" prefHeight="50.0" prefWidth="300.0" styleClass="menuButton" text="EXIT" />
+           
+            </children>
+        </VBox>
+      <Pane fx:id="controlPanel" layoutX="10.0" layoutY="50.0" prefHeight="500.0" prefWidth="780.0" styleClass="controlsPanel2" visible="false">
+         <children>
+            <ImageView fitHeight="430.0" fitWidth="550.0" layoutX="70.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" styleClass="controlImage" />
+         </children></Pane>
+    </children>
+    <stylesheets>
+        <URL value="@window_style.css" />
+    </stylesheets>
+</Pane>

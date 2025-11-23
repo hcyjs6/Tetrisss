@@ -6,8 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
-import com.comp2042.gui.GuiController;
-
+import com.comp2042.gui.MenuController;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,7 +16,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        URL location = getClass().getClassLoader().getResource("gameLayout.fxml");
+        // Load the menu layout
+        URL location = getClass().getClassLoader().getResource("menuLayout.fxml");
         ResourceBundle resources = null;
 
         FXMLLoader fxmlLoader = new FXMLLoader(location, resources);
@@ -26,17 +26,16 @@ public class Main extends Application {
         Image icon = new Image(getClass().getResourceAsStream("/tetrisIcon.png"));
         primaryStage.getIcons().add(icon); // Add the icon to the primary stage
 
-        GuiController c = fxmlLoader.getController();
+        MenuController menuController = fxmlLoader.getController();
+        menuController.setStage(primaryStage);
 
         primaryStage.setTitle("TetrisJFX");
         Scene scene = new Scene(root, 800, 580); // Create a new scene with the root node and the width and height
         primaryStage.setResizable(false);
+        
         primaryStage.setScene(scene); // Set the scene to the primary stage
         primaryStage.sizeToScene(); // Automatically size the stage to fit the scene
-        //primaryStage.setFullScreen(true); // Set the scene to the primary stage
         primaryStage.show(); // Display the primary stage to user
-        
-        new GameController(c);
     }
 
 
