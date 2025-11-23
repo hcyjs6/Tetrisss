@@ -35,6 +35,7 @@ public class Main extends Application {
         
         primaryStage.setScene(scene); // Set the scene to the primary stage
         primaryStage.sizeToScene(); // Automatically size the stage to fit the scene
+        primaryStage.centerOnScreen(); // Center the window on the screen
         primaryStage.show(); // Display the primary stage to user
     }
 

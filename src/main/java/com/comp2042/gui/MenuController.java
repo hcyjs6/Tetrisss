@@ -35,12 +35,21 @@ public class MenuController {
         // Get the game controller
         GuiController c = fxmlLoader.getController();
         
+        // Set the stage reference for scene switching
+        c.setStage(stage);
+        
+        
         // Switch to game scene
         Scene gameScene = new Scene(root, 800, 580);
         stage.setScene(gameScene);
         
         // Initialize the game (GameController will handle game state)
         new GameController(c);
+    }
+
+    @FXML
+    private void closeControlPanel() {
+        controlPanel.setVisible(false);
     }
 
     @FXML

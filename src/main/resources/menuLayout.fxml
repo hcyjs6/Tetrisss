@@ -44,9 +44,45 @@
            
             </children>
         </VBox>
-      <Pane fx:id="controlPanel" layoutX="10.0" layoutY="50.0" prefHeight="500.0" prefWidth="780.0" styleClass="controlsPanel2" visible="false">
+
+        <!-- Control Panel -->
+      <Pane fx:id="controlPanel" layoutX="45.0" layoutY="45.0" prefHeight="525.0" prefWidth="710.0" styleClass="controlsPanelMenu" visible="false">
          <children>
-            <ImageView fitHeight="430.0" fitWidth="550.0" layoutX="70.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" styleClass="controlImage" />
+            <HBox prefHeight="525.0" prefWidth="710.0">
+               <children>
+                  <VBox prefHeight="249.0" prefWidth="450.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="45.0" prefWidth="434.0" styleClass="controlKeyboardTitle" text="KEYBOARD CONTROL KEYS" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets left="20.0" top="140.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="30.0" />
+                           </padding></Label>
+                        <ImageView fitHeight="249.0" fitWidth="434.0" layoutX="20.0" pickOnBounds="true" preserveRatio="true" styleClass="controlImageMenu">
+                           <VBox.margin>
+                              <Insets left="20.0" />
+                           </VBox.margin></ImageView>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="200.0" prefWidth="240.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="28.0" prefWidth="236.0" styleClass="controlKeyboardTitle" text="SCORE VALUES" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets left="10.0" top="70.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="20.0" />
+                           </padding></Label>
+                        <ImageView fitHeight="437.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true" styleClass="scoreValuesImage">
+                           <VBox.margin>
+                              <Insets left="25.0" />
+                           </VBox.margin></ImageView>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Button onAction="#closeControlPanel" alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="670.0" layoutY="5.0" mnemonicParsing="false" styleClass="crossButtonMenu" text="X" />
          </children></Pane>
     </children>
     <stylesheets>

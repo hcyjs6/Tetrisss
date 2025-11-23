@@ -195,10 +195,10 @@
                </VBox.margin></Label>
                 <VBox alignment="CENTER" spacing="20.0">
                     <children>
-                        <Button onAction="#resumeGame" styleClass="resumeButton" text="Resume" />
-                        <Button onAction="#newGame" styleClass="restartButton2" text="Restart" />
-                        <Button onAction="#showControlKeys" styleClass="showControlKeysButton" text="Show Control Keys" /> 
-                        <Button onAction="#exitGame" styleClass="exitButton2" text="Exit Game" />
+                        <Button onAction="#resumeGame" styleClass="ButtonInPause" text="Resume" />
+                        <Button onAction="#newGame" styleClass="ButtonInPause" text="Restart" />
+                        <Button onAction="#showControlKeys" styleClass="ButtonInPause" text="Show Control Keys" /> 
+                        <Button onAction="#backToMenu" styleClass="ButtonInPause" text="Go Back to Menu" />
                     </children>
                 </VBox>
             </children>

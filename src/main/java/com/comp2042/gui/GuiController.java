@@ -34,6 +34,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
 
 
 import java.net.URL;
@@ -102,6 +104,7 @@ public class GuiController implements Initializable {
     private GameController gameController;
     private GameStateController gameStateController;
     private Board board;
+    private Stage stage;
 
     private Rectangle[][] displayMatrix;
 
@@ -534,8 +537,6 @@ public class GuiController implements Initializable {
         Platform.exit();
     }
 
-    
-
     /**
      * Handles the ESC key press and pause button click event.
      * Pauses the game and shows the pause panel.
@@ -586,5 +587,46 @@ public class GuiController implements Initializable {
         darkOverlay.setVisible(true);
         pausePanel.setVisible(true);
         gamePanel.requestFocus();
+    }
+
+    /**
+     * Sets the stage reference for scene switching.
+     * @param stage the primary stage
+     */
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    /**
+     * Handles the back to menu button click event.
+     * Switches back to the main menu scene.
+     * @param buttonEvent the action event
+     */
+    public void backToMenu(ActionEvent buttonEvent) throws Exception {
+       
+         
+            timeLine.stop();
+            
+            
+            // Reset game state
+            gameStateController.setGameState(GameStateController.GameState.MAIN_MENU);
+            
+            
+            // Load the menu layout
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("menuLayout.fxml"));
+            javafx.scene.Parent root = fxmlLoader.load();
+            
+            // Get the menu controller and set the stage
+            com.comp2042.gui.MenuController menuController = fxmlLoader.getController();
+            if (menuController != null && stage != null) {
+                menuController.setStage(stage);
+            }
+            
+            // Switch to menu scene
+            if (stage != null) {
+                javafx.scene.Scene menuScene = new javafx.scene.Scene(root, 800, 580);
+                stage.setScene(menuScene);
+            }
+       
     }
 }
