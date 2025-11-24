@@ -48,7 +48,7 @@
         <!-- Control Panel -->
       <Pane fx:id="controlPanel" layoutX="45.0" layoutY="45.0" prefHeight="525.0" prefWidth="710.0" styleClass="controlsPanelMenu" visible="false">
          <children>
-            <HBox prefHeight="525.0" prefWidth="710.0">
+            <HBox>
                <children>
                   <VBox prefHeight="249.0" prefWidth="450.0">
                      <children>

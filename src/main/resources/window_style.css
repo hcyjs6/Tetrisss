@@ -239,41 +239,6 @@
 }
 
 
-.controlsPanel2 {
-    -fx-background-color: rgb(255, 163, 193);
-    -fx-border-color: #000000;
-    -fx-border-width: 5;
-    -fx-padding: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 10, 0, 0, 2);
-    
-}
-
-.controlImage {
-    -fx-image: url("/Controls.png");
-    -fx-fit-height: 430px;
-    -fx-fit-width: 550px;
-}
-
-.crossButton {
-    -fx-font-family: "Open Sans";
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #ff3f7c;
-    -fx-background-color:  transparent;
-    -fx-scale-x: 1.0;
-    -fx-scale-y: 1.0;
-    
-}
-
-.crossButton:hover {
-    -fx-text-fill: #a2244c;
-    
-}
-
-.crossButton:pressed {
-    fx-text-fill: #a2244c;
-}
-
 /* Dark Overlay for Pause , Game Over and Control Panel */
 .overlay {
     -fx-background-color: rgba(0, 0, 0, 0.6);
@@ -327,11 +292,10 @@
 }
 
 .controlsPanelMenu {
-    -fx-background-color: #ffc6c6;
-    -fx-background-radius: 15px;
-    -fx-border-color: #3b3b3b;
-    -fx-border-radius: 10px;
-    -fx-border-width: 5;
+
+    -fx-background-color: #3b3b3b, #ffc6c6;
+    -fx-background-insets: 0, 5;
+    -fx-background-radius: 15, 10;
     -fx-padding: 12;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 10, 0, 0, 2);
     
