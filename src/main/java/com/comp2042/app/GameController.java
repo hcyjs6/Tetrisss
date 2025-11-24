@@ -95,7 +95,7 @@ public class GameController implements InputEventListener {
         // Only refresh background immediately if no rows were cleared
         // If rows were cleared, the fade animation will handle the refresh after it completes
         if (clearRow.getLinesRemoved() == 0) {
-            viewGuiController.refreshGameBackground(board.getBoardMatrix());
+            viewGuiController.refreshGameBoard(board.getBoardMatrix());
         }
         return new DownData(clearRow, board.getViewData());
     }
@@ -226,16 +226,7 @@ public class GameController implements InputEventListener {
         board.holdBrick();
         return board.getViewData();
     }
-
-    /**
-     * Gets the ghost piece data for the current falling piece.
-     * 
-     * @return ViewData containing the ghost piece position and shape
-     */
-   
-    public ViewData getGhostPieceData() {
-        return board.getGhostPieceViewData();
-    }
+    
 
     /**
      * Starts a new game by resetting all game state and UI.

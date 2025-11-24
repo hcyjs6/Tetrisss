@@ -26,7 +26,8 @@ public final class GhostPieceLogic {
     }
 
     public static ViewData createGhostPieceViewData(int[][] currentShape, Point currentOffset, int ghostPieceY) {
-        return new ViewData(currentShape, (int) currentOffset.getX(), ghostPieceY);
+        // Create ghost piece ViewData with shape in ghostPieceData field, not brickData
+        return new ViewData(null, (int) currentOffset.getX(), ghostPieceY, null, null, currentShape);
     }
 }
 

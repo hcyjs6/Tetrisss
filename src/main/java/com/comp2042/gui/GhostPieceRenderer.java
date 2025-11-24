@@ -1,7 +1,5 @@
 package com.comp2042.gui;
 
-import com.comp2042.logic.ViewData;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -12,52 +10,43 @@ import javafx.scene.shape.Rectangle;
 public final class GhostPieceRenderer {
 
     private GhostPieceRenderer() {
-        // Utility class
+       
     }
 
-    // Initialize the ghost piece
-    public static Rectangle[][] initGhostPiece(GridPane ghostPanel, int brickSize) {
+    public static Rectangle[][] initGhostPiece(GridPane ghostPanel, int[][] ghostData, int brickSize) {
         ghostPanel.getChildren().clear();
-        Rectangle[][] ghostRectangles = new Rectangle[4][4];
-        for (int i = 0; i < ghostRectangles.length; i++) {
-            for (int j = 0; j < ghostRectangles[i].length; j++) {
-                Rectangle ghostGrid = new Rectangle(brickSize, brickSize);
-                ghostGrid.setFill(Color.TRANSPARENT);
-                ghostGrid.setStroke(Color.WHITE);
-                ghostGrid.setStrokeWidth(3);
-                ghostGrid.setStrokeType(javafx.scene.shape.StrokeType.INSIDE);
-                ghostRectangles[i][j] = ghostGrid;
-                ghostPanel.add(ghostGrid, j, i);
+
+
+        Rectangle[][] ghostMatrix = new Rectangle[ghostData.length][ghostData[0].length];
+
+        for (int i = 0; i < ghostData.length; i++) {
+            for (int j = 0; j < ghostData[i].length; j++) {
+                
+                Rectangle cell = new Rectangle(brickSize, brickSize);
+                drawGhostCell(cell, ghostData[i][j]);
+                ghostMatrix[i][j] = cell;
+                ghostPanel.add(cell, j, i);
             }
         }
-        return ghostRectangles;
+        return ghostMatrix;
     }
 
-    // Refresh the ghost piece
-    public static void refreshGhostPiece(ViewData ghostData, ViewData currentPieceData, Rectangle[][] ghostRectangles, GridPane ghostPanel, BorderPane gameBoard, int brickSize) {
-        if (ghostRectangles == null || ghostData == null || currentPieceData == null) {
-            return;
+    public static void drawGhostCell(Rectangle cell, int colorValue) {
+        cell.setFill(Color.TRANSPARENT);
+        //cell.setFill(BrickColour.getFillColor(colorValue));
+        cell.setStroke(BrickColour.getFillColor(colorValue));
+        cell.setStrokeWidth(3);
+        cell.setStrokeType(javafx.scene.shape.StrokeType.INSIDE);
+        cell.setOpacity(0.0);
+        
+
+        if (colorValue != 0) {
+            //cell.setFill(BrickColour.getFillColor(colorValue));
+            cell.setOpacity(0.5);
         }
 
-        for (Rectangle[] row : ghostRectangles) {
-            for (Rectangle rect : row) {
-                rect.setOpacity(0.0);
-            }
-        }
 
-        if (ghostData.getyPosition() > currentPieceData.getyPosition()) {
-            ghostPanel.setLayoutX(gameBoard.getLayoutX() + 10 + ghostData.getxPosition() * brickSize);
-            ghostPanel.setLayoutY(gameBoard.getLayoutY() + 10 + ghostData.getyPosition() * brickSize);
-
-            int[][] shape = ghostData.getBrickData();
-            for (int i = 0; i < shape.length; i++) {
-                for (int j = 0; j < shape[i].length; j++) {
-                    if (shape[i][j] != 0) {
-                        ghostRectangles[i][j].setOpacity(0.35);
-                    }
-                }
-            }
-        }
     }
 }
+
 

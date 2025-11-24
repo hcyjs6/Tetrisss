@@ -57,7 +57,7 @@ public class ClearRowEffect {
         parallelFade.getChildren().addAll(fadeTransitions);
 
         parallelFade.setOnFinished(e -> {
-            guiController.refreshGameBackground(clearRow.getNewMatrix());
+            guiController.refreshGameBoard(clearRow.getNewMatrix());
             showNotification(clearRow);
             guiController.refreshBrick(downData.getViewData());
         });
