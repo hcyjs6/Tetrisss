@@ -42,13 +42,9 @@ public class LineClearScoring {
             case 3:
                 return points_per_lineCleared * 5;       // 200 points
             case 4:
-                return points_per_lineCleared * 8;       // 320 points 
-            case 5:
-                return points_per_lineCleared * 12;      // 480 points 
-            case 6:
-                return points_per_lineCleared * 16;      // 640 points 
+                return points_per_lineCleared * 8;       // 320 points   
             default:
-                return points_per_lineCleared * (8 + (linesCleared - 4) * 4);
+                return 0;
         }
     }
 }

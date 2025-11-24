@@ -8,21 +8,15 @@ import com.comp2042.logic.GameStateController;
 import com.comp2042.logic.speed.DropSpeedController;
 import com.comp2042.logic.Board;
 import com.comp2042.logic.ViewData;
-import com.comp2042.logic.ClearRow;
 import com.comp2042.logic.DownData;
 import com.comp2042.app.GameController;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.animation.FadeTransition;
-import javafx.animation.ParallelTransition;
-import javafx.util.Duration;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Label;
@@ -40,8 +34,6 @@ import javafx.fxml.FXMLLoader;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.List;
-import java.util.ArrayList;
 
 public class GuiController implements Initializable {
 
@@ -107,6 +99,7 @@ public class GuiController implements Initializable {
     private Stage stage;
 
     private Rectangle[][] displayMatrix;
+    private ClearRowEffect clearRowEffect;
 
     private InputEventListener eventListener;
 
@@ -118,10 +111,9 @@ public class GuiController implements Initializable {
 
     private DropSpeedController dropSpeedController;
     private Timeline timeLine;
-    private Timeline countdownTimeline;
-
     private boolean isResume = false;
     private boolean isCountDownEnd;
+    private Countdown countdown;
 
 
     @Override
@@ -189,6 +181,39 @@ public class GuiController implements Initializable {
         countdownOverlay.setVisible(false);
         
         ghostPanel.setVisible(false);
+
+        countdown = new Countdown(countdownOverlay, countdownLabel, brickPanel, ghostPanel, nextBrickPanel, this::isCountdownFinished);
+    }
+
+    private void moveDown(MoveEvent event) {
+        if (!isCountDownEnd || gameStateController.isPaused()) {
+            gamePanel.requestFocus();
+            return;
+        }
+        if (eventListener == null) {
+            gamePanel.requestFocus();
+            return;
+        }
+        if (gameStateController.isPlaying()) {
+            DownData downData;
+            
+            // Handle drop types only
+            if (event.getEventType() == EventType.SOFT_DROP) {
+                downData = eventListener.onSoftDropEvent(event);
+            } else if (event.getEventType() == EventType.HARD_DROP) {
+                downData = eventListener.onHardDropEvent(event);
+            } else {
+                // No other down events handled
+                return;
+            } 
+            
+            if (downData.getClearRow() != null && downData.getClearRow().getLinesRemoved() > 0) {
+                playClearRowEffect(downData);
+            } else {
+                refreshBrick(downData.getViewData());
+            }
+        }
+        gamePanel.requestFocus();
     }
 
     // ✅ Initialize the game view from the GAMECONTROLLER
@@ -205,6 +230,8 @@ public class GuiController implements Initializable {
                 setRectangleData(boardMatrix[i][j], rectangle);
             }
         }
+
+        clearRowEffect = new ClearRowEffect(displayMatrix, groupNotification, this);
 
         // Display the current brick with all grid rectangles
         rectangles = new Rectangle[brick.getBrickData().length][brick.getBrickData()[0].length];
@@ -277,42 +304,21 @@ public class GuiController implements Initializable {
         }
 
         isCountDownEnd = false;
-        countdownOverlay.setVisible(true);
+        countdown.start(isResume);
+      
+    }
+
+    private void isCountdownFinished() {
+        isCountDownEnd = true;
+        isResume = false;
+
+        
+        timeLine.play();
         
 
-        if (!isResume) {
-
-            brickPanel.setVisible(false);
-            ghostPanel.setVisible(false);
-            nextBrickPanel.setVisible(false);
-        } 
-
-        if (countdownTimeline != null) {
-            countdownTimeline.stop();
-        }
-
-        countdownTimeline = new Timeline(
-            new KeyFrame(Duration.ZERO, e -> countdownLabel.setText("3")),
-            new KeyFrame(Duration.seconds(1), e -> countdownLabel.setText("2")),
-            new KeyFrame(Duration.seconds(2), e -> countdownLabel.setText("1")),
-            new KeyFrame(Duration.seconds(3), e -> countdownLabel.setText("GO!")),
-            new KeyFrame(Duration.seconds(3.8), e -> finishCountdown())
-        );
-        countdownTimeline.playFromStart();
-    }
-
-    private void finishCountdown() {
-        isCountDownEnd = true;
-       
-        ghostPanel.setVisible(true);
-        nextBrickPanel.setVisible(true);
-        countdownOverlay.setVisible(false);
-        brickPanel.setVisible(true);
-        countdownLabel.setText("");
-        timeLine.play();
-      
         gamePanel.requestFocus();
     }
+    
 
     // Initialize the ghost piece
     private void initGhostPiece() {
@@ -374,83 +380,9 @@ public class GuiController implements Initializable {
         }
     }
 
-    private void moveDown(MoveEvent event) {
-        if (!isCountDownEnd || gameStateController.isPaused()) {
-            gamePanel.requestFocus();
-            return;
-        }
-        if (eventListener == null) {
-            gamePanel.requestFocus();
-            return;
-        }
-        if (gameStateController.isPlaying()) {
-            DownData downData;
-            
-            // Handle drop types only
-            if (event.getEventType() == EventType.SOFT_DROP) {
-                downData = eventListener.onSoftDropEvent(event);
-            } else if (event.getEventType() == EventType.HARD_DROP) {
-                downData = eventListener.onHardDropEvent(event);
-            } else {
-                // No other down events handled
-                return;
-            } 
-            
-            if (downData.getClearRow() != null && downData.getClearRow().getLinesRemoved() > 0) {
-                // Fade out the cleared rows
-                fadeEffect(downData.getClearRow(), downData);
-            } else {
-                refreshBrick(downData.getViewData());
-            }
-        }
-        gamePanel.requestFocus();
-    }
-
-    private void fadeEffect(ClearRow clearRow, DownData downData) {
-        List<Integer> clearedRowIndex = clearRow.getClearedRowIndex();
+    private void playClearRowEffect(DownData downData) {
+        clearRowEffect.play(downData.getClearRow(), downData);
         
-        // Create fade transitions for all rectangles in the cleared rows
-        List<FadeTransition> fadeTransitions = new ArrayList<>();
-        
-        for (Integer rowIndex : clearedRowIndex) {
-            if (rowIndex >= 0 && rowIndex < displayMatrix.length) {
-                for (int columnIndex = 0; columnIndex < displayMatrix[rowIndex].length; columnIndex++) {
-                    Rectangle rectangle = displayMatrix[rowIndex][columnIndex];
-                    FadeTransition fade = new FadeTransition(Duration.millis(100), rectangle);
-                    fade.setFromValue(1.0);
-                    fade.setToValue(0.7);
-                    fade.setCycleCount(4);
-                    fadeTransitions.add(fade);
-                }
-            }
-        }
-
-        // Create a parallel transition to fade all rows simultaneously
-        ParallelTransition parallelFade = new ParallelTransition();
-        parallelFade.getChildren().addAll(fadeTransitions);
-        
-        // After fade completes, refresh the background and brick
-        parallelFade.setOnFinished(e -> {
-            // Update the board with cleared rows
-            refreshGameBackground(clearRow.getNewMatrix());
-            
-            // Show notification
-            int totalPoints = clearRow.getTotalPointsAwarded();
-            int comboBonus = clearRow.getTotalComboBonus();
-            int basePoints = totalPoints - comboBonus;
-            
-            String notificationText = " + " + basePoints + "points (+ " + comboBonus + " combo bonus)";
-            NotificationPanel notificationPanel = new NotificationPanel(notificationText);
-            StackPane.setAlignment(notificationPanel, Pos.CENTER);
-            groupNotification.getChildren().add(notificationPanel);
-            notificationPanel.showScore(groupNotification.getChildren());
-            
-            // Refresh the brick display
-            refreshBrick(downData.getViewData());
-        });
-        
-        // Start the fade animation
-        parallelFade.play();
     }
 
     /**
@@ -523,7 +455,6 @@ public class GuiController implements Initializable {
         }
 
         gamePanel.requestFocus();
-        timeLine.play();
        
     }
 
@@ -563,8 +494,6 @@ public class GuiController implements Initializable {
         darkOverlay.setVisible(false);
         pausePanel.setVisible(false);
         startCountdown();
-        timeLine.play();
-       
         gamePanel.requestFocus();
     }
 
