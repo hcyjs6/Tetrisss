@@ -11,6 +11,7 @@ import com.comp2042.logic.Board;
 import com.comp2042.logic.ViewData;
 import com.comp2042.logic.DownData;
 import com.comp2042.app.GameController;
+import javafx.animation.Animation;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -102,6 +103,8 @@ public class GuiController implements Initializable {
     private boolean isCountDownEnd;
     private Countdown countdown;
     private final BackgroundMusic backgroundMusic = new BackgroundMusic("Audio/tetrisBGM.mp3");
+    private boolean dropPaused;
+    
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -280,6 +283,20 @@ public class GuiController implements Initializable {
 
         isCountDownEnd = false;
         countdown.start(isResume);
+    }
+
+    void pauseAutoDrop() { // pause auto drop for effect
+        if (timeLine != null && timeLine.getStatus() == Animation.Status.RUNNING) {
+            dropPaused = true;
+            timeLine.pause();
+        }
+    }
+
+    void resumeAutoDrop() { // resume auto drop after effect
+        if (dropPaused && timeLine != null && gameStateController.isPlaying() && isCountDownEnd) {
+            timeLine.play();
+        }
+        dropPaused = false;
     }
 
     private void isCountdownFinished() {

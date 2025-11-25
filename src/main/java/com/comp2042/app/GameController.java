@@ -14,6 +14,7 @@ import com.comp2042.logic.SimpleBoard;
 import com.comp2042.logic.ViewData;
 import com.comp2042.logic.DownData;
 import com.comp2042.logic.ClearRow;
+import com.comp2042.audio.SoundEffect;
 /**
  * The GameController class coordinates between the game board and UI.
  * Handles input events and manages the game flow.
@@ -28,6 +29,7 @@ public class GameController implements InputEventListener {
     private final GuiController viewGuiController;  // Create a new GUI controller
     private final Board board;
     private final GameScore gameScore;
+    private final SoundEffect gameOverSFX;
 
     /**
      * Creates a new game controller and initializes the game.
@@ -41,7 +43,8 @@ public class GameController implements InputEventListener {
         this.gameScore = new GameScore();
         this.scoringRules = new ScoringRules(gameScore);
         this.viewGuiController = guiController;
-        
+        this.gameOverSFX = new SoundEffect("Audio/gameOverSFX.wav");
+
         // Set the initial level before initializing the game
         if (selectedLevel >= 1 && selectedLevel <= 100) {
             scoringRules.setLevelValue(selectedLevel);
@@ -80,6 +83,8 @@ public class GameController implements InputEventListener {
         }
         
         board.mergeBrickToBackground();
+        viewGuiController.refreshGameBoard(board.getBoardMatrix());
+        viewGuiController.refreshBrick(board.getViewData());
         ClearRow clearRow = board.clearRows();
 
         if (clearRow.getLinesRemoved() > 0) {
@@ -97,6 +102,7 @@ public class GameController implements InputEventListener {
         board.createNewBrick();
         
         if (board.isGameOver()) {
+            gameOverSFX.playSFX();
             gameStateController.setGameState(GameStateController.GameState.GAME_OVER);
             viewGuiController.gameOver();
         }

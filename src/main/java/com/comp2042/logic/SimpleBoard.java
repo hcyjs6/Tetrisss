@@ -7,6 +7,7 @@ import com.comp2042.logic.bricks.Brick;
 import com.comp2042.logic.bricks.BrickGenerator;
 import com.comp2042.logic.bricks.RandomBrickGenerator;
 import com.comp2042.logic.hold.HoldLogic;
+import com.comp2042.audio.SoundEffect;
 
 import java.awt.*;
 
@@ -29,6 +30,8 @@ public class SimpleBoard implements Board {
     private final HoldLogic holdLogic;
     private int[][] currentGameMatrix;
     private Point currentOffset;
+    private final SoundEffect rotateSFX;
+    private final SoundEffect hardDropSFX;
 
     public SimpleBoard(int width, int height) {
         this.width = width;
@@ -37,6 +40,8 @@ public class SimpleBoard implements Board {
         brickGenerator = new RandomBrickGenerator();
         brickRotator = new BrickRotator();
         holdLogic = new HoldLogic(brickRotator, brickGenerator);
+        rotateSFX = new SoundEffect("Audio/rotateSFX.wav");
+        hardDropSFX = new SoundEffect("Audio/hardDropSFX.wav");
     }
 
     // Centralized method to attempt a move.
@@ -61,6 +66,8 @@ public class SimpleBoard implements Board {
 
     @Override
     public int hardDrop() {
+
+        hardDropSFX.playSFX();
         int dropDistance = 0;
         while (attemptMove(0, 1)) {  // Move down as far as possible in one move
             dropDistance++;
@@ -81,6 +88,7 @@ public class SimpleBoard implements Board {
     @Override
     public boolean rotateLeftBrick() {
         NextShapeInfo nextShape = brickRotator.getAnticlockwiseNextShape();
+        rotateSFX.playSFX();
         return kickOffsets(nextShape);
    
     }
@@ -88,6 +96,7 @@ public class SimpleBoard implements Board {
     @Override
     public boolean rotateRightBrick() {
         NextShapeInfo nextShape = brickRotator.getClockwiseNextShape();
+        rotateSFX.playSFX();
         return kickOffsets(nextShape);
     }
 

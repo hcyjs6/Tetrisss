@@ -11,7 +11,7 @@ public class BackgroundMusic {
     
     private final String resourcePath;
     private MediaPlayer bgmPlayer;
-    private double volume = 0.5;
+    private double volume = 0.1;
 
     public BackgroundMusic(String resourcePath) {
         this.resourcePath = resourcePath;

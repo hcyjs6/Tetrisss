@@ -1,5 +1,6 @@
 package com.comp2042.gui;
 
+import com.comp2042.audio.SoundEffect;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.control.Label;
@@ -19,6 +20,7 @@ public class Countdown {
     private final GridPane ghostPanel;
     private final GridPane nextBrickPanel;
     private final Runnable isCountDownEnd;
+    private final SoundEffect countdownSFX;
 
     private Timeline countdownTimeline;
 
@@ -29,6 +31,7 @@ public class Countdown {
         this.ghostPanel = ghostPanel;
         this.nextBrickPanel = nextBrickPanel;
         this.isCountDownEnd = isCountDownEnd;
+        this.countdownSFX = new SoundEffect("Audio/countdownSFX.wav");
     }
 
     /**
@@ -48,6 +51,8 @@ public class Countdown {
         if (countdownTimeline != null) {
             countdownTimeline.stop();
         }
+
+        countdownSFX.playSFX();
 
         countdownTimeline = new Timeline(
             new KeyFrame(Duration.ZERO, e -> countdownLabel.setText("3")),
