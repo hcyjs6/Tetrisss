@@ -1,5 +1,6 @@
 package com.comp2042.gui;
 
+import com.comp2042.audio.BackgroundMusic;
 import com.comp2042.logic.event.EventSource;
 import com.comp2042.logic.event.EventType;
 import com.comp2042.logic.event.MoveEvent;
@@ -100,6 +101,7 @@ public class GuiController implements Initializable {
     private boolean isResume = false;
     private boolean isCountDownEnd;
     private Countdown countdown;
+    private final BackgroundMusic backgroundMusic = new BackgroundMusic("Audio/tetrisBGM.mp3");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -284,6 +286,7 @@ public class GuiController implements Initializable {
         isCountDownEnd = true;
         isResume = false;
         timeLine.play();
+        backgroundMusic.playBGM();
         gamePanel.requestFocus();
     }
     
@@ -333,6 +336,7 @@ public class GuiController implements Initializable {
        
         gameStateController.setGameState(GameStateController.GameState.GAME_OVER);
         timeLine.stop();
+        backgroundMusic.stopBGM();
         darkOverlay.setVisible(true);
         gameOverPanel.setVisible(true);
     }
@@ -345,6 +349,7 @@ public class GuiController implements Initializable {
         
         isResume = false;
         timeLine.stop();
+        backgroundMusic.stopBGM(); // Stop BGM when starting a new game 
         darkOverlay.setVisible(false);
         gameOverPanel.setVisible(false);
         pausePanel.setVisible(false);
@@ -381,6 +386,7 @@ public class GuiController implements Initializable {
        
         gameStateController.pauseGame();
         timeLine.stop();
+        backgroundMusic.pauseBGM();
         darkOverlay.setVisible(true);
         pausePanel.setVisible(true);
         gamePanel.requestFocus();
@@ -397,6 +403,7 @@ public class GuiController implements Initializable {
         isResume = true;
         darkOverlay.setVisible(false);
         pausePanel.setVisible(false);
+        
         startCountdown();
         gamePanel.requestFocus();
     }
@@ -437,6 +444,7 @@ public class GuiController implements Initializable {
     public void backToMenu(ActionEvent buttonEvent) throws Exception {
        
         timeLine.stop();
+        backgroundMusic.stopBGM();
             
         // Reset game state
         gameStateController.setGameState(GameStateController.GameState.MAIN_MENU);
