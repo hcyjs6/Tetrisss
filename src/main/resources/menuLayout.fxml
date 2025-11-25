@@ -82,8 +82,34 @@
                   </VBox>
                </children>
             </HBox>
-            <Button onAction="#closeControlPanel" alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="670.0" layoutY="5.0" mnemonicParsing="false" styleClass="crossButtonMenu" text="X" />
+            <Button alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="670.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeControlPanel" styleClass="crossButtonMenu" text="X" />
          </children></Pane>
+      <HBox alignment="CENTER" layoutY="200.0" prefHeight="100.0" prefWidth="800.0">
+         <children>
+            <Button fx:id="decreaseLevelButton" mnemonicParsing="false" onAction="#decreaseLevel" styleClass="levelButton" text="&lt;">
+               <font>
+                  <Font name="Arial Black" size="18.0" />
+               </font>
+            </Button>
+            <Label text="Level" textAlignment="CENTER" textFill="#ff889a">
+               <font>
+                  <Font name="Arial Black" size="50.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" right="10.0" />
+               </padding>
+            </Label>
+            <Label fx:id="levelLabel" text="1" textFill="#ff8da6">
+               <font>
+                  <Font name="Impact" size="50.0" />
+               </font>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </Label>
+            <Button fx:id="increaseLevelButton" mnemonicParsing="false" onAction="#increaseLevel" styleClass="levelButton" text="&gt;" />
+         </children>
+      </HBox>
     </children>
     <stylesheets>
         <URL value="@window_style.css" />

@@ -219,7 +219,6 @@ public class GuiController implements Initializable {
         // Initialize the drop speed controller
         dropSpeedController = new DropSpeedController(() -> moveDown(new MoveEvent(EventType.SOFT_DROP, EventSource.THREAD)));
         timeLine = dropSpeedController.getTimeline();
-        dropSpeedController.updateSpeed(1);
            
         ghostPieceMatrix = GhostPieceRenderer.initGhostPiece(ghostPanel, objectData.getGhostPieceData(), BRICK_SIZE);
         refreshGhostPiece(board.getGhostPieceViewData());

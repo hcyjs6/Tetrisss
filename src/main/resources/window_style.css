@@ -343,6 +343,32 @@
     -fx-scale-y: 0.95;
 }
 
+.levelButton {
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e98d8d;
+    -fx-background-color: #f5a9a9, #ffc6c6;
+    -fx-background-insets: 0, 3;
+    -fx-background-radius: 12, 9;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+
+}
+
+.levelButton:hover {
+    -fx-text-fill: #cf7171;
+    -fx-background-color: #dc8c8c, #f4b4b4;
+ 
+}
+
+.levelButton:pressed {
+    -fx-text-fill: #cf7171;
+    -fx-background-color: #dc8c8c, #f4b4b4;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
 
 
 

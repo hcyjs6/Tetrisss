@@ -120,4 +120,13 @@ public class ScoringRules {
         lineTracker.resetLineTracker();
     }
     
+    /**
+     * Sets the initial level for the game.
+     * 
+     * @param selectedLevel the selected level to set (should be between 1 and 100)
+     */
+    public void setLevelValue(int selectedLevel) {
+        levelControls.setLevelValue(selectedLevel);
+    }
+    
 }

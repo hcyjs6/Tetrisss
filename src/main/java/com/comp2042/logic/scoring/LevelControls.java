@@ -13,9 +13,10 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public class LevelControls {
     
-    private static final int LINES_PER_LEVEL = 10;
+    private static final int LINES_PER_LEVEL = 5;
     
     private final IntegerProperty currentLevel = new SimpleIntegerProperty(1);
+    private int levelCustomized = 1;
     
     /**
      * Gets the current level property for UI binding.
@@ -37,11 +38,12 @@ public class LevelControls {
     
     /**
      * Updates the level based on total lines cleared.
+     * Level increases by 1 for every 5 lines cleared, starting from the initial level.
      * 
      * @param totalLinesCleared the total number of lines cleared in the game
      */
     public void updateLevel(int totalLinesCleared) {
-        int newLevel = currentLevel.getValue() + (totalLinesCleared / (currentLevel.getValue() * LINES_PER_LEVEL));
+        int newLevel = levelCustomized + (totalLinesCleared / LINES_PER_LEVEL);
         if (newLevel > currentLevel.getValue()) {
             currentLevel.setValue(newLevel);
         }
@@ -51,6 +53,19 @@ public class LevelControls {
      * Resets the level manager to initial state.
      */
     public void resetLevel() {
+        levelCustomized = 1;
         currentLevel.setValue(1);
+    }
+    
+    /**
+     * Sets the initial level for the game.
+     * 
+     * @param selectedLevel the selected level to set (should be between 1 and 100)
+     */
+    public void setLevelValue(int selectedLevel) {
+        if (selectedLevel >= 1 && selectedLevel <= 100) {
+            levelCustomized = selectedLevel;
+            currentLevel.setValue(selectedLevel);
+        }
     }
 }

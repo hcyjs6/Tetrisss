@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 import com.comp2042.app.GameController;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 
 public class MenuController {
 
@@ -19,8 +21,20 @@ public class MenuController {
     @FXML
     private Pane controlPanel;
 
+    @FXML
+    private Label levelLabel;
+
+    @FXML
+    private Button decreaseLevelButton;
+
+    @FXML
+    private Button increaseLevelButton;
+
+    private int selectedLevel = 1;
 
     private Stage stage;
+
+
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -43,8 +57,8 @@ public class MenuController {
         Scene gameScene = new Scene(root, 800, 580);
         stage.setScene(gameScene);
         
-        // Initialize the game (GameController will handle game state)
-        new GameController(c);
+        // Initialize the game with the selected level from the menu
+        new GameController(c, selectedLevel);
     }
 
     @FXML
@@ -61,5 +75,33 @@ public class MenuController {
     private void exitGame() {
         Platform.exit();
     }
+
+    @FXML
+    private void decreaseLevel() {
+        if (selectedLevel > 1) {
+            selectedLevel--;
+            updateLevelLabel();
+        }
+    }
+
+    @FXML
+    private void increaseLevel() {
+        if (selectedLevel < 100) {
+            selectedLevel++;
+            updateLevelLabel();
+        }
+    }
+
+    private void updateLevelLabel() {
+      
+        levelLabel.setText(String.valueOf(selectedLevel));
+        
+    }
+
+    public int getSelectedLevel() {
+        return selectedLevel;
+    }
+
+    
 }
 

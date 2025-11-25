@@ -28,6 +28,28 @@ public class GameController implements InputEventListener {
     private final GuiController viewGuiController;  // Create a new GUI controller
     private final Board board;
     private final GameScore gameScore;
+
+    /**
+     * Creates a new game controller and initializes the game.
+     * 
+     * @param guiController the GUI controller for UI updates
+     * @param initialLevel the initial level to start the game at (1-100)
+     */
+    public GameController(GuiController guiController, int selectedLevel) {
+        this.gameStateController = new GameStateController();
+        this.board = new SimpleBoard(20, 10);
+        this.gameScore = new GameScore();
+        this.scoringRules = new ScoringRules(gameScore);
+        this.viewGuiController = guiController;
+        
+        // Set the initial level before initializing the game
+        if (selectedLevel >= 1 && selectedLevel <= 100) {
+            scoringRules.setLevelValue(selectedLevel);
+        }
+        
+        initializeGame();
+    }
+
     /**
      * Initializes the game by setting up the board, UI, and event handling.
      */
@@ -40,20 +62,7 @@ public class GameController implements InputEventListener {
         // Initialize level and lines cleared display
         viewGuiController.bindLevel(scoringRules.levelProperty());
         viewGuiController.bindLinesCleared(scoringRules.linesClearedProperty());
-    }
-
-    /**
-     * Creates a new game controller and initializes the game.
-     * 
-     * @param guiController the GUI controller for UI updates
-     */
-    public GameController(GuiController guiController) {
-        this.gameStateController = new GameStateController();
-        this.board = new SimpleBoard(20, 10);
-        this.gameScore = new GameScore();
-        this.scoringRules = new ScoringRules(gameScore);
-        this.viewGuiController = guiController;
-        initializeGame();
+        
     }
 
      /**
