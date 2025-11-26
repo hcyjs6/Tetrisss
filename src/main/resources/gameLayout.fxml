@@ -207,6 +207,7 @@
             <Button alignment="TOP_RIGHT" contentDisplay="CENTER" layoutX="670.0" layoutY="5.0" mnemonicParsing="false" onAction="#closeControlPanel" styleClass="crossButtonMenu" text="X" />
          </children>
       </Pane>
+      
         <!-- Notification overlay positioned above the board -->
         <StackPane fx:id="groupNotification" layoutY="0.0" mouseTransparent="true" prefHeight="580.0" prefWidth="800.0" />
         

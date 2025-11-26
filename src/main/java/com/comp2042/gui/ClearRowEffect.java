@@ -81,16 +81,50 @@ public class ClearRowEffect {
     }
 
     private void showNotification(ClearRow clearRow) {
-        int totalPoints = clearRow.getTotalPointsAwarded();
-        int comboBonus = clearRow.getTotalComboBonus();
-        int basePoints = totalPoints - comboBonus;
 
-        String notificationText = " + " + basePoints + "points (+ " + comboBonus + " combo bonus)";
+        String linesRemovedText = "";
+        String comboText = "";
+        String totalPointsText = "";
+        String notificationText = "";
+
+        int totalPoints = clearRow.getTotalPointsAwarded(); // total points awarded for the cleared rows
+        int combo = clearRow.getCombo(); // combo multiplier
+       // int comboBonus = clearRow.getTotalComboBonus(); // total combo bonus for the cleared rows
+       // int basePoints = totalPoints - comboBonus;
+        int linesRemoved = clearRow.getLinesRemoved(); // number of rows removed
+
+        if (linesRemoved == 1) {
+            linesRemovedText = "Single";
+
+        } else if (linesRemoved == 2) {
+            linesRemovedText = "Double";
+
+        } else if (linesRemoved == 3) {
+            linesRemovedText = "Triple";
+
+        } else if (linesRemoved == 4) {
+            linesRemovedText = "Tetris";
+
+        }
+
+        totalPointsText = " + " + totalPoints + " points";
+
+        if (combo > 0) {
+            comboText = combo + "x Combo";
+            notificationText = linesRemovedText + "\n" + comboText + "\n" + totalPointsText;
+            
+        }else if (combo == 0) {
+            notificationText = linesRemovedText + "\n" + totalPointsText;
+
+        }else {
+            return;
+        }
+
         NotificationPanel notificationPanel = new NotificationPanel(notificationText);
         StackPane.setAlignment(notificationPanel, Pos.CENTER);
         notificationLayer.getChildren().add(notificationPanel);
         notificationSFX.playSFX();
-        notificationPanel.showScore(notificationLayer.getChildren());
+        notificationPanel.shownotification(notificationLayer.getChildren());
     }
 }
 

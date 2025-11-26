@@ -87,7 +87,7 @@ public class MatrixOperations {
         
         // If no rows to clear, return original matrix
         if (clearedRows.isEmpty()) {
-            return new ClearRow(0, MatrixOperations.copy(matrix), 0, 0, new ArrayList<>());
+            return new ClearRow(0, MatrixOperations.copy(matrix), 0, 0, 0, new ArrayList<>());
         }
             
         // Copy non-cleared rows from bottom to top
@@ -108,7 +108,7 @@ public class MatrixOperations {
             }
         }
         
-        return new ClearRow(clearedRows.size(), temporaryMatrix, 0, 0, clearedRows);
+        return new ClearRow(clearedRows.size(), temporaryMatrix, 0, 0, 0, clearedRows);
     }
 
     public static List<int[][]> deepCopyList(List<int[][]> list){

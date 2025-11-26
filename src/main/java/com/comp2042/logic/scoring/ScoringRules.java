@@ -97,6 +97,14 @@ public class ScoringRules {
     }
 
     /**
+     * Gets the current combo multiplier.
+     * @return the current combo multiplier
+     */
+    public int getComboMultiplier() {
+        return comboSystem.getComboMultiplier();
+    }
+
+    /**
      * Gets the total combo bonus.
      * @return the total combo bonus
      */

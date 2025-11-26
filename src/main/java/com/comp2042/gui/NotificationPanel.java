@@ -12,6 +12,7 @@ import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
 public class NotificationPanel extends BorderPane {
@@ -19,16 +20,17 @@ public class NotificationPanel extends BorderPane {
     public NotificationPanel(String text) {
         setMinHeight(560);
         setMinWidth(280);
-        final Label score = new Label(text);
-        score.getStyleClass().add("notificationStyle");
+        final Label notification = new Label(text);
+        notification.getStyleClass().add("notificationStyle");
+        notification.setTextAlignment(TextAlignment.CENTER);
         final Effect glow = new Glow(0.6);
-        score.setEffect(glow);
-        score.setTextFill(Color.WHITE);
-        setCenter(score);
+        notification.setEffect(glow);
+        notification.setTextFill(Color.WHITE);
+        setCenter(notification);
 
     }
 
-    public void showScore(ObservableList<Node> list) {
+    public void shownotification(ObservableList<Node> list) {
         FadeTransition ft = new FadeTransition(Duration.millis(2000), this);
         TranslateTransition tt = new TranslateTransition(Duration.millis(2500), this);
         tt.setToY(this.getLayoutY() - 40);
