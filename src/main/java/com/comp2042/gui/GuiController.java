@@ -68,6 +68,12 @@ public class GuiController implements Initializable {
     private VBox gameOverPanel;
 
     @FXML
+    private Label gameOverScoreLabel;
+
+    @FXML
+    private Label pauseScoreLabel;
+
+    @FXML
     private Pane darkOverlay;
 
     @FXML
@@ -332,6 +338,7 @@ public class GuiController implements Initializable {
         scoreLabel.textProperty().bind(integerProperty.asString());
     }
 
+
     // Bind the level to the level label from the GAMECONTROLLER
     public void bindLevel(IntegerProperty integerProperty) {
         levelLabel.textProperty().bind(integerProperty.asString());
@@ -355,7 +362,9 @@ public class GuiController implements Initializable {
         timeLine.stop();
         backgroundMusic.stopBGM();
         darkOverlay.setVisible(true);
+        gameOverScoreLabel.setText(scoreLabel.getText());
         gameOverPanel.setVisible(true);
+       
     }
 
     /**
@@ -406,6 +415,7 @@ public class GuiController implements Initializable {
         backgroundMusic.pauseBGM();
         darkOverlay.setVisible(true);
         pausePanel.setVisible(true);
+        pauseScoreLabel.setText(scoreLabel.getText());
         gamePanel.requestFocus();
     }
     
