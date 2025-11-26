@@ -16,28 +16,26 @@ public class SoundEffect {
 
     public SoundEffect(String resourcePath) {
         this.resourcePath = resourcePath;
+        initSFX(); // Preload audio to avoid delay on first play
     }
 
     private void initSFX() {
-      
+       
             URL loadSFX = getClass().getClassLoader().getResource(resourcePath);
-            Media sfx = new Media(loadSFX.toExternalForm());
-            sfxPlayer = new MediaPlayer(sfx);
-            sfxPlayer.setVolume(volume);
-        
+            if (loadSFX != null) {
+                Media sfx = new Media(loadSFX.toExternalForm());
+                sfxPlayer = new MediaPlayer(sfx);
+                sfxPlayer.setVolume(volume);
+            }
+       
     }
     
     public void playSFX() {
 
-        if (sfxPlayer == null) {
-            initSFX();
-        } 
-
         if (sfxPlayer != null) {
-        sfxPlayer.seek(Duration.ZERO); // rewind to the start before replaying
-        sfxPlayer.play();
+            sfxPlayer.seek(Duration.ZERO); // rewind to the start before replaying
+            sfxPlayer.play();
         }
-
     }
 
    

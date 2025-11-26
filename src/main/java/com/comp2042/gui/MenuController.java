@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 
 import javafx.stage.Stage;
 import com.comp2042.app.GameController;
+import com.comp2042.audio.SoundEffect;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Label;
@@ -33,6 +34,9 @@ public class MenuController {
     private int selectedLevel = 1;
 
     private Stage stage;
+    
+    private final SoundEffect buttonClickSFX = new SoundEffect("Audio/clickButtonSFX.wav");
+    private final SoundEffect crossButtonSFX = new SoundEffect("Audio/crossButtonSFX.wav");
 
 
 
@@ -42,6 +46,7 @@ public class MenuController {
 
     @FXML
     private void startGame() throws Exception {
+        buttonClickSFX.playSFX();
         // Load the game layout
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("gameLayout.fxml"));
         Parent root = fxmlLoader.load(); // Load the FXML file
@@ -63,21 +68,25 @@ public class MenuController {
 
     @FXML
     private void closeControlPanel() {
+        crossButtonSFX.playSFX();
         controlPanel.setVisible(false);
     }
 
     @FXML
     private void showControlKeys() {
+        buttonClickSFX.playSFX();
         controlPanel.setVisible(true);
     }
 
     @FXML
     private void exitGame() {
+        buttonClickSFX.playSFX();
         Platform.exit();
     }
 
     @FXML
     private void decreaseLevel() {
+        buttonClickSFX.playSFX();
         if (selectedLevel > 1) {
             selectedLevel--;
             updateLevelLabel();
@@ -86,6 +95,7 @@ public class MenuController {
 
     @FXML
     private void increaseLevel() {
+        buttonClickSFX.playSFX();
         if (selectedLevel < 100) {
             selectedLevel++;
             updateLevelLabel();

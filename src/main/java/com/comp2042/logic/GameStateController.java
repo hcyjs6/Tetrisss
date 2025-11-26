@@ -58,7 +58,8 @@ public class GameStateController {
      * This method checks if the game is over.
      * @return true if game is over
      */
-    public boolean isGameOver() { return currentState == GameState.GAME_OVER;
+    public boolean isGameOver() { 
+        return currentState == GameState.GAME_OVER;
     }
     
     /**

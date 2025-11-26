@@ -11,41 +11,39 @@ public class BackgroundMusic {
     
     private final String resourcePath;
     private MediaPlayer bgmPlayer;
-    private double volume = 0.1;
+    private double volume = 0.15;
 
     public BackgroundMusic(String resourcePath) {
         this.resourcePath = resourcePath;
+        initBGM(); // Preload audio to avoid delay on first play
     }
 
     private void initBGM() {
-        
-       
-            URL loadBGM = getClass().getClassLoader().getResource(resourcePath);
+        URL loadBGM = getClass().getClassLoader().getResource(resourcePath);
+        if (loadBGM != null) {
             Media bgm = new Media(loadBGM.toExternalForm());
             bgmPlayer = new MediaPlayer(bgm);
             bgmPlayer.setCycleCount(MediaPlayer.INDEFINITE); // Loop the music
             bgmPlayer.setVolume(volume);
-        
+        }
     }
 
     public void playBGM() {
-
-        if (bgmPlayer == null) {
-            initBGM();
-        }
-        if (bgmPlayer.getStatus() != MediaPlayer.Status.PLAYING) {
+        if (bgmPlayer != null && bgmPlayer.getStatus() != MediaPlayer.Status.PLAYING) {
             bgmPlayer.play();
         }
     }
 
     public void pauseBGM() {
-        if (bgmPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
+        if (bgmPlayer != null && bgmPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             bgmPlayer.pause();
         }
     }
 
     public void stopBGM() {
-        bgmPlayer.stop();
+        if (bgmPlayer != null) {
+            bgmPlayer.stop();
+        }
     }
 
  

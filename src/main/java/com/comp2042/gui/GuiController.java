@@ -1,6 +1,7 @@
 package com.comp2042.gui;
 
 import com.comp2042.audio.BackgroundMusic;
+import com.comp2042.audio.SoundEffect;
 import com.comp2042.logic.event.EventSource;
 import com.comp2042.logic.event.EventType;
 import com.comp2042.logic.event.MoveEvent;
@@ -120,6 +121,8 @@ public class GuiController implements Initializable {
     private boolean isCountDownEnd;
     private Countdown countdown;
     private final BackgroundMusic backgroundMusic = new BackgroundMusic("Audio/tetrisBGM.mp3");
+    private final SoundEffect buttonClickSFX = new SoundEffect("Audio/clickButtonSFX.wav");
+    private final SoundEffect crossButtonSFX = new SoundEffect("Audio/crossButtonSFX.wav");
     private boolean dropPaused;
     private String actionSelected; // Tracks which action needs confirmation
     
@@ -385,6 +388,10 @@ public class GuiController implements Initializable {
      * Resets UI state and delegates game logic reset to GameController.
      */
     public void newGame(ActionEvent buttonEvent) {
+
+        if (gameStateController.isGameOver()) {
+        buttonClickSFX.playSFX();
+        }
         
         isResume = false;
         timeLine.stop();
@@ -412,7 +419,7 @@ public class GuiController implements Initializable {
      * @param buttonEvent the action event
      */
     public void exitGame(ActionEvent buttonEvent) {
-
+        buttonClickSFX.playSFX();
         Platform.exit();
     }
 
@@ -422,7 +429,7 @@ public class GuiController implements Initializable {
      * @param buttonEvent the action event
      */
     public void pauseGame(ActionEvent buttonEvent) {
-       
+        buttonClickSFX.playSFX();
         gameStateController.pauseGame();
         timeLine.stop();
         backgroundMusic.pauseBGM();
@@ -438,7 +445,7 @@ public class GuiController implements Initializable {
      * @param actionEvent the action event
      */
     public void resumeGame(ActionEvent actionEvent) {
-   
+        buttonClickSFX.playSFX();
         gameStateController.resumeGame();
         isResume = true;
         darkOverlay.setVisible(false);
@@ -452,6 +459,7 @@ public class GuiController implements Initializable {
      * Shows confirmation dialog for restart action.
      */
     public void confirmRestart(ActionEvent buttonEvent) {
+        buttonClickSFX.playSFX();
         actionSelected = "restart";
         pausePanel.setVisible(false);
         confirmPanel.setVisible(true);
@@ -464,6 +472,7 @@ public class GuiController implements Initializable {
      * Shows confirmation dialog for back to menu action.
      */
     public void confirmBackToMenu(ActionEvent buttonEvent) {
+        buttonClickSFX.playSFX();
         actionSelected = "backToMenu";
         pausePanel.setVisible(false);
         confirmPanel.setVisible(true);
@@ -476,6 +485,7 @@ public class GuiController implements Initializable {
      * Handles confirmation Yes button - executes the pending action.
      */
     public void confirmYes(ActionEvent buttonEvent) throws Exception {
+        buttonClickSFX.playSFX();
         confirmPanel.setVisible(false);
         pausePanel.setVisible(false);
 
@@ -492,6 +502,7 @@ public class GuiController implements Initializable {
      * Handles confirmation No button - returns to pause panel.
      */
     public void confirmNo(ActionEvent buttonEvent) {
+        buttonClickSFX.playSFX();
         confirmPanel.setVisible(false);
         pausePanel.setVisible(true);
         actionSelected = null;
@@ -499,7 +510,7 @@ public class GuiController implements Initializable {
     }
 
     public void showControlKeys(ActionEvent buttonEvent) {
-    
+        buttonClickSFX.playSFX();
         gameStateController.pauseGame();
         timeLine.stop();
         darkOverlay.setVisible(true);
@@ -510,6 +521,7 @@ public class GuiController implements Initializable {
     }
 
     public void closeControlPanel(ActionEvent buttonEvent) {
+        crossButtonSFX.playSFX();
         controlPanel.setVisible(false);
         gameStateController.pauseGame();
         timeLine.stop();
@@ -532,6 +544,10 @@ public class GuiController implements Initializable {
      * @param buttonEvent the action event
      */
     public void backToMenu(ActionEvent buttonEvent) throws Exception {
+
+        if (gameStateController.isGameOver()) {
+            buttonClickSFX.playSFX();
+        }
        
         timeLine.stop();
         backgroundMusic.stopBGM();
