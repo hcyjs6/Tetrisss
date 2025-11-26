@@ -74,7 +74,18 @@ public class GuiController implements Initializable {
     private Label pauseScoreLabel;
 
     @FXML
+    private VBox confirmPanel;
+
+    @FXML
+    private Label confirmMessage;
+
+    @FXML
+    private Label alertMessage;
+
+    @FXML
     private Pane darkOverlay;
+    
+    
 
     @FXML
     private BorderPane gameBoard;
@@ -110,6 +121,7 @@ public class GuiController implements Initializable {
     private Countdown countdown;
     private final BackgroundMusic backgroundMusic = new BackgroundMusic("Audio/tetrisBGM.mp3");
     private boolean dropPaused;
+    private String actionSelected; // Tracks which action needs confirmation
     
 
     @Override
@@ -170,6 +182,7 @@ public class GuiController implements Initializable {
         gameOverPanel.setVisible(false);
         pausePanel.setVisible(false); // Initially hide the pause panel
         controlPanel.setVisible(false); // Initially hide the control panel
+        confirmPanel.setVisible(false); // Initially hide the confirmation panel
         darkOverlay.setVisible(false); // Initially hide the dark overlay
         nextBrickPanel.setVisible(false);
         countdownOverlay.setVisible(false); 
@@ -432,6 +445,56 @@ public class GuiController implements Initializable {
         pausePanel.setVisible(false);
         
         startCountdown();
+        gamePanel.requestFocus();
+    }
+
+    /**
+     * Shows confirmation dialog for restart action.
+     */
+    public void confirmRestart(ActionEvent buttonEvent) {
+        actionSelected = "restart";
+        pausePanel.setVisible(false);
+        confirmPanel.setVisible(true);
+        confirmMessage.setText("Restart Game?");
+        alertMessage.setText("Restart the game will reset your\n progress to level 1 and your current\nprogress will be lost. ");
+        gamePanel.requestFocus();
+    }
+
+    /**
+     * Shows confirmation dialog for back to menu action.
+     */
+    public void confirmBackToMenu(ActionEvent buttonEvent) {
+        actionSelected = "backToMenu";
+        pausePanel.setVisible(false);
+        confirmPanel.setVisible(true);
+        confirmMessage.setText("Return to Menu?");
+        alertMessage.setText("Your current progress will be lost.");
+        gamePanel.requestFocus();
+    }
+
+    /**
+     * Handles confirmation Yes button - executes the pending action.
+     */
+    public void confirmYes(ActionEvent buttonEvent) throws Exception {
+        confirmPanel.setVisible(false);
+        pausePanel.setVisible(false);
+
+        if (actionSelected.equals("restart")) {
+            newGame(buttonEvent);
+
+        } else if (actionSelected.equals("backToMenu")) {
+            backToMenu(buttonEvent);
+        }
+        actionSelected = null;
+    }
+
+    /**
+     * Handles confirmation No button - returns to pause panel.
+     */
+    public void confirmNo(ActionEvent buttonEvent) {
+        confirmPanel.setVisible(false);
+        pausePanel.setVisible(true);
+        actionSelected = null;
         gamePanel.requestFocus();
     }
 
