@@ -2,36 +2,43 @@ package com.comp2042.logic.bricks;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 // This class generates random Tetris pieces
 public class RandomBrickGenerator implements BrickGenerator {
 
-    private final List<Brick> brickList;
-
     private final Deque<Brick> nextBricks = new ArrayDeque<>();
 
     public RandomBrickGenerator() {
-        brickList = new ArrayList<>();
-        brickList.add(new IBrick());
-        brickList.add(new JBrick());
-        brickList.add(new LBrick());
-        brickList.add(new OBrick());
-        brickList.add(new SBrick());
-        brickList.add(new TBrick());
-        brickList.add(new ZBrick());
-        nextBricks.add(brickList.get(ThreadLocalRandom.current().nextInt(brickList.size())));
-        nextBricks.add(brickList.get(ThreadLocalRandom.current().nextInt(brickList.size())));
+        fillListOfBricks();
+        fillListOfBricks(); // Fill two bags initially for better preview
+    }
+
+    /**
+     * Creates a new shuffled bag of all 7 brick types and adds them to the queue.
+     */
+    private void fillListOfBricks() {
+        List<Brick> listOfBricks = new ArrayList<>();
+        listOfBricks.add(new IBrick());
+        listOfBricks.add(new JBrick());
+        listOfBricks.add(new LBrick());
+        listOfBricks.add(new OBrick());
+        listOfBricks.add(new SBrick());
+        listOfBricks.add(new TBrick());
+        listOfBricks.add(new ZBrick());
+        Collections.shuffle(listOfBricks);
+        nextBricks.addAll(listOfBricks);
     }
 
     @Override
     public Brick getBrick() {
-        if (nextBricks.size() <= 1) {
-            nextBricks.add(brickList.get(ThreadLocalRandom.current().nextInt(brickList.size())));
+       
+        if (nextBricks.size() <= 7) {
+            fillListOfBricks();
         }
-        return nextBricks.poll(); //remove the first brick from the queue and return it
+        return nextBricks.poll();
     }
 
     @Override
@@ -45,7 +52,7 @@ public class RandomBrickGenerator implements BrickGenerator {
     @Override
     public void resetBrickGenerator() {
         nextBricks.clear();
-        nextBricks.add(brickList.get(ThreadLocalRandom.current().nextInt(brickList.size())));
-        nextBricks.add(brickList.get(ThreadLocalRandom.current().nextInt(brickList.size())));
+        fillListOfBricks();
+        fillListOfBricks();
     }
 }
