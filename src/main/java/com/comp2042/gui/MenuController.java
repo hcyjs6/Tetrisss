@@ -5,31 +5,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.event.ActionEvent;
 
 import javafx.stage.Stage;
 import com.comp2042.app.GameController;
 import com.comp2042.audio.SoundEffect;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Label;
-import javafx.scene.control.Button;
 
 public class MenuController {
-
-   @FXML
-   private VBox menuPanel;
 
     @FXML
     private Pane controlPanel;
 
     @FXML
     private Label levelLabel;
-
-    @FXML
-    private Button decreaseLevelButton;
-
-    @FXML
-    private Button increaseLevelButton;
 
     private int selectedLevel = 1;
 
@@ -66,26 +56,26 @@ public class MenuController {
         new GameController(c, selectedLevel);
     }
 
-    @FXML
-    private void closeControlPanel() {
+
+    public void closeControlPanel(ActionEvent buttonEvent) {
         crossButtonSFX.playSFX();
         controlPanel.setVisible(false);
     }
 
-    @FXML
-    private void showControlKeys() {
+   
+    public void showControlKeys(ActionEvent buttonEvent) {
         buttonClickSFX.playSFX();
         controlPanel.setVisible(true);
     }
 
-    @FXML
-    private void exitGame() {
+
+    public void exitGame(ActionEvent buttonEvent) {
         buttonClickSFX.playSFX();
         Platform.exit();
     }
 
-    @FXML
-    private void decreaseLevel() {
+    
+    public void decreaseLevel(ActionEvent buttonEvent) {
         buttonClickSFX.playSFX();
         if (selectedLevel > 1) {
             selectedLevel--;
@@ -93,8 +83,7 @@ public class MenuController {
         }
     }
 
-    @FXML
-    private void increaseLevel() {
+    public void increaseLevel(ActionEvent buttonEvent) {
         buttonClickSFX.playSFX();
         if (selectedLevel < 100) {
             selectedLevel++;
@@ -103,9 +92,7 @@ public class MenuController {
     }
 
     private void updateLevelLabel() {
-      
         levelLabel.setText(String.valueOf(selectedLevel));
-        
     }
 
     public int getSelectedLevel() {

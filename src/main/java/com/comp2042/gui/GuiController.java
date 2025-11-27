@@ -125,6 +125,21 @@ public class GuiController implements Initializable {
     private final SoundEffect crossButtonSFX = new SoundEffect("Audio/crossButtonSFX.wav");
     private boolean dropPaused;
     private String actionSelected; // Tracks which action needs confirmation
+
+    /**
+     * Initializes all dependencies at once.
+     * 
+     * @param eventListener the input event listener
+     * @param gameController the game controller instance
+     * @param board the board instance
+     * @param gameStateController the game state controller instance
+     */
+    public void initializeDependencies(InputEventListener eventListener, GameController gameController, Board board, GameStateController gameStateController) {
+        this.eventListener = eventListener;
+        this.gameController = gameController;
+        this.board = board;
+        this.gameStateController = gameStateController;
+    }
     
 
     @Override
@@ -137,7 +152,7 @@ public class GuiController implements Initializable {
             @Override
             public void handle(KeyEvent keyEvent) {
                 
-                if (isCountDownEnd && !gameStateController.isPaused() && !gameStateController.isGameOver() && gameStateController.isPlaying()) {
+                if (isCountDownEnd && !gameStateController.isPaused() && !gameStateController.isGameOver() && !gameStateController.isMainMenu() && gameStateController.isPlaying()) {
                     
                     if (eventListener == null) {
                         return;
@@ -256,7 +271,7 @@ public class GuiController implements Initializable {
 
     //  Refresh the brick display when the brick moves 
     public void refreshBrick(ViewData objectData) {
-        if (!gameStateController.isPaused() && !gameStateController.isGameOver() && gameStateController.isPlaying()) {
+        if (!gameStateController.isPaused() && !gameStateController.isGameOver() && !gameStateController.isMainMenu() && gameStateController.isPlaying()) {
            
             brickPanel.setLayoutX(gameBoard.getLayoutX() + 10 + objectData.getxPosition() * BRICK_SIZE);
             brickPanel.setLayoutY(gameBoard.getLayoutY() + 10 + objectData.getyPosition() * BRICK_SIZE);
@@ -307,6 +322,19 @@ public class GuiController implements Initializable {
         countdown.start(isResume);
     }
 
+    private void isCountdownFinished() {
+        isCountDownEnd = true;
+        isResume = false;
+        timeLine.play();
+        backgroundMusic.playBGM();
+        gamePanel.requestFocus();
+    }
+
+    private void playClearRowEffect(DownData downData) {
+        clearRowEffect.play(downData.getClearRow(), downData);
+        
+    }
+
     void pauseAutoDrop() { // pause auto drop for effect
         if (timeLine != null && timeLine.getStatus() == Animation.Status.RUNNING) {
             dropPaused = true;
@@ -319,34 +347,6 @@ public class GuiController implements Initializable {
             timeLine.play();
         }
         dropPaused = false;
-    }
-
-    private void isCountdownFinished() {
-        isCountDownEnd = true;
-        isResume = false;
-        timeLine.play();
-        backgroundMusic.playBGM();
-        gamePanel.requestFocus();
-    }
-    
-    private void playClearRowEffect(DownData downData) {
-        clearRowEffect.play(downData.getClearRow(), downData);
-        
-    }
-
-    /**
-     * Initializes all dependencies at once.
-     * 
-     * @param eventListener the input event listener
-     * @param gameController the game controller instance
-     * @param board the board instance
-     * @param gameStateController the game state controller instance
-     */
-    public void initializeDependencies(InputEventListener eventListener, GameController gameController, Board board, GameStateController gameStateController) {
-        this.eventListener = eventListener;
-        this.gameController = gameController;
-        this.board = board;
-        this.gameStateController = gameStateController;
     }
 
     // Bind the score to the score label from the GAMECONTROLLER
@@ -367,11 +367,11 @@ public class GuiController implements Initializable {
     public void bindLinesCleared(IntegerProperty integerProperty) {
         linesLabel.textProperty().bind(integerProperty.asString());
     }
-    
+
     public DropSpeedController getDropSpeedController() {
         return dropSpeedController;
     }
-
+    
     public void gameOver() {
        
         gameStateController.setGameState(GameStateController.GameState.GAME_OVER);

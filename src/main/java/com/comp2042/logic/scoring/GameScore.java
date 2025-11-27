@@ -35,13 +35,6 @@ public final class GameScore {
     }
 
     /**
-     * Resets the score to zero.
-     */
-    public void resetScore() {
-        score.setValue(0);
-    }
-    
-    /**
      * Gets the current score value.
      * 
      * @return the current score value
@@ -49,4 +42,13 @@ public final class GameScore {
     public int getCurrentScore() {
         return score.getValue();
     }
+
+    /**
+     * Resets the score to zero.
+     */
+    public void resetScore() {
+        score.setValue(0);
+    }
+    
+    
 }

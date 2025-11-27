@@ -13,21 +13,21 @@ public final class BrickColour {
             case 0:
                 return Color.TRANSPARENT;
             case 1:
-                return Color.web("#FFB6C1"); // Light Pink
+                return Color.web("#FFB6C1"); 
             case 2:
-                return Color.web("#DDA0DD"); // Plum
+                return Color.web("#DDA0DD"); 
             case 3:
-                return Color.web("#E0FFE0"); // Light Mint Green
+                return Color.web("#E0FFE0"); 
             case 4:
-                return Color.web("#FFFACD"); // Lemon Chiffon
+                return Color.web("#FFFACD"); 
             case 5:
-                return Color.web("#FFDAB9"); // Peach Puff
+                return Color.web("#FFDAB9");
             case 6:
-                return Color.web("#B0E0E6"); // Powder Blue
+                return Color.web("#B0E0E6"); 
             case 7:
-                return Color.web("#DA70D6"); // Orchid
+                return Color.web("#DA70D6"); 
             default:
-                return Color.web("#FFC0CB"); // Pink
+                return Color.web("#FFC0CB"); 
         }
     }
 }

@@ -29,6 +29,10 @@ public interface Board {
 
     ViewData getGhostPieceViewData();
 
+    void holdBrick();
+
+    int[][] getHoldBrickData();
+
     void mergeBrickToBackground();
 
     ClearRow clearRows();
@@ -37,7 +41,4 @@ public interface Board {
 
     void resetBoard();
 
-    int[][] getHoldBrickData();
-
-    void holdBrick();
 }

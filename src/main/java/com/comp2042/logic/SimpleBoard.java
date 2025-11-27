@@ -144,33 +144,37 @@ public class SimpleBoard implements Board {
         return true; // Always return true - game over check will be handled separately
     }
     
-   
-    @Override
-    public boolean isGameOver() {
-        return CollisionDetector.checkSpawnCollision(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
-    }
-
     @Override
     public int[][] getBoardMatrix() {
         return currentGameMatrix;
     }
-
+   
     @Override
     public ViewData getViewData() {
         return new ViewData(brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY(), brickGenerator.getNextBrick().getShapeMatrix().get(0), getHoldBrickData(), getGhostPieceViewData().getGhostPieceData());
     }
-    
-    @Override
-    public ViewData getGhostPieceViewData() {
-        int ghostY = getGhostPieceY();
-        return GhostPieceLogic.createGhostPieceViewData(brickRotator.getCurrentShape(), currentOffset, ghostY);
-    }
-    
+
     @Override
     public int getGhostPieceY() {
         return GhostPieceLogic.calculateGhostPieceY(currentGameMatrix, brickRotator.getCurrentShape(), currentOffset);
     }
 
+    @Override
+    public ViewData getGhostPieceViewData() {
+        int ghostY = getGhostPieceY();
+        return GhostPieceLogic.createGhostPieceViewData(brickRotator.getCurrentShape(), currentOffset, ghostY);
+    }
+
+    @Override
+    public void holdBrick() {
+        holdLogic.holdBrick(currentOffset, SPAWN_X, SPAWN_Y);
+    }
+
+    @Override
+    public int[][] getHoldBrickData() {
+        return holdLogic.getHoldBrickData();
+    }
+    
     @Override
     public void mergeBrickToBackground() {
         currentGameMatrix = MatrixOperations.merge(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
@@ -184,6 +188,11 @@ public class SimpleBoard implements Board {
 
     }
 
+    @Override
+    public boolean isGameOver() {
+        return CollisionDetector.checkSpawnCollision(currentGameMatrix, brickRotator.getCurrentShape(), (int) currentOffset.getX(), (int) currentOffset.getY());
+    }
+ 
     /** 
      * Resets the game board to a new game state.
      */
@@ -198,13 +207,5 @@ public class SimpleBoard implements Board {
     }
 
 
-    @Override
-    public void holdBrick() {
-        holdLogic.holdBrick(currentOffset, SPAWN_X, SPAWN_Y);
-    }
-
-    @Override
-    public int[][] getHoldBrickData() {
-        return holdLogic.getHoldBrickData();
-    }
+  
 }
