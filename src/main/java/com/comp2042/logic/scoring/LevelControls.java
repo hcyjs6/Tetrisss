@@ -41,12 +41,15 @@ public class LevelControls {
      * Level increases by 1 for every 5 lines cleared, starting from the initial level.
      * 
      * @param totalLinesCleared the total number of lines cleared in the game
+     * @return true if level increased, false otherwise
      */
-    public void updateLevel(int totalLinesCleared) {
+    public boolean updateLevel(int totalLinesCleared) {
         int newLevel = levelCustomized + (totalLinesCleared / LINES_PER_LEVEL);
         if (newLevel > currentLevel.getValue()) {
             currentLevel.setValue(newLevel);
+            return true;
         }
+        return false;
     }
     
     /**

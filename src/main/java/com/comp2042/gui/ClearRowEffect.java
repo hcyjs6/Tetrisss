@@ -23,6 +23,7 @@ public class ClearRowEffect {
     private final GuiController guiController;
     private final SoundEffect clearRowSFX;
     private final SoundEffect notificationSFX;
+    private final SoundEffect levelUpSFX;
 
     public ClearRowEffect(Rectangle[][] displayMatrix, StackPane notificationLayer, GuiController guiController) { 
         this.displayMatrix = displayMatrix;
@@ -30,6 +31,7 @@ public class ClearRowEffect {
         this.guiController = guiController;
         this.clearRowSFX = new SoundEffect("Audio/clearRowSFX.wav");
         this.notificationSFX = new SoundEffect("Audio/notificationSFX.mp3");
+        this.levelUpSFX = new SoundEffect("Audio/levelUpSFX.wav");
        
     }
 
@@ -85,13 +87,14 @@ public class ClearRowEffect {
         String linesRemovedText = "";
         String comboText = "";
         String totalPointsText = "";
+        String levelUpText = "";
+        String text = "";
         String notificationText = "";
 
         int totalPoints = clearRow.getTotalPointsAwarded(); // total points awarded for the cleared rows
         int combo = clearRow.getCombo(); // combo multiplier
-       // int comboBonus = clearRow.getTotalComboBonus(); // total combo bonus for the cleared rows
-       // int basePoints = totalPoints - comboBonus;
         int linesRemoved = clearRow.getLinesRemoved(); // number of rows removed
+        boolean levelUp = clearRow.isLevelUp(); // whether level increased
 
         if (linesRemoved == 1) {
             linesRemovedText = "Single";
@@ -108,16 +111,26 @@ public class ClearRowEffect {
         }
 
         totalPointsText = " + " + totalPoints + " points";
+        levelUpText = "LEVEL UP!";
 
         if (combo > 0) {
             comboText = combo + "x Combo";
-            notificationText = linesRemovedText + "\n" + comboText + "\n" + totalPointsText;
+            text = linesRemovedText + "\n" + comboText + "\n" + totalPointsText;
             
-        }else if (combo == 0) {
-            notificationText = linesRemovedText + "\n" + totalPointsText;
+        } else if (combo == 0) {
+            text = linesRemovedText + "\n" + totalPointsText;
+
+        } else {
+            return;
+        }
+
+        // Add level up text at the end if level increased
+        if (levelUp) {
+            levelUpSFX.playSFX();
+            notificationText = levelUpText + "\n\n\n" + text;
 
         }else {
-            return;
+            notificationText = text;
         }
 
         NotificationPanel notificationPanel = new NotificationPanel(notificationText);

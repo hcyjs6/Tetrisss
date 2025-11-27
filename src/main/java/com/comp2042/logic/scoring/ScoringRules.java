@@ -18,6 +18,7 @@ public class ScoringRules {
     private final MoveDownScoring moveDownScoring;
     private final LineTracker lineTracker;
     private final ComboSystem comboSystem;
+    private boolean isLevelUp = false;
 
     public ScoringRules(GameScore score) {
         this.score = score;
@@ -69,6 +70,8 @@ public class ScoringRules {
         score.addPoints(pointsAwarded);
     }
     
+    
+
     /**
      * Calculates and adds points for clearing lines.
      * @param linesCleared the number of lines cleared
@@ -87,13 +90,21 @@ public class ScoringRules {
         // Update line tracking
         lineTracker.addLinesCleared(linesCleared);
 
-        // Update level progression
+        // Update level progression and track if level increased
         int totalLinesCleared = lineTracker.getTotalLinesCleared();
-        levelControls.updateLevel(totalLinesCleared);
+        isLevelUp = levelControls.updateLevel(totalLinesCleared);
         
         comboSystem.incrementCombo();
 
         return totalPointsAwarded;
+    }
+
+    /**
+     * Checks if a level up occurred during the last line clear.
+     * @return true if level increased, false otherwise
+     */
+    public boolean isLevelUp() {
+        return isLevelUp;
     }
 
     /**

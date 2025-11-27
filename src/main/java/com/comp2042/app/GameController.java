@@ -92,9 +92,10 @@ public class GameController implements InputEventListener {
             int combo = scoringRules.getComboMultiplier();
             int totalComboBonus = scoringRules.getTotalComboBonus();
             int pointsAwarded = scoringRules.add_LineCleared_Points(clearRow.getLinesRemoved());
+            boolean levelUp = scoringRules.isLevelUp();
             
             // Update the ClearRow with actual points for notification
-            clearRow = new ClearRow(clearRow.getLinesRemoved(), clearRow.getNewMatrix(), pointsAwarded, combo, totalComboBonus, clearRow.getClearedRowIndex());
+            clearRow = new ClearRow(clearRow.getLinesRemoved(), clearRow.getNewMatrix(), pointsAwarded, combo, totalComboBonus, clearRow.getClearedRowIndex(), levelUp);
         } else {
             // Reset the combo system if no lines were cleared
             scoringRules.resetCombo();
