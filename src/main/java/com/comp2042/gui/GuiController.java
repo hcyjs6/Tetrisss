@@ -414,16 +414,6 @@ public class GuiController implements Initializable {
     }
 
     /**
-     * Handles the exit button click event.
-     * Exits the game.
-     * @param buttonEvent the action event
-     */
-    public void exitGame(ActionEvent buttonEvent) {
-        buttonClickSFX.playSFX();
-        Platform.exit();
-    }
-
-    /**
      * Handles the ESC key press and pause button click event.
      * Pauses the game and shows the pause panel.
      * @param buttonEvent the action event

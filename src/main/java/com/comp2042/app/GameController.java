@@ -77,8 +77,7 @@ public class GameController implements InputEventListener {
      */
     private DownData handleBrickLanded(MoveEvent event, int dropOffset) {
         // Award drop points if this is a hard drop with a valid drop distance
-        if (dropOffset > 0 && event.getEventSource() == EventSource.USER && 
-            event.getEventType() == EventType.HARD_DROP) {
+        if (dropOffset > 0 && event.getEventSource() == EventSource.USER && event.getEventType() == EventType.HARD_DROP) {
             scoringRules.add_MoveDown_Points(event.getEventType(), dropOffset);
         }
         
@@ -104,6 +103,10 @@ public class GameController implements InputEventListener {
         board.createNewBrick();
         
         if (board.isGameOver()) {
+            // Display the last brick at spawn position before showing game over
+            viewGuiController.refreshGameBoard(board.getBoardMatrix());
+            viewGuiController.refreshBrick(board.getViewData());
+            
             gameOverSFX.playSFX();
             gameStateController.setGameState(GameStateController.GameState.GAME_OVER);
             viewGuiController.gameOver();
