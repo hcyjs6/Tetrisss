@@ -1,25 +1,23 @@
-// Basic score management system
 package com.comp2042.logic.scoring;
 
-import javafx.beans.property.IntegerProperty; // Import for JavaFX integer property
-import javafx.beans.property.SimpleIntegerProperty;  // Import for creating integer properties
+import javafx.beans.property.IntegerProperty; 
+import javafx.beans.property.SimpleIntegerProperty;  
 
 /**
- * The GameScore class manages the player's score for the game.
- * This is a simple data container that works with JavaFX properties for UI binding.
+ * Handles the player's score of the game. 
+ * This class works with JavaFX properties for UI binding.
  * 
  * @author Sek Joe Rin
- * @version 1.0
  */
 public final class GameScore {
 
     private final IntegerProperty score = new SimpleIntegerProperty(0); // Create a new integer property with initial value 0
 
     /**
-     * Gets the score property for binding to UI components.
+     * Returns the score property for UI binding.
      * This allows the UI to automatically update when the score changes.
      * 
-     * @return the score property that can be bound to UI elements
+     * @return the score property.
      */
     public IntegerProperty scoreProperty() {
         return score;

@@ -3,11 +3,23 @@ package com.comp2042.gui;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
+/**
+ * This class provides color for Tetris brick pieces.
+ * This utility class maps numeric values to specific colors used for different brick types.
+ * 
+ * @author Sek Joe Rin
+ */
 public final class BrickColour {
 
     private BrickColour() {
     }
 
+    /**
+     * Returns the fill color corresponding to the given numeric value.
+     * 
+     * @param value the numeric value representing the brick type (0-7)
+     * @return the color for the brick corresponding to the value, or default color if value is invalid
+     */
     public static Paint getFillColor(int value) {
         switch (value) {
             case 0:

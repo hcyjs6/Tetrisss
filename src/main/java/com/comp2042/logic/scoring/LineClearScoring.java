@@ -5,17 +5,16 @@ package com.comp2042.logic.scoring;
  * This class is responsible only for calculating points based on lines cleared.
  * 
  * @author Sek Joe Rin
- * @version 1.0
  */
 public class LineClearScoring {
     
     private static final int points_per_lineCleared = 40;
     
     /**
-     * Calculates points for clearing lines with level multiplier.
+     * Calculates points when lines are cleared with level multiplier.
      * 
      * @param linesCleared the number of lines cleared
-     * @param level the current level (acts as multiplier)
+     * @param levelMultiplier the current level acts as the multiplier
      * @return the total points for this line clear
      */
     public int calculatePoints(int linesCleared, int levelMultiplier) {
@@ -28,10 +27,10 @@ public class LineClearScoring {
     }
     
     /**
-     * Calculates base points for line clearing without level multiplier.
+     * Calculates base points based on the number of lines cleared without level multiplier.
      * 
      * @param linesCleared the number of lines cleared
-     * @return the base points for this line clear
+     * @return the base points based on the number of lines cleared
      */
     private int calculateLineClearedPoints(int linesCleared) {
         switch (linesCleared) {

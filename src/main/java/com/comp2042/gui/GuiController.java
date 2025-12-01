@@ -14,7 +14,6 @@ import com.comp2042.logic.DownData;
 import com.comp2042.app.GameController;
 import javafx.animation.Animation;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,6 +33,12 @@ import javafx.fxml.FXMLLoader;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class manages the game view, handles user input, displays game elements,
+ * and coordinates between the UI and game logic controllers.
+ * 
+ * @author Sek Joe Rin
+ */
 public class GuiController implements Initializable {
 
     private static final int BRICK_SIZE = 28;
@@ -142,6 +147,13 @@ public class GuiController implements Initializable {
     }
     
 
+    /**
+     * Initializes the GUI controller and sets up keyboard event handlers.
+     * This method is called automatically when the FXML file is loaded.
+     * 
+     * @param location the location used to resolve relative paths for the root object
+     * @param resources the resources used to localize the root object
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -239,8 +251,13 @@ public class GuiController implements Initializable {
         gamePanel.requestFocus();
     }
 
-    // Initialize the game view from the GAMECONTROLLER
-    public void initGameView(int[][] boardMatrix, ViewData objectData) {
+    /**
+     * Initializes the game view by setting up the game board, bricks, and game elements.
+     * 
+     * @param boardMatrix the 2D array representing the initial game board state
+     * @param brickData the ViewData containing information about the current brick and next brick
+     */
+    public void initGameView(int[][] boardMatrix, ViewData brickData) {
 
         // Display the game board background with all grid rectangles
         gameBoardMatrix = GameBoardRenderer.initGameBoard(gamePanel, boardMatrix, BRICK_SIZE);
@@ -248,63 +265,72 @@ public class GuiController implements Initializable {
         clearRowEffect = new ClearRowEffect(gameBoardMatrix, groupNotification, this);
 
         // Display the current brick with all grid rectangles
-        currentBrickMatrix = BrickRenderer.initCurrentBrick(brickPanel, objectData.getBrickData(), BRICK_SIZE);
-        brickPanel.setLayoutX(gameBoard.getLayoutX() + 10 + objectData.getxPosition() * BRICK_SIZE);
-        brickPanel.setLayoutY(gameBoard.getLayoutY() + 10 + objectData.getyPosition() * BRICK_SIZE);
+        currentBrickMatrix = BrickRenderer.initCurrentBrick(brickPanel, brickData.getBrickData(), BRICK_SIZE);
+        brickPanel.setLayoutX(gameBoard.getLayoutX() + 10 + brickData.getxPosition() * BRICK_SIZE);
+        brickPanel.setLayoutY(gameBoard.getLayoutY() + 10 + brickData.getyPosition() * BRICK_SIZE);
 
         // Display the next brick with all grid rectangles
-        NextBrickRenderer.initNextBrick(nextBrickPanel, objectData.getNextBrickData());
+        NextBrickRenderer.initNextBrick(nextBrickPanel, brickData.getNextBrickData());
 
         // Display the hold brick (if any)
-        HoldBrickRenderer.initHoldBrick(holdBrickPanel, objectData.getHoldBrickData());
+        HoldBrickRenderer.initHoldBrick(holdBrickPanel, brickData.getHoldBrickData());
 
         // Initialize the drop speed controller
         dropSpeedController = new DropSpeedController(() -> moveDown(new MoveEvent(EventType.SOFT_DROP, EventSource.THREAD)));
         timeLine = dropSpeedController.getTimeline();
            
-        ghostPieceMatrix = GhostPieceRenderer.initGhostPiece(ghostPanel, objectData.getGhostPieceData(), BRICK_SIZE);
+        ghostPieceMatrix = GhostPieceRenderer.initGhostPiece(ghostPanel, brickData.getGhostPieceData(), BRICK_SIZE);
         refreshGhostPiece(board.getGhostPieceViewData());
             
         // Display the countdown
         startCountdown();
     }
 
-    //  Refresh the brick display when the brick moves 
-    public void refreshBrick(ViewData objectData) {
+    /**
+     * Refreshes the brick display when the brick moves or rotates.
+     * 
+     * @param brickData the ViewData containing the current brick position and shape information
+     */
+    public void refreshBrick(ViewData brickData) {
         if (!gameStateController.isPaused() && !gameStateController.isGameOver() && !gameStateController.isMainMenu() && gameStateController.isPlaying()) {
            
-            brickPanel.setLayoutX(gameBoard.getLayoutX() + 10 + objectData.getxPosition() * BRICK_SIZE);
-            brickPanel.setLayoutY(gameBoard.getLayoutY() + 10 + objectData.getyPosition() * BRICK_SIZE);
+            brickPanel.setLayoutX(gameBoard.getLayoutX() + 10 + brickData.getxPosition() * BRICK_SIZE);
+            brickPanel.setLayoutY(gameBoard.getLayoutY() + 10 + brickData.getyPosition() * BRICK_SIZE);
             
-            for (int i = 0; i < objectData.getBrickData().length; i++) {
-                for (int j = 0; j < objectData.getBrickData()[i].length; j++) {
-                    BrickRenderer.drawBrickCell(currentBrickMatrix[i][j], objectData.getBrickData()[i][j]);
+            for (int i = 0; i < brickData.getBrickData().length; i++) {
+                for (int j = 0; j < brickData.getBrickData()[i].length; j++) {
+                    BrickRenderer.drawBrickCell(currentBrickMatrix[i][j], brickData.getBrickData()[i][j]);
                 }
             }
             
             // Refresh ghost piece after current piece moves   
             refreshGhostPiece(board.getGhostPieceViewData());
-            NextBrickRenderer.initNextBrick(nextBrickPanel, objectData.getNextBrickData());
+            NextBrickRenderer.initNextBrick(nextBrickPanel, brickData.getNextBrickData());
             // Refresh hold brick display
-            HoldBrickRenderer.initHoldBrick(holdBrickPanel, objectData.getHoldBrickData());
+            HoldBrickRenderer.initHoldBrick(holdBrickPanel, brickData.getHoldBrickData());
         }
     }
 
-    private void refreshGhostPiece(ViewData objectData) {
-        if (ghostPieceMatrix == null || objectData == null || objectData.getGhostPieceData() == null) {
+    private void refreshGhostPiece(ViewData brickData) {
+        if (ghostPieceMatrix == null || brickData == null || brickData.getGhostPieceData() == null) {
             return;
         }
 
-        ghostPanel.setLayoutX(gameBoard.getLayoutX() + 10 + objectData.getxPosition() * BRICK_SIZE);
-        ghostPanel.setLayoutY(gameBoard.getLayoutY() + 10 + objectData.getyPosition() * BRICK_SIZE);
+        ghostPanel.setLayoutX(gameBoard.getLayoutX() + 10 + brickData.getxPosition() * BRICK_SIZE);
+        ghostPanel.setLayoutY(gameBoard.getLayoutY() + 10 + brickData.getyPosition() * BRICK_SIZE);
 
-        for (int i = 0; i < objectData.getGhostPieceData().length; i++) {
-            for (int j = 0; j < objectData.getGhostPieceData()[i].length; j++) {
-                GhostPieceRenderer.drawGhostCell(ghostPieceMatrix[i][j], objectData.getGhostPieceData()[i][j]);
+        for (int i = 0; i < brickData.getGhostPieceData().length; i++) {
+            for (int j = 0; j < brickData.getGhostPieceData()[i].length; j++) {
+                GhostPieceRenderer.drawGhostCell(ghostPieceMatrix[i][j], brickData.getGhostPieceData()[i][j]);
             }
         }
     }
 
+    /**
+     * Refreshes the game board display with the current board state.
+     * 
+     * @param board the 2D array representing the current game board state
+     */
     public void refreshGameBoard(int[][] board) {
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
@@ -313,6 +339,9 @@ public class GuiController implements Initializable {
         }
     }
  
+    /**
+     * Starts the countdown sequence before the game starts.
+     */
     public void startCountdown() {
         if (timeLine != null) {
             timeLine.stop();
@@ -349,13 +378,21 @@ public class GuiController implements Initializable {
         dropPaused = false;
     }
 
-    // Bind the score to the score label from the GAMECONTROLLER
+    /**
+     * Binds the score property to the score label in the UI.
+     * 
+     * @param integerProperty the IntegerProperty containing the current score value
+     */
     public void bindScore(IntegerProperty integerProperty) {
         scoreLabel.textProperty().bind(integerProperty.asString());
     }
 
 
-    // Bind the level to the level label from the GAMECONTROLLER
+    /**
+     * Binds the level property to the level label in the UI and updates drop speed.
+     * 
+     * @param integerProperty the IntegerProperty containing the current level value
+     */
     public void bindLevel(IntegerProperty integerProperty) {
         levelLabel.textProperty().bind(integerProperty.asString());
         if (dropSpeedController != null) {
@@ -363,15 +400,27 @@ public class GuiController implements Initializable {
         }
     }
   
-    // Bind the lines cleared to the lines label from the GAMECONTROLLER
+    /**
+     * Binds the lines cleared property to the lines label in the UI.
+     * 
+     * @param integerProperty the IntegerProperty containing the current lines cleared value
+     */
     public void bindLinesCleared(IntegerProperty integerProperty) {
         linesLabel.textProperty().bind(integerProperty.asString());
     }
 
+    /**
+     * Returns the drop speed controller instance.
+     * 
+     * @return the DropSpeedController used for controlling brick falling speed
+     */
     public DropSpeedController getDropSpeedController() {
         return dropSpeedController;
     }
     
+    /**
+     * Displays the game over panel and stops background music.
+     */
     public void gameOver() {
        
         gameStateController.setGameState(GameStateController.GameState.GAME_OVER);
@@ -385,7 +434,9 @@ public class GuiController implements Initializable {
 
     /**
      * Handles the restart button click event.
-     * Resets UI state and delegates game logic reset to GameController.
+     * Resets UI state and game logic.
+     * 
+     * @param buttonEvent the action event from the restart button
      */
     public void newGame(ActionEvent buttonEvent) {
 
@@ -416,7 +467,8 @@ public class GuiController implements Initializable {
     /**
      * Handles the ESC key press and pause button click event.
      * Pauses the game and shows the pause panel.
-     * @param buttonEvent the action event
+     * 
+     * @param buttonEvent the action event (may be null if triggered by ESC key)
      */
     public void pauseGame(ActionEvent buttonEvent) {
         buttonClickSFX.playSFX();
@@ -432,7 +484,8 @@ public class GuiController implements Initializable {
     /**
      * Handles the resume button click event.
      * Resumes the game and hides the pause panel.
-     * @param actionEvent the action event
+     * 
+     * @param actionEvent the action event from the resume button
      */
     public void resumeGame(ActionEvent actionEvent) {
         buttonClickSFX.playSFX();
@@ -446,7 +499,9 @@ public class GuiController implements Initializable {
     }
 
     /**
-     * Shows confirmation dialog for restart action.
+     * Shows confirmation panel for restart action.
+     * 
+     * @param buttonEvent the action event from the restart button
      */
     public void confirmRestart(ActionEvent buttonEvent) {
         buttonClickSFX.playSFX();
@@ -459,7 +514,9 @@ public class GuiController implements Initializable {
     }
 
     /**
-     * Shows confirmation dialog for back to menu action.
+     * Shows confirmation panel for back to menu action.
+     * 
+     * @param buttonEvent the action event from the back to menu button
      */
     public void confirmBackToMenu(ActionEvent buttonEvent) {
         buttonClickSFX.playSFX();
@@ -472,7 +529,10 @@ public class GuiController implements Initializable {
     }
 
     /**
-     * Handles confirmation Yes button - executes the pending action.
+     * Handles confirmation Yes button and executes the pending action.
+     * 
+     * @param buttonEvent the action event from the confirm yes button
+     * @throws Exception if there is an error loading the menu layout
      */
     public void confirmYes(ActionEvent buttonEvent) throws Exception {
         buttonClickSFX.playSFX();
@@ -490,6 +550,8 @@ public class GuiController implements Initializable {
 
     /**
      * Handles confirmation No button - returns to pause panel.
+     * 
+     * @param buttonEvent the action event from the confirm no button
      */
     public void confirmNo(ActionEvent buttonEvent) {
         buttonClickSFX.playSFX();
@@ -499,6 +561,11 @@ public class GuiController implements Initializable {
         gamePanel.requestFocus();
     }
 
+    /**
+     * Shows the control keys panel displaying keyboard controls and score values.
+     * 
+     * @param buttonEvent the action event from the show control keys button
+     */
     public void showControlKeys(ActionEvent buttonEvent) {
         buttonClickSFX.playSFX();
         gameStateController.pauseGame();
@@ -510,6 +577,11 @@ public class GuiController implements Initializable {
         gamePanel.requestFocus();
     }
 
+    /**
+     * Closes the control panel and returns to the pause panel.
+     * 
+     * @param buttonEvent the action event from the close button
+     */
     public void closeControlPanel(ActionEvent buttonEvent) {
         crossButtonSFX.playSFX();
         controlPanel.setVisible(false);
@@ -522,7 +594,8 @@ public class GuiController implements Initializable {
 
     /**
      * Sets the stage reference for scene switching.
-     * @param stage the primary stage
+     * 
+     * @param stage the primary stage 
      */
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -531,7 +604,9 @@ public class GuiController implements Initializable {
     /**
      * Handles the back to menu button click event.
      * Switches back to the main menu scene.
-     * @param buttonEvent the action event
+     * 
+     * @param buttonEvent the action event from the back to menu button
+     * @throws Exception if there is an error loading the menu layout
      */
     public void backToMenu(ActionEvent buttonEvent) throws Exception {
 

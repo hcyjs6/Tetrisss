@@ -10,7 +10,9 @@ import javafx.util.Duration;
 
 
 /**
- * Encapsulates the countdown overlay logic shown before gameplay resumes.
+ * This class manages the countdown animation displayed before gameplay starts.
+ * 
+ * @author Sek Joe Rin
  */
 public class Countdown {
 
@@ -24,6 +26,16 @@ public class Countdown {
 
     private Timeline countdownTimeline;
 
+    /**
+     * Creates a new Countdown instance.
+     * 
+     * @param overlay the StackPane overlay that contains the countdown
+     * @param countdownLabel the Label that displays the countdown numbers
+     * @param brickPanel the GridPane for the current brick
+     * @param ghostPanel the GridPane for the ghost piece
+     * @param nextBrickPanel the GridPane for the next brick preview
+     * @param isCountDownEnd the Runnable callback to execute when countdown finishes
+     */
     public Countdown(StackPane overlay, Label countdownLabel, GridPane brickPanel, GridPane ghostPanel, GridPane nextBrickPanel, Runnable isCountDownEnd) {
         this.overlay = overlay;
         this.countdownLabel = countdownLabel;
@@ -35,7 +47,8 @@ public class Countdown {
     }
 
     /**
-     * Starts the countdown sequence.
+     * Starts the countdown sequence from 3 to GO!.
+     * This method displays the countdown overlay and animates the countdown numbers.
      *
      * @param isResume indicates whether the countdown is resuming an existing game
      */

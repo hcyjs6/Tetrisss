@@ -4,19 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// This is the MOST CRITICAL utility class. 
-//Everything else depends on it for collision detection, matrix operations, and line clearing.
-// It contains methods to check if a brick intersects with the board, to merge a brick with the board, and to check if a line is clear.
-
+/**
+ * Provides utility methods for matrix operations in the Tetris game.
+ * This class contains methods for collision detection, merging bricks with the board, copying matrices, and clearing full rows.
+ * 
+ * @author Sek Joe Rin
+ */
 public class MatrixOperations {
-
-
-    //We don't want to instantiate this utility class
+    
     private MatrixOperations(){
 
     }
 
-    // Returns true if collision detected, false if move is safe
+    /**
+     * Checks if a brick intersects with the board at the specified position.
+     * 
+     * @param matrix the game board matrix
+     * @param brick the 2D array representing the brick shape
+     * @param targetX the target x coordinate
+     * @param targetY the target y coordinate
+     * @return true if collision detected, false if move is safe
+     */
     public static boolean intersect(final int[][] matrix, final int[][] brick, int targetX, int targetY) {
         for (int i = 0; i < brick.length; i++) { // Loop through brick rows
             for (int j = 0; j < brick[i].length; j++) { // Loop through brick columns
@@ -40,6 +48,12 @@ public class MatrixOperations {
     }
 
 
+    /**
+     * Creates a deep copy of a 2D integer array.
+     * 
+     * @param original the original 2D array to copy
+     * @return a deep copy of the original array
+     */
     public static int[][] copy(int[][] original) {
         int[][] myInt = new int[original.length][];
         for (int i = 0; i < original.length; i++) {
@@ -51,6 +65,15 @@ public class MatrixOperations {
         return myInt;
     }
 
+    /**
+     * Merges a brick into the board at the specified position.
+     * 
+     * @param filledFields the current board matrix
+     * @param brick the 2D array representing the brick shape
+     * @param x the x coordinate where the brick should be merged
+     * @param y the y coordinate where the brick should be merged
+     * @return a new matrix with the brick merged into it
+     */
     public static int[][] merge(int[][] filledFields, int[][] brick, int x, int y) {
         int[][] copy = copy(filledFields);
         for (int i = 0; i < brick.length; i++) {
@@ -65,9 +88,14 @@ public class MatrixOperations {
         return copy;
     }
 
-    // Check if a row is full and remove it if it is
+    /**
+     * Checks if any rows are full and removes them, then returns the result.
+     * 
+     * @param matrix the current board matrix
+     * @return a ClearRow object containing information about cleared rows and the new matrix after clearing rows
+     */
     public static ClearRow checkRemoving(final int[][] matrix) {
-        int[][] temporaryMatrix = new int[matrix.length][matrix[0].length]; // create a temporary matrix(same size as the original matrix) to store the new matrix after clearing rows
+        int[][] temporaryMatrix = new int[matrix.length][matrix[0].length]; // create a temporary matrix(same size as the original matrix) to store the new matrix after clearing rows        
         List<Integer> clearedRows = new ArrayList<>(); // list to remember the indices of rows to be cleared
         
         //Identify which rows need to be cleared
@@ -111,6 +139,12 @@ public class MatrixOperations {
         return new ClearRow(clearedRows.size(), temporaryMatrix, 0, 0, 0, clearedRows, false);
     }
 
+    /**
+     * Creates a deep copy of a list of 2D integer arrays.
+     * 
+     * @param list the list of 2D arrays to copy
+     * @return a new list containing deep copies of all arrays
+     */
     public static List<int[][]> deepCopyList(List<int[][]> list){
         return list.stream().map(MatrixOperations::copy).collect(Collectors.toList());
     }

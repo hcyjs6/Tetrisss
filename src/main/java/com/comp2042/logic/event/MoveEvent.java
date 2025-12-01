@@ -1,20 +1,40 @@
 package com.comp2042.logic.event;
-// This is a class that represents an event/actions that occurs when a user or automatic timer moves the brick
-// Package the event type(what happened) and event source (who caused the event) into a single object
 
-public final class MoveEvent { // final class cannot be extended
-    private final EventType eventType; // what happened - down, left, right, rotate, etc.
-    private final EventSource eventSource; // who caused the event - user or automatic timer
+/**
+ * Represents a move event that occurs during the game.
+ * This class packages the event type and event source into a single object.
+ * 
+ * @author Sek Joe Rin
+ */
+public final class MoveEvent {
+    private final EventType eventType;
+    private final EventSource eventSource;
 
+    /**
+     * Creates a new MoveEvent with the specified event type and source.
+     * 
+     * @param eventType the type of event that occurred (e.g., LEFT, RIGHT, ROTATE_LEFT)
+     * @param eventSource the source that caused the event (USER or THREAD)
+     */
     public MoveEvent(EventType eventType, EventSource eventSource) {
         this.eventType = eventType;
         this.eventSource = eventSource;
     }
 
+    /**
+     * Returns the type of event that occurred.
+     * 
+     * @return the EventType representing what action happened
+     */
     public EventType getEventType() {
         return eventType;
     }
 
+    /**
+     * Returns the source that caused the event.
+     * 
+     * @return the EventSource indicating who caused the event (USER or THREAD)
+     */
     public EventSource getEventSource() {
         return eventSource;
     }

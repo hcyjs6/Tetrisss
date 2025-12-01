@@ -6,6 +6,10 @@ import javafx.scene.media.MediaPlayer;
 
 /**
  * Handles background music playback for the game.
+ * This class manages loading, playing, pausing, and stopping background music
+ * that loops continuously during gameplay.
+ * 
+ * @author Sek Joe Rin
  */
 public class BackgroundMusic {
     
@@ -13,11 +17,20 @@ public class BackgroundMusic {
     private MediaPlayer bgmPlayer;
     private double volume = 0.15;
 
+    /**
+     * This method creates a new background music instance and loads the music file.
+     * The music is preloaded to avoid delay when first played.
+     * 
+     * @param resourcePath the path to the music file in the resources folder
+     */
     public BackgroundMusic(String resourcePath) {
         this.resourcePath = resourcePath;
-        initBGM(); // Preload audio to avoid delay on first play
+        initBGM(); 
     }
 
+    /**
+     * This method initializes the background music by loading the music file and setting the volume.
+     */
     private void initBGM() {
         URL loadBGM = getClass().getClassLoader().getResource(resourcePath);
         if (loadBGM != null) {
@@ -28,18 +41,30 @@ public class BackgroundMusic {
         }
     }
 
+    /**
+     * Starts playing the background music.
+     * If the music is already playing, this method does nothing.
+     */
     public void playBGM() {
         if (bgmPlayer != null && bgmPlayer.getStatus() != MediaPlayer.Status.PLAYING) {
             bgmPlayer.play();
         }
     }
 
+    /**
+     * Pauses the background music playback.
+     * If the music is not currently playing, this method does nothing.
+     */
     public void pauseBGM() {
         if (bgmPlayer != null && bgmPlayer.getStatus() == MediaPlayer.Status.PLAYING) {
             bgmPlayer.pause();
         }
     }
 
+    /**
+     * Stops the background music playback.
+     * This resets the playback position to the beginning.
+     */
     public void stopBGM() {
         if (bgmPlayer != null) {
             bgmPlayer.stop();

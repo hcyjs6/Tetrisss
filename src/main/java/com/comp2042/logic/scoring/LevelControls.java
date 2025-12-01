@@ -1,15 +1,13 @@
-// Basic level management system
 package com.comp2042.logic.scoring;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 /**
- * Manages level progression in Tetris.
- * This class is responsible only for level management based on total lines cleared.
+ * Handles the level progression of the game.
+ * This class is responsible only for the level management based on the total lines cleared.
  * 
  * @author Sek Joe Rin
- * @version 1.0
  */
 public class LevelControls {
     
@@ -19,29 +17,30 @@ public class LevelControls {
     private int levelCustomized = 1;
     
     /**
-     * Gets the current level property for UI binding.
+     * Returns the current level property for UI binding.
+     * This allows the UI to automatically update when the level changes.
      * 
-     * @return the level property
+     * @return the current level property.
      */
     public IntegerProperty levelProperty() {
         return currentLevel;
     }
     
     /**
-     * Gets the current level value.
+     * Returns the current level value.
      * 
-     * @return the current level
+     * @return the current level.
      */
     public int getCurrentLevel() {
         return currentLevel.getValue();
     }
     
     /**
-     * Updates the level based on total lines cleared.
+     * Updates the level based on the total lines cleared.
      * Level increases by 1 for every 10 lines cleared, starting from the initial level.
      * 
      * @param totalLinesCleared the total number of lines cleared in the game
-     * @return true if level increased, false otherwise
+     * @return true if the level increased, false otherwise
      */
     public boolean updateLevel(int totalLinesCleared) {
         int newLevel = levelCustomized + (totalLinesCleared / LINES_PER_LEVEL);
@@ -55,7 +54,7 @@ public class LevelControls {
     /**
      * Sets the initial level for the game.
      * 
-     * @param selectedLevel the selected level to set (should be between 1 and 100)
+     * @param selectedLevel the selected level to be set (between 1 and 100)
      */
     public void setLevelValue(int selectedLevel) {
         if (selectedLevel >= 1 && selectedLevel <= 100) {
@@ -65,7 +64,7 @@ public class LevelControls {
     }
     
     /**
-     * Resets the level manager to initial state.
+     * Resets the level to the initial state of 1.
      */
     public void resetLevel() {
         levelCustomized = 1;

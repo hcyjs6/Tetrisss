@@ -17,7 +17,11 @@ class BrickRotatorTest {
     void setUp() {
         brickRotator = new BrickRotator();
         brickGenerator = new RandomBrickGenerator();
+        // Get a brick with 4 rotation states 
         Brick brick = brickGenerator.getBrick();
+        while (brick.getShapeMatrix().size() < 4) {
+            brick = brickGenerator.getBrick();
+        }
         brickRotator.setBrick(brick);
         brickRotator.setCurrentShape(0);
     }

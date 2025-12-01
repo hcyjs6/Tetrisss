@@ -4,6 +4,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Handles rendering of the next brick preview panel.
+ * This class displays the upcoming Tetris piece that will appear next in the game.
+ * 
+ * @author Sek Joe Rin
+ */
 public final class NextBrickRenderer {
 
     private static final int NEXT_BRICK_SIZE = 28;
@@ -11,6 +17,12 @@ public final class NextBrickRenderer {
     private NextBrickRenderer() {
     }
 
+    /**
+     * Initializes the next brick preview by clearing the panel and drawing the next brick shape.
+     * 
+     * @param nextBrickPanel the GridPane where the next brick will be displayed
+     * @param nextBrickData the 2D array representing the next brick shape and color values
+     */
     public static void initNextBrick(GridPane nextBrickPanel, int[][] nextBrickData) {
         nextBrickPanel.getChildren().clear();
 

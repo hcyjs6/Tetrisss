@@ -15,6 +15,10 @@ import com.comp2042.audio.SoundEffect;
 
 /**
  * Handles the visual effect that plays when rows are cleared.
+ * This class manages the fade animation when rows are cleared and displays notifications
+ * showing points earned, combos, and level-up messages.
+ * 
+ * @author Sek Joe Rin
  */
 public class ClearRowEffect {
 
@@ -25,6 +29,13 @@ public class ClearRowEffect {
     private final SoundEffect notificationSFX;
     private final SoundEffect levelUpSFX;
 
+    /**
+     * Creates a new ClearRowEffect instance.
+     * 
+     * @param displayMatrix the 2D array of rectangles representing the game board cells
+     * @param notificationLayer the StackPane where notifications will be displayed
+     * @param guiController the GUI controller for refreshing the game board and brick
+     */
     public ClearRowEffect(Rectangle[][] displayMatrix, StackPane notificationLayer, GuiController guiController) { 
         this.displayMatrix = displayMatrix;
         this.notificationLayer = notificationLayer;
@@ -36,10 +47,11 @@ public class ClearRowEffect {
     }
 
     /**
-     * Plays the fade effect for the cleared rows and triggers UI updates when complete.
+     * Plays the fade effect for the cleared rows and updates the game board and brick after the effect is complete.
+     * This method animates the cleared rows and shows a notification with points and combo information.
      *
      * @param clearRow data describing the cleared rows
-     * @param downData data describing the resulting board state
+     * @param downData data describing the new view data after the cleared rows are merged to the background
      */
     public void play(ClearRow clearRow, DownData downData) {
         List<Integer> clearedRowIndex = clearRow.getClearedRowIndex();
@@ -82,6 +94,12 @@ public class ClearRowEffect {
         clearRowSFX.playSFX(); // play clear row sound effect
     }
 
+    /**
+     * Shows a notification with points and combo information.
+     * This method creates a notification panel and displays the points and combo information on the notification layer.
+     * 
+     * @param clearRow data describing the cleared rows and the points and combo information
+     */
     private void showNotification(ClearRow clearRow) {
 
         String linesRemovedText = "";

@@ -6,7 +6,10 @@ import javafx.scene.shape.Rectangle;
 
 
 /**
- * Utility class responsible for rendering the background game board grid.
+ * Handles rendering of the background game board grid.
+ * This class creates and manages the visual representation of the game board where bricks are placed.
+ * 
+ * @author Sek Joe Rin
  */
 public final class GameBoardRenderer {
 
@@ -14,7 +17,14 @@ public final class GameBoardRenderer {
         
     }
 
-    
+    /**
+     * Initializes the game board by creating a matrix of rectangles for each cell.
+     * 
+     * @param gamePanel the GridPane where the game board will be displayed
+     * @param boardMatrix the 2D array representing the current state of the game board
+     * @param brickSize the size in pixels for each board cell
+     * @return a 2D array of Rectangle objects representing the board cells
+     */
     public static Rectangle[][] initGameBoard(GridPane gamePanel, int[][] boardMatrix, int brickSize) {
         Rectangle[][] displayMatrix = new Rectangle[boardMatrix.length][boardMatrix[0].length];
 
@@ -31,6 +41,12 @@ public final class GameBoardRenderer {
         return displayMatrix;
     }
 
+    /**
+     * Draws a single game board cell with the specified color.
+     * 
+     * @param color the numeric value representing the cell color (0 for empty, 1-7 for brick colors)
+     * @param cell the Rectangle to draw
+     */
     public static void drawGameBoardCell(int color, Rectangle cell) {
         
         if (color == 0) {

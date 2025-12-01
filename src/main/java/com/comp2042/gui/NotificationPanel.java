@@ -15,8 +15,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
+/**
+ * This class displays notifications during gameplay such as points earned, combos, and level-up messages.
+ * Notification panel appears on screen with animation effects when rows are cleared.
+ * 
+ * @author Sek Joe Rin
+ */
 public class NotificationPanel extends BorderPane {
 
+    /**
+     * Creates a new NotificationPanel with the specified text.
+     * 
+     * @param text the notification message to display
+     */
     public NotificationPanel(String text) {
         setMinHeight(560);
         setMinWidth(280);
@@ -30,6 +41,12 @@ public class NotificationPanel extends BorderPane {
 
     }
 
+    /**
+     * Displays the notification with fade and translate animations.
+     * The notification will automatically remove itself from the list after the animation complete.
+     * 
+     * @param list the ObservableList of nodes where this notification is displayed on the screen
+     */
     public void shownotification(ObservableList<Node> list) {
         FadeTransition ft = new FadeTransition(Duration.millis(2000), this);
         TranslateTransition tt = new TranslateTransition(Duration.millis(2500), this);

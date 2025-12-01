@@ -7,6 +7,13 @@ import com.comp2042.audio.SoundEffect;
 
 import java.awt.Point;
 
+/**
+ * Handles the hold feature for Tetris pieces.
+ * This class manages storing and swapping the current piece with a held piece.
+ * Players can only hold once per piece that lands.
+ * 
+ * @author Sek Joe Rin
+ */
 public class HoldLogic {
     
     private Brick heldBrick; // The brick currently being held
@@ -16,6 +23,12 @@ public class HoldLogic {
     private final SoundEffect canholdSFX;
    
     
+    /**
+     * Creates a new HoldLogic instance.
+     * 
+     * @param brickRotator the BrickRotator used to get and set the current brick
+     * @param brickGenerator the BrickGenerator used to generate new bricks
+     */
     public HoldLogic(BrickRotator brickRotator, BrickGenerator brickGenerator) {
         this.heldBrick = null;
         this.canHold = true;
@@ -25,7 +38,16 @@ public class HoldLogic {
    
     }
 
-    // Check if the hold ability is available
+    /**
+     * Holds the current brick or swaps it with the previously held brick.
+     * If no brick is held, stores the current brick and creates a new one.
+     * If a brick is already held, swaps the current brick with the held brick.
+     * Can only hold once per piece that lands.
+     * 
+     * @param currentOffset the current position of the brick on the board
+     * @param spawnX the x coordinate of the spawn position
+     * @param spawnY the y coordinate of the spawn position
+     */
     public void holdBrick(Point currentOffset, int spawnX, int spawnY) {
 
         // Get the current brick
@@ -56,7 +78,11 @@ public class HoldLogic {
         canHold = false;
     }
 
-    // Get the data of the held brick
+    /**
+     * Returns the shape data of the currently held brick.
+     * 
+     * @return a 2D array representing the held brick shape, or null if no brick is held
+     */
     public int[][] getHoldBrickData() {
         if (heldBrick == null) {
             return null;
@@ -64,12 +90,18 @@ public class HoldLogic {
         return heldBrick.getShapeMatrix().get(0);
     }
 
-    // Reset the hold ability
+    /**
+     * Resets the hold ability.
+     * This is called when a new piece is created.
+     */
     public void resetCanHold() {
         this.canHold = true;
     }
 
-    // Reset the held brick and the hold ability
+    /**
+     * Resets both the held brick and the hold ability.
+     * This is called when starting a new game.
+     */
     public void reset() {
         this.heldBrick = null;
         this.canHold = true;

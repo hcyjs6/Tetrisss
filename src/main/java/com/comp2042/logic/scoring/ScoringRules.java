@@ -4,11 +4,10 @@ import com.comp2042.logic.event.EventType;
 import javafx.beans.property.IntegerProperty;
 
 /**
- * Coordinates all scoring logic for the Tetris game.
- * This class acts as a facade that delegates to specialized scoring classes.
+ * Coordinates all scoring logic of the Tetris game.
+ * This class acts as the central point for all scoring logic.
  * 
  * @author Sek Joe Rin
- * @version 1.0
  */
 public class ScoringRules {
     
@@ -20,6 +19,10 @@ public class ScoringRules {
     private final ComboSystem comboSystem;
     private boolean isLevelUp = false;
 
+    /**
+     * Initializes the scoring rules with the necessary components.
+     * @param score the score component
+     */
     public ScoringRules(GameScore score) {
         this.score = score;
         this.lineClearScoring = new LineClearScoring();
@@ -29,33 +32,50 @@ public class ScoringRules {
         this.comboSystem = new ComboSystem();
     }
 
+    /**
+     * Returns the level property for UI binding.
+     * @return the level property.
+     */
     public IntegerProperty levelProperty() {
         return levelControls.levelProperty();
     }
 
+    /**
+     * Returns the lines cleared property for UI binding.
+     * @return the lines cleared property.
+     */
     public IntegerProperty linesClearedProperty() {
         return lineTracker.linesClearedProperty();
     }
 
+    /**
+     * Gets the total number of lines cleared.
+     * @return the current total number of lines cleared.
+     */
     public int getTotalLinesCleared() {
         return lineTracker.getTotalLinesCleared();
     }
 
+    /**
+     * Gets the current level value.
+     * @return the current level value.
+     */
     public int getCurrentLevel() {
         return levelControls.getCurrentLevel();
     }
 
     /**
-     * Gets the current score.
-     * @return the current score
+     * Gets the current score value.
+     * @return the current score value.
      */
     public int getCurrentScore() {
         return score.getCurrentScore();
     }
-
     
     /**
-     * Adds points for a successful move down with level bonus.
+     * Adds points for a successful move down by user input with level bonus.
+     * @param eventType the type of move down event (SOFT_DROP or HARD_DROP)
+     * @param dropDistance the distance the piece moved down
      */
     public void add_MoveDown_Points(EventType eventType, int dropDistance) {
         int levelMultiplier = levelControls.getCurrentLevel();
@@ -69,13 +89,11 @@ public class ScoringRules {
         }
         score.addPoints(pointsAwarded);
     }
-    
-    
 
     /**
-     * Calculates and adds points for clearing lines.
+     * Adds points for clearing lines with level multiplier and combo bonus.
      * @param linesCleared the number of lines cleared
-     * @return the points awarded for this line clear
+     * @return the total points awarded for this line clear with level multiplier and combo bonus.
      */
     public int add_LineCleared_Points(int linesCleared) {
         if (linesCleared <= 0) {
@@ -100,24 +118,24 @@ public class ScoringRules {
     }
 
     /**
-     * Checks if a level up occurred during the last line clear.
-     * @return true if level increased, false otherwise
+     * Checks if the level increased during the last line clear.
+     * @return true if the level increased, false otherwise
      */
     public boolean isLevelUp() {
         return isLevelUp;
     }
 
     /**
-     * Gets the current combo multiplier.
-     * @return the current combo multiplier
+     * Gets the current combo multiplier value.
+     * @return the current combo multiplier value.
      */
     public int getComboMultiplier() {
         return comboSystem.getComboMultiplier();
     }
 
     /**
-     * Gets the total combo bonus.
-     * @return the total combo bonus
+     * Gets the total combo bonus value.
+     * @return the total combo bonus value.
      */
     public int getTotalComboBonus() {
         return comboSystem.getBaseComboBonus() * comboSystem.getComboMultiplier();
@@ -131,7 +149,7 @@ public class ScoringRules {
     }
     
     /**
-     * Resets the scoring system for a new game.
+     * Resets the achievements for a new game.
      */
     public void resetAchievements() {
         score.resetScore();
@@ -141,8 +159,7 @@ public class ScoringRules {
     
     /**
      * Sets the initial level for the game.
-     * 
-     * @param selectedLevel the selected level to set (should be between 1 and 100)
+     * @param selectedLevel the selected level to be set (between 1 and 100)
      */
     public void setLevelValue(int selectedLevel) {
         levelControls.setLevelValue(selectedLevel);

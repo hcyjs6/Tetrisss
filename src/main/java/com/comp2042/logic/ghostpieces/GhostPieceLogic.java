@@ -6,7 +6,11 @@ import com.comp2042.logic.CollisionDetector;
 import java.awt.Point;
 
 /**
- * Ghost piece logic for position calculations.
+ * Handles ghost piece logic for position calculations.
+ * This class calculates where the current piece will land on the board,
+ * displaying a preview of the landing position.
+ * 
+ * @author Sek Joe Rin
  */
 public final class GhostPieceLogic {
 
@@ -14,6 +18,14 @@ public final class GhostPieceLogic {
         // Utility class
     }
 
+    /**
+     * Calculates the y coordinate where the ghost piece will land on the board.
+     * 
+     * @param boardMatrix the current state of the game board
+     * @param currentShape the 2D array representing the current brick shape
+     * @param currentOffset the current position of the brick on the board
+     * @return the y coordinate where the ghost piece will land
+     */
     public static int calculateGhostPieceY(int[][] boardMatrix, int[][] currentShape, Point currentOffset) {
         int ghostPieceY = (int) currentOffset.getY();
         int ghostPieceX = (int) currentOffset.getX();
@@ -25,6 +37,14 @@ public final class GhostPieceLogic {
         return ghostPieceY;
     }
 
+    /**
+     * Creates ViewData for the ghost piece preview.
+     * 
+     * @param currentShape the 2D array representing the current brick shape
+     * @param currentOffset the current position of the brick on the board
+     * @param ghostPieceY the y coordinate where the ghost piece will land
+     * @return ViewData containing the ghost piece information for rendering
+     */
     public static ViewData createGhostPieceViewData(int[][] currentShape, Point currentOffset, int ghostPieceY) {
         // Create ghost piece ViewData with shape in ghostPieceData field, not brickData
         return new ViewData(null, (int) currentOffset.getX(), ghostPieceY, null, null, currentShape);

@@ -11,8 +11,21 @@ import com.comp2042.gui.MenuController;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Main class is the entry point for the Tetris application.
+ * It initializes the JavaFX application window and loads the main menu.
+ * 
+ * @author Sek Joe Rin
+ */
 public class Main extends Application {
 
+    /**
+     * Starts the JavaFX application by loading the menu layout and initializing the primary stage.
+     * This method sets up the application window with appropriate title, icon, and dimensions, then displays the main menu to the user.
+     * 
+     * @param primaryStage the primary stage for the JavaFX application
+     * @throws Exception if there is an error loading the FXML file or initializing the stage
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
 
@@ -39,7 +52,12 @@ public class Main extends Application {
         primaryStage.show(); // Display the primary stage to user
     }
 
-
+    /**
+     * The main entry point for the Tetris application.
+     * This method launches the JavaFX application.
+     * 
+     * @param args command-line arguments
+     */
     public static void main(String[] args) {
         launch(args); // Start the JavaFX application
     }
