@@ -387,51 +387,111 @@ mvn javafx:run
 11. **`NextBrickRenderer`** (`com.comp2042.gui.NextBrickRenderer`)
     - **Purpose:** Renders the next brick preview and displays the upcoming piece that will appear.
 
-12. **`NotificationPanel`** (`com.comp2042.gui.NotificationPanel`)
-    - **Purpose:** Displays notifications for line clears, combos, and level ups. Features animated notifications with fade-in and fade-out effects.
-
 #### <ins>4.1.3 Logic Package - Ghost Pieces</ins>
 
-13. **`GhostPieceLogic`** (`com.comp2042.logic.ghostpieces.GhostPieceLogic`)
+12. **`GhostPieceLogic`** (`com.comp2042.logic.ghostpieces.GhostPieceLogic`)
     - **Purpose:** Calculates the landing position for the ghost piece preview. Determines where the current piece will land and creates ViewData for ghost piece rendering.
 
 #### <ins>4.1.4 Logic Package - Hold System</ins>
 
-14. **`HoldLogic`** (`com.comp2042.logic.hold.HoldLogic`)
+13. **`HoldLogic`** (`com.comp2042.logic.hold.HoldLogic`)
     - **Purpose:** Manages the hold feature logic for storing and swapping pieces. Allows players to hold the current piece or swap with a previously held piece, enforcing a one-hold-per-piece limit.
 
 #### <ins>4.1.5 Logic Package - Scoring</ins>
 
-15. **`ComboSystem`** (`com.comp2042.logic.scoring.ComboSystem`)
+14. **`ComboSystem`** (`com.comp2042.logic.scoring.ComboSystem`)
     - **Purpose:** Manages combo multiplier system for consecutive line clears. Tracks combo count, increments on consecutive clears, resets when no lines cleared, and calculates combo bonus.
 
-16. **`GameScore`** (`com.comp2042.logic.scoring.GameScore`)
+15. **`GameScore`** (`com.comp2042.logic.scoring.GameScore`)
     - **Purpose:** Manages the game score with JavaFX property binding. Provides methods to add points, reset score, and bind score property to UI for automatic updates.
 
-17. **`LevelControls`** (`com.comp2042.logic.scoring.LevelControls`)
+16. **`LevelControls`** (`com.comp2042.logic.scoring.LevelControls`)
     - **Purpose:** Manages level progression and level value. Handles level progression (10 lines per level), level property binding, and setting initial level.
 
-18. **`LineClearScoring`** (`com.comp2042.logic.scoring.LineClearScoring`)
+17. **`LineClearScoring`** (`com.comp2042.logic.scoring.LineClearScoring`)
     - **Purpose:** Calculates points for line clears based on the number of lines cleared. Provides different point values for Single, Double, Triple, and Tetris (4 lines) clears.
 
-19. **`LineTracker`** (`com.comp2042.logic.scoring.LineTracker`)
+18. **`LineTracker`** (`com.comp2042.logic.scoring.LineTracker`)
     - **Purpose:** Tracks total lines cleared for level progression. 
 
-20. **`MoveDownScoring`** (`com.comp2042.logic.scoring.MoveDownScoring`)
+19. **`MoveDownScoring`** (`com.comp2042.logic.scoring.MoveDownScoring`)
     - **Purpose:** Calculates points for soft drops and hard drops. Awards 1 point per cell for soft drops and 2 points per cell for hard drops.
 
-21. **`ScoringRules`** (`com.comp2042.logic.scoring.ScoringRules`)
+20. **`ScoringRules`** (`com.comp2042.logic.scoring.ScoringRules`)
     - **Purpose:** Coordinates all scoring logic and acts as the central scoring controller. Integrates all scoring components, manages level multipliers and combos, and provides unified scoring interface.
 
 #### <ins>4.1.6 Logic Package - Speed Control</ins>
 
-22. **`DropSpeedController`** (`com.comp2042.logic.speed.DropSpeedController`)
+21. **`DropSpeedController`** (`com.comp2042.logic.speed.DropSpeedController`)
     - **Purpose:** Controls the falling speed of pieces based on level. Automatically adjusts falling speed as level increases, with reset functionality for new games.
 
 #### <ins>4.1.7 Logic Package - Game State and Collision</ins>
 
-23. **`CollisionDetector`** (`com.comp2042.logic.CollisionDetector`)
+22. **`CollisionDetector`** (`com.comp2042.logic.CollisionDetector`)
     - **Purpose:** Handles all collision detection logic for the Tetris game. Provides methods to check collisions for brick movements, rotations, spawn positions, and ghost piece calculations.
 
-24. **`GameStateController`** (`com.comp2042.logic.GameStateController`)
+23. **`GameStateController`** (`com.comp2042.logic.GameStateController`)
     - **Purpose:** Manages the overall game state of the Tetris game. Handles state transitions between PLAYING, PAUSED, GAME_OVER, and MAIN_MENU states.
+   
+## 4.2 Modified Java Classes
+   
+1. **SimpleBoard.java** (`com.comp2042.logic.SimpleBoard`)
+   - **Modifications:** Added hold feature integration `HoldLogic`, ghost piece preview `GhostPieceLogic`, sound effects for rotation and hard drop, and wall kick rotation system using `BrickRotator` and `CollisionDetector`. Added methods: `holdBrick()`, `getHoldBrickData()`, `getGhostPieceY()`, `getGhostPieceViewData()`, and `resetBoard()`. Modified `getViewData()` to include ghost piece and hold brick data, and `kickOffsets()` to support wall kicks.
+   - **Why These Modifications Were Necessary:** To support new features (hold, ghost piece, audio, wall kicks) that require integration with new logic classes and additional data for the UI.
+
+2. **Board.java** (`com.comp2042.logic.Board`)
+   - **Modifications:** Extended interface with method declarations for hold (`holdBrick()`, `getHoldBrickData()`), ghost piece (`getGhostPieceY()`, `getGhostPieceViewData()`), and reset (`resetBoard()`). Updated `getViewData()` documentation to include ghost piece and hold brick information.
+   - **Why These Modifications Were Necessary:** To ensure all Board implementations support the new hold and ghost piece features.
+
+3. **ViewData.java** (`com.comp2042.logic.ViewData`)
+   - **Modifications:** Added `holdBrickData` and `ghostPieceData` fields. Added constructor accepting ghost piece and hold brick data, and getter methods (`getHoldBrickData()`, `getGhostPieceData()`).
+   - **Why These Modifications Were Necessary:** To carry hold brick and ghost piece data to the UI layer for rendering these visual elements.
+
+4. **NotificationPanel.java** (`com.comp2042.gui.NotificationPanel`)
+    - **Modifications:** Set notification location to the middle of the game board. Modified to change notification text dynamically according to lines cleared (Single, Double, Triple, Tetris) and Combo Bonus. Added animated fade-in and fade-out effects with transitions (`shownotification()`). Improved styling with glow effects and text formatting.
+    - **Why These Modifications Were Necessary:** Positioning notifications in the center makes them more visible to players. Dynamic text helps players understand what they achieved (how many lines cleared). Smooth animations enhance user experience and provide clear visual feedback.
+
+5. **ClearRow.java** (`com.comp2042.logic.ClearRow`)
+   - **Modifications:** Added fields for scoring (`totalPointsAwarded`, `combo`, `totalComboBonus`), animation (`clearedRowIndex`),and level progression (`levelUp`).
+   - **Why These Modifications Were Necessary:** To support comprehensive scoring system, combo tracking, level progression notifications, and row clearing animations.
+
+6. **GameStateController.java** (`com.comp2042.logic.GameStateController`)
+   - **Modifications:** Added `resetGameState()` method and state checking methods (`isPlaying()`, `isPaused()`, `isGameOver()`, `isMainMenu()`). Enhanced `pauseGame()` and `resumeGame()` with state validation.
+   - **Why These Modifications Were Necessary:** To ensure proper game flow control, prevent invalid state transitions, and support pause/resume and game restart features.
+
+7. **GuiController.java** (`com.comp2042.gui.GuiController`)
+   - **Modifications:** Added FXML fields for new UI components (pause panel, game over panel, ghost panel, hold panel, etc.), integrated new renderer classes, added `DropSpeedController`, `Countdown`, `NotificationPanel`, `ClearRowEffect`, audio system, and `GameStateController`. Enhanced keyboard event handling for hold (C), pause (ESC), soft drop (DOWN), hard drop (SPACE). Added methods for game state management, game restart, control panel, property binding (`bindScore()`, `bindLevel()`, `bindLinesCleared()`), and animations.
+   - **Why These Modifications Were Necessary:** To integrate all new features (hold, ghost piece, audio, scoring, notifications, pause menu, game over screen, countdown, animations) into the UI..
+
+8. **Main.java** (`com.comp2042.app.Main`)
+   - **Modifications:** Modified the Main class to integrate with `MenuController`.
+   - **Why These Modifications Were Necessary:** To ensure resources load the Main Menu layout first when the application starts before enter the game.
+
+9. **MatrixOperations.java** (`com.comp2042.logic.MatrixOperations`)
+    - **Modifications:** Changed row clearing algorithm from queue-based approach to direct row copying which is more efficient. Enhanced `checkRemoving()` to return `ClearRow` with comprehensive scoring data (combo, level up, cleared row indices) instead of just basic score. Added `deepCopyList()` method for safe copying of brick shapes.
+    - **Why These Modifications Were Necessary:** The new clearing method is faster, uses less memory, and tracks which rows were cleared (needed for animations). Enhanced return value provides all scoring information for the scoring system. `deepCopyList()` prevents bugs when copying brick data.
+
+10. **BrickGenerator.java** (`com.comp2042.logic.bricks.BrickGenerator`)
+    - **Modifications:** Added `resetBrickGenerator()` method declaration to the interface.
+    - **Why These Modifications Were Necessary:** To support game reset functionality, ensuring the brick generator starts fresh for new games.
+
+11. **RandomBrickGenerator.java** (`com.comp2042.logic.bricks.RandomBrickGenerator`)
+    - **Modifications:** Refactored from pure random generation to 7-bag randomizer system using `Deque<Brick>` queue. Added `fillListOfBricks()` method that creates and shuffles bags of all 7 brick types. Modified `getBrick()` to use queue polling with automatic refill logic. Implemented `resetBrickGenerator()` method.
+    - **Why These Modifications Were Necessary:** The 7-bag system ensures fairness by guaranteeing all 7 brick types appear before any repeats, preventing unfair sequences and providing balanced gameplay (standard Tetris randomizer algorithm).
+
+12. **EventType.java** (`com.comp2042.logic.event.EventType`)
+    - **Modifications:** Added `SOFT_DROP`, `HARD_DROP`, `ROTATE_LEFT`, and `ROTATE_RIGHT` enum values.
+    - **Why These Modifications Were Necessary:** To support soft drop, hard drop, and separate rotation directions for proper scoring and wall kick system.
+
+13. **InputEventListener.java** (`com.comp2042.logic.event.InputEventListener`)
+    - **Modifications:** Added `onSoftDropEvent()`, `onHardDropEvent()`, `onRotateLeftEvent()`, and `onRotateRightEvent()` method declarations.
+    - **Why These Modifications Were Necessary:** To support soft drop, hard drop, and separate rotation directions. The distinction is important for scoring and for proper implementation of clockwise/anti-clockwise rotation with wall kicks.
+
+14. **BrickRotator.java** (`com.comp2042.logic.rotation.BrickRotator`)
+    - **Modifications:** Refactored from single rotation method to separate `getClockwiseNextShape()` and `getAnticlockwiseNextShape()` methods. Both return `NextShapeInfo` objects containing rotated shape matrix and rotation state index.
+    - **Why These Modifications Were Necessary:** To allow rotation in both directions (standard Tetris feature) and support wall kick system calculations. The `NextShapeInfo` objects provide both shape and position index needed for wall kick offsets.
+
+15. **GameController.java** (`com.comp2042.app.GameController`)
+    - **Modifications:** Integrated `GameStateController` and `ScoringRules`. Added `handleBrickLanded()` and `handleBrickMoved()` for scoring, `executeMovement()` helper method, and `createNewGame()` for game reset. Uses `EventSource` enum to distinguish USER and THREAD events for scoring.
+    - **Why These Modifications Were Necessary:** To decouple UI from game logic, integrate scoring system, and support comprehensive game reset functionality.
+
