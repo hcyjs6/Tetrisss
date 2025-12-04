@@ -13,7 +13,6 @@
 4. [Refactoring Process](#40-refactoring-process)
     - [New Java Classes](#41-new-java-classes)
     - [Modified Java Classes](#42-modified-java-classes)
-    - [Summary and Additional Notes](#43-summary-and-additional-notes-of-refactoring-process)
 5. [Unexpected Problems](#50-unexpected-problems)
 ---
 ## 1.0 My Github
@@ -345,8 +344,94 @@ mvn javafx:run
   - Time constraints
 - **Current State:** 
   - Difficulty only increases through drop speed; no other difficulty mechanics are implemented
-
-
-
+       
 ---
 
+## 4.0 Refactoring Process
+### 4.1 New Java Classes
+
+#### <ins>4.1.1 Audio Package</ins>
+
+1. **`BackgroundMusic`** (`com.comp2042.audio.BackgroundMusic`)
+   - **Purpose:** Manages background music playback with looping functionality. Provides methods to play, pause, stop music, and control volume. Automatically loops the music track during gameplay.
+   
+2. **`SoundEffect`** (`com.comp2042.audio.SoundEffect`)
+   - **Purpose:** Handles short sound effect playback for game events. Provides volume control and preloading functionality to avoid audio delays during gameplay.
+
+#### <ins>4.1.2 GUI Package</ins>
+
+3. **`BrickColour`** (`com.comp2042.gui.BrickColour`)
+   - **Purpose:** Defines color for different brick types. Maps numeric values to specific colors used for visual distinction of Tetris pieces.
+
+4. **`BrickRenderer`** (`com.comp2042.gui.BrickRenderer`)
+   - **Purpose:** Renders the current falling brick on the game board. 
+
+5. **`ClearRowEffect`** (`com.comp2042.gui.ClearRowEffect`)
+   - **Purpose:** Creates visual animation effects when rows are cleared. Implements fade-out animation for cleared rows to provide visual feedback.
+
+6. **`Countdown`** (`com.comp2042.gui.Countdown`)
+   - **Purpose:** Displays countdown timer before game starts. Shows 3-2-1-Go! countdown with sound effects and dark overlay.
+
+7. **`GameBoardRenderer`** (`com.comp2042.gui.GameBoardRenderer`)
+   - **Purpose:** Renders the main game board background. Initializes and displays the game board grid.
+
+8. **`GhostPieceRenderer`** (`com.comp2042.gui.GhostPieceRenderer`)
+   - **Purpose:** Renders semi-transparent ghost piece preview showing where the current piece will land. Provides visual guidance for piece placement.
+
+9. **`HoldBrickRenderer`** (`com.comp2042.gui.HoldBrickRenderer`)
+   - **Purpose:** Renders the held brick in the hold panel and displays the currently held piece.
+
+10. **`MenuController`** (`com.comp2042.gui.MenuController`)
+    - **Purpose:** Controls the main menu UI, level selection, and game initialization. Handles level selection (1-100), start game, show controls & scoring rules, and exit functionality.
+
+11. **`NextBrickRenderer`** (`com.comp2042.gui.NextBrickRenderer`)
+    - **Purpose:** Renders the next brick preview and displays the upcoming piece that will appear.
+
+12. **`NotificationPanel`** (`com.comp2042.gui.NotificationPanel`)
+    - **Purpose:** Displays notifications for line clears, combos, and level ups. Features animated notifications with fade-in and fade-out effects.
+
+#### <ins>4.1.3 Logic Package - Ghost Pieces</ins>
+
+13. **`GhostPieceLogic`** (`com.comp2042.logic.ghostpieces.GhostPieceLogic`)
+    - **Purpose:** Calculates the landing position for the ghost piece preview. Determines where the current piece will land and creates ViewData for ghost piece rendering.
+
+#### <ins>4.1.4 Logic Package - Hold System</ins>
+
+14. **`HoldLogic`** (`com.comp2042.logic.hold.HoldLogic`)
+    - **Purpose:** Manages the hold feature logic for storing and swapping pieces. Allows players to hold the current piece or swap with a previously held piece, enforcing a one-hold-per-piece limit.
+
+#### <ins>4.1.5 Logic Package - Scoring</ins>
+
+15. **`ComboSystem`** (`com.comp2042.logic.scoring.ComboSystem`)
+    - **Purpose:** Manages combo multiplier system for consecutive line clears. Tracks combo count, increments on consecutive clears, resets when no lines cleared, and calculates combo bonus.
+
+16. **`GameScore`** (`com.comp2042.logic.scoring.GameScore`)
+    - **Purpose:** Manages the game score with JavaFX property binding. Provides methods to add points, reset score, and bind score property to UI for automatic updates.
+
+17. **`LevelControls`** (`com.comp2042.logic.scoring.LevelControls`)
+    - **Purpose:** Manages level progression and level value. Handles level progression (10 lines per level), level property binding, and setting initial level.
+
+18. **`LineClearScoring`** (`com.comp2042.logic.scoring.LineClearScoring`)
+    - **Purpose:** Calculates points for line clears based on the number of lines cleared. Provides different point values for Single, Double, Triple, and Tetris (4 lines) clears.
+
+19. **`LineTracker`** (`com.comp2042.logic.scoring.LineTracker`)
+    - **Purpose:** Tracks total lines cleared for level progression. 
+
+20. **`MoveDownScoring`** (`com.comp2042.logic.scoring.MoveDownScoring`)
+    - **Purpose:** Calculates points for soft drops and hard drops. Awards 1 point per cell for soft drops and 2 points per cell for hard drops.
+
+21. **`ScoringRules`** (`com.comp2042.logic.scoring.ScoringRules`)
+    - **Purpose:** Coordinates all scoring logic and acts as the central scoring controller. Integrates all scoring components, manages level multipliers and combos, and provides unified scoring interface.
+
+#### <ins>4.1.6 Logic Package - Speed Control</ins>
+
+22. **`DropSpeedController`** (`com.comp2042.logic.speed.DropSpeedController`)
+    - **Purpose:** Controls the falling speed of pieces based on level. Automatically adjusts falling speed as level increases, with reset functionality for new games.
+
+#### <ins>4.1.7 Logic Package - Game State and Collision</ins>
+
+23. **`CollisionDetector`** (`com.comp2042.logic.CollisionDetector`)
+    - **Purpose:** Handles all collision detection logic for the Tetris game. Provides methods to check collisions for brick movements, rotations, spawn positions, and ghost piece calculations.
+
+24. **`GameStateController`** (`com.comp2042.logic.GameStateController`)
+    - **Purpose:** Manages the overall game state of the Tetris game. Handles state transitions between PLAYING, PAUSED, GAME_OVER, and MAIN_MENU states.
