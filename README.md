@@ -124,6 +124,7 @@ mvn javafx:run
 ---
 
 ## 3.0 Features
+
 ### 3.1 Implemented and Working Properly
 
 #### 1. Basic Tetris Gameplay
@@ -348,6 +349,7 @@ mvn javafx:run
 ---
 
 ## 4.0 Refactoring Process
+
 ### 4.1 New Java Classes
 
 #### <ins>4.1.1 Audio Package</ins>
@@ -433,7 +435,7 @@ mvn javafx:run
 23. **`GameStateController`** (`com.comp2042.logic.GameStateController`)
     - **Purpose:** Manages the overall game state of the Tetris game. Handles state transitions between PLAYING, PAUSED, GAME_OVER, and MAIN_MENU states.
    
-## 4.2 Modified Java Classes
+### 4.2 Modified Java Classes
    
 1. **SimpleBoard.java** (`com.comp2042.logic.SimpleBoard`)
    - **Modifications:** Added hold feature integration `HoldLogic`, ghost piece preview `GhostPieceLogic`, sound effects for rotation and hard drop, and wall kick rotation system using `BrickRotator` and `CollisionDetector`. Added methods: `holdBrick()`, `getHoldBrickData()`, `getGhostPieceY()`, `getGhostPieceViewData()`, and `resetBoard()`. Modified `getViewData()` to include ghost piece and hold brick data, and `kickOffsets()` to support wall kicks.
