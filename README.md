@@ -1,18 +1,18 @@
-# COMP2042 Developing Maintainable Software
+# Tetris Game
 ---
 ## Table of Contents
 1. [My Github](#10-my-github)
 2. [Setup and Compilation Instructions](#20-setup-and-compilation-instructions)
-    - [Prerequisites and Dependencies](#21-prerequisites-and-dependencies)
-    - [Step-by-Step Compilation Guide](#22-step-by-step-compilation-guide)
-    - [Common Build Commands](#23-common-build-commands)
+    - [2.1 Prerequisites and Dependencies](#21-prerequisites-and-dependencies)
+    - [2.2 Step-by-Step Compilation Guide](#22-step-by-step-compilation-guide)
+    - [2.3 Common Build Commands](#23-common-build-commands)
 3. [Features](#30-features)
-    - [Implemented and Working Properly](#31-implemented-and-working-properly)
-    - [Implemented but Not Working Properly](#32-implemented-but-not-working-properly)
-    - [Not Implemented](#33-not-implemented)
+    - [3.1 Implemented and Working Properly](#31-implemented-and-working-properly)
+    - [3.2 Implemented but Not Working Properly](#32-implemented-but-not-working-properly)
+    - [3.3 Not Implemented](#33-not-implemented)
 4. [Refactoring Process](#40-refactoring-process)
-    - [New Java Classes](#41-new-java-classes)
-    - [Modified Java Classes](#42-modified-java-classes)
+    - [4.1 New Java Classes](#41-new-java-classes)
+    - [4.2 Modified Java Classes](#42-modified-java-classes)
 5. [Unexpected Problems](#50-unexpected-problems)
 ---
 ## 1.0 My Github
@@ -496,4 +496,46 @@ mvn javafx:run
 15. **GameController.java** (`com.comp2042.app.GameController`)
     - **Modifications:** Integrated `GameStateController` and `ScoringRules`. Added `handleBrickLanded()` and `handleBrickMoved()` for scoring, `executeMovement()` helper method, and `createNewGame()` for game reset. Uses `EventSource` enum to distinguish USER and THREAD events for scoring.
     - **Why These Modifications Were Necessary:** To decouple UI from game logic, integrate scoring system, and support comprehensive game reset functionality.
+      
+---
+
+## 5.0 Unexpected Problems
+
+1. **Ghost Piece Rendering**
+   - **Problem:** Ghost piece did not correspond to the falling brick position, causing incorrect visual feedback
+   - **Solution:** Fixed collision detection logic in `GhostPieceLogic.calculateGhostPieceY()` to properly calculate landing position
+
+2. **Hold Feature State Management**
+   - **Problem:** Hold feature could be used multiple times per piece, breaking game balance
+   - **Solution:** Implemented `canHold` flag in `HoldLogic` that resets only when a new piece is created
+
+3. **Score Property Binding**
+   - **Problem:** UI not updating when score changed
+   - **Solution:** Implemented JavaFX `IntegerProperty` in `GameScore` class and bound it to UI labels using `bindScore()`, `bindLevel()`, and `bindLinesCleared()` methods
+
+4. **Level Speed Synchronization**
+   - **Problem:** Drop speed not updating when level changed
+   - **Solution:** Bound `DropSpeedController` with `levelProperty` to automatically update speed when level increases
+
+5. **Clear Row Animation Timing**
+   - **Problem:** Board refreshed before animation completed, causing unexpected behavior on falling bricks
+   - **Solution:** Added `pauseAutoDrop()` and `resumeAutoDrop()` methods in `GuiController` to pause automatic piece falling during row clearing animations
+
+6. **Rotation Sound Effect**
+   - **Problem:** Sound effect played even when rotation failed
+   - **Solution:** Moved sound effect playback to after successful rotation check in `SimpleBoard.rotateLeftBrick()` and `rotateRightBrick()`
+
+7. **Game Reset Functionality**
+   - **Problem:** Not all game state was properly reset when starting a new game
+   - **Solution:** Created comprehensive `resetAchievements()` in `ScoringRules`, `resetBoard()` in `SimpleBoard`, and `resetGameState()` in `GameStateController` to ensure complete state reset
+
+8. **Git Remote URL Mismatch**
+   - **Problem:** Git remote was pointing to non-existent repository (`Tetris-Project.git`) while actual repository was `Tetrisss.git`
+   - **Solution:** Updated Git remote URL to match the actual GitHub repository and synchronized local and remote configurations
+
+---
+
+**Author:** Sek Joe Rin  
+**Date:** 4/12/2025  
+**Course:** COMP2042 Developing Maintainable Software
 
