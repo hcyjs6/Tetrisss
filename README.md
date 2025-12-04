@@ -18,7 +18,7 @@
 ---
 ## 1.0 My Github
 **Name:** Sek Joe Rin <br>
-**Student ID:** [Your Student ID] <br>
+**Student ID:** 20724197 <br>
 **Link:** https://github.com/hcyjs6/Tetrisss.git
 
 ---
@@ -36,7 +36,7 @@
 - JavaFX Controls 21.0.6
 - JavaFX FXML 21.0.6
 - JavaFX Media 21.0.6
-- JUnit Jupiter 5.12.1 (for testing)
+- JUnit Jupiter 5.12.1 
 
 **Recommended IDE:**
 - IntelliJ IDEA 2023.3+ or IntelliJ IDEA Community Edition 2023.3+
@@ -62,8 +62,6 @@
    - Download from [Git for Windows](https://gitforwindows.org/)
    - Verify installation: `git --version`
 
-### 2.2 Step-by-Step Compilation Guide
-
 #### Step 2: Setup Project
 1. **Open the Project**
    - If you have the project files locally, navigate to the project directory
@@ -82,7 +80,7 @@
    - If dependencies don't load: File → Reload Project from Disk
 
 #### Step 3: Compile the Application
-1. **Clean previous builds** (optional but recommended):
+1. **Clean previous builds (optional but recommended)**:
    ```bash
    mvn clean
    ```
@@ -101,22 +99,9 @@
    - No compilation errors should appear in the console
 
 #### Step 4: Run the Application
-**Option 1: Run using Maven (Recommended)**
+**Run using Maven**
 ```bash
 mvn javafx:run
-```
-
-**Option 2: Run from IntelliJ IDEA**
-- Right-click on `src/main/java/com/comp2042/app/Main.java`
-- Select "Run 'Main.main()'"
-
-**Option 3: Package and Run JAR**
-```bash
-# Package the application
-mvn package
-
-# Run the packaged JAR
-java -jar target/CW2025-1.0-SNAPSHOT.jar
 ```
 
 ### 2.3 Common Build Commands
@@ -129,9 +114,6 @@ java -jar target/CW2025-1.0-SNAPSHOT.jar
 
     # Run tests
     mvn test
-
-    # Package application
-    mvn package
 
     # Install to local repository
     mvn install
@@ -146,15 +128,61 @@ java -jar target/CW2025-1.0-SNAPSHOT.jar
 ### 3.1 Implemented and Working Properly
 
 #### 1. Basic Tetris Gameplay
-- All 7 standard Tetris pieces (I, O, T, S, Z, J, L) implemented
-- Piece movement (left, right, down)
-- Piece rotation (clockwise and counter-clockwise)
-- Automatic piece falling with speed progression
-- Line clearing when rows are completed
-- Game over detection when pieces reach the top
+- 7 standard Tetris pieces (I, O, T, S, Z, J, L) implemented 
+- Pieces spawn at the top center of the game board 
+- Implemented piece movement- move left or right with arrow keys
+- Automatic piece falling with speed that increases as level progresses
+- Implemented line clearing functionality - clear lines when rows are completed 
+- Multiple line clears supported (Single, Double, Triple, Tetris)
+- Game over detection when pieces reached the top of the gameboard
+- Gameboard contains 20 rows and 20 columns (20x20 grid)
 - **Location:** `com.comp2042.logic.SimpleBoard`, `com.comp2042.logic.bricks` package
 
-#### 2. Hold Feature
+#### 2. Rotation System with Wall Kicks
+- Wall kick system for rotation near walls
+- Smooth rotation with collision detection
+- **Location:** `com.comp2042.logic.rotation.BrickRotator`
+
+#### 3. Collision Detection
+- Accurate collision detection for all movements
+- Prevents pieces from moving through walls or other pieces
+- **Location:** `com.comp2042.logic.CollisionDetector`
+
+#### 4. Main Menu
+- Created using FXML (`menuLayout.fxml`) and `MenuController`
+- Click the START GAME button to start new game
+- Click SHOW CONTROLS & SCORES button to display keyboard controls and scoring rules
+- Click EXIT button to close application
+- **Location:** `com.comp2042.gui.MenuController`, `src/main/resources/menuLayout.fxml`
+
+#### 5. Level Selection in Main Menu
+- Level selection between 1 - 100 at game start 
+- Increase/decrease buttons to adjust starting level
+- Level selected affects initial drop speed
+- Initial drop speed increases with higher level selected
+- **Location:** `com.comp2042.gui.MenuController`, `src/main/resources/menuLayout.fxml`
+
+#### 6. Countdown
+- 3-2-1-Go! countdown before game starts
+- Appears after starting new game or resuming from pause
+- Dark overlay with large countdown numbers
+- Sound effect plays for each countdown number
+- **Location:** `com.comp2042.gui.Countdown`, `com.comp2042.gui.GuiController.startCountdown()`
+
+#### 7. Soft Drop and Hard Drop
+- **Soft Drop:** Press DOWN arrow key to accelerate piece falling (1 point per cell)
+- **Hard Drop:** Press SPACE key to instantly drop piece to bottom (2 points per cell)
+- Points awarded based on distance dropped
+- Sound effect plays for hard drop
+- **Location:** `com.comp2042.logic.scoring.MoveDownScoring`, `com.comp2042.logic.SimpleBoard`
+
+#### 8. Added Clockwise and Anti-Clockwise Rotation
+- Clockwise rotation (Z key) and counter-clockwise rotation (X key)
+- Rotation with wall kick system for smooth rotation near walls
+- Sound effect plays when rotation succeeds
+- **Location:** `com.comp2042.logic.rotation.BrickRotator`, `com.comp2042.logic.SimpleBoard`
+
+#### 9. Hold
 - Players can hold the current piece by pressing 'C'
 - Swaps between current and held piece
 - Can only hold once per piece that lands
@@ -162,18 +190,30 @@ java -jar target/CW2025-1.0-SNAPSHOT.jar
 - Sound effect plays when holding a piece
 - **Location:** `com.comp2042.logic.hold.HoldLogic`, `com.comp2042.gui.HoldBrickRenderer`
 
-#### 3. Ghost Piece Preview
+#### 10. Show Next Brick
+- Displays the next piece that will appear
+- Visual display of next piece in the next brick panel
+- Helps players plan their moves
+- **Location:** `com.comp2042.gui.NextBrickRenderer`
+
+#### 11. Ghost Pieces
 - Visual preview showing where the current piece will land
 - Semi-transparent ghost piece displayed on the game board
 - Updates dynamically as the piece moves or rotates
+- Helps players position pieces accurately
 - **Location:** `com.comp2042.logic.ghostpieces.GhostPieceLogic`, `com.comp2042.gui.GhostPieceRenderer`
 
-#### 4. Next Piece Preview
-- Displays the next piece that will appear
-- Rendered in a dedicated panel next to the game board
-- **Location:** `com.comp2042.gui.NextBrickRenderer`
+#### 12. Pause Menu
+- Created using FXML in `gameLayout.fxml` with `GuiController`
+- Accessible via ESC key or pause button
+- Displays current score while paused
+- Options: Resume, Restart, Show Control Keys, Go Back to Menu
+- Dark overlay background when active
+- Background music pauses when game is paused
+- Bricks stop moving and no action input can be made when game is paused
+- **Location:** `com.comp2042.gui.GuiController.pauseGame()`, `gameLayout.fxml` pausePanel
 
-#### 5. Comprehensive Scoring System
+#### 13. Comprehensive Scoring System
 - **Line Clear Scoring:** Points awarded based on number of lines cleared (Single, Double, Triple, Tetris)
 - **Move Down Scoring:** Points for soft drops and hard drops
 - **Level Multiplier:** Score multiplied by current level
@@ -181,47 +221,84 @@ java -jar target/CW2025-1.0-SNAPSHOT.jar
 - Score, level, and lines cleared displayed in real-time
 - **Location:** `com.comp2042.logic.scoring` package
 
-#### 6. Level System
+#### 14. Added Detailed Notification
+- Displays notifications for line clears, combos, and level ups
+- Animated fade-in and fade-out effects
+- Shows points awarded, combo multiplier, and total combo bonus
+- Appears above the game board
+- **Location:** `com.comp2042.gui.NotificationPanel`
+
+#### 15. Level Progression during Gameplay
 - Level progression based on lines cleared (10 lines per level)
-- Level selection at game start (1-100)
 - Drop speed increases with level
 - Level displayed in the UI
+- Level up sound effect and notification
 - **Location:** `com.comp2042.logic.scoring.LevelControls`, `com.comp2042.logic.speed.DropSpeedController`
 
-#### 7. Audio System
-- **Background Music:** Looping Tetris theme music during gameplay
-- **Sound Effects:** Button clicks, piece rotation, hard drop, line clear, game over, level up, hold piece, countdown, notifications
+#### 16. Added BGM during Gameplay
+- Looping Tetris theme music during gameplay
 - Music pauses when game is paused
-- **Location:** `com.comp2042.audio` package
+- Music stops when game over
+- Volume control (set to 0.15)
+- **Location:** `com.comp2042.audio.BackgroundMusic`
 
-#### 8. Game State Management
-- Playing, Paused, Game Over, and Main Menu states
-- Pause functionality (ESC key)
-- Game over screen with final score
-- New game creation with reset functionality
-- **Location:** `com.comp2042.logic.GameStateController`
+#### 17. Added Sound Effects
+- Button clicks, piece rotation, hard drop, line clear, game over, level up, hold piece, countdown, notifications
+- Sound effects play for various game events
+- Volume control (set to 1.0)
+- **Location:** `com.comp2042.audio.SoundEffect`
 
-#### 9. User Interface
-- Main menu with level selection
-- Game board with visual feedback
-- Score panel displaying score, level, and lines cleared
-- Pause menu overlay
-- Game over screen
-- Control panel showing keyboard controls
-- Countdown timer before game starts
-- Notification panel for line clears and combos
-- Clear row animation effects
-- **Location:** `com.comp2042.gui` package
+#### 18. Added Effect during Rows Clearing
+- Visual animation effects when rows are cleared
+- Fade-out animation for cleared rows
+- Provides visual feedback during line clearing
+- **Location:** `com.comp2042.gui.ClearRowEffect`
 
-#### 10. Rotation System with Wall Kicks
-- Wall kick system for rotation near walls
-- Smooth rotation with collision detection
-- **Location:** `com.comp2042.logic.rotation.BrickRotator`
+#### 19. Game Over using FXML
+- Created using FXML in `gameLayout.fxml` with `GuiController`
+- Displays final score when game ends
+- Options: Retry (start new game) or Go Back to Menu
+- Dark overlay background
+- Background music stops when game over
+- **Location:** `com.comp2042.gui.GuiController.gameOver()`, `gameLayout.fxml` gameOverPanel
 
-#### 11. Collision Detection
-- Accurate collision detection for all movements
-- Prevents pieces from moving through walls or other pieces
-- **Location:** `com.comp2042.logic.CollisionDetector`
+#### 20. Allow Users to Restart the Game from Various Screens
+- Restart option available from pause menu
+- Restart option available from game over screen
+- Confirmation panel prevents accidental resets
+- Resets all game state including score, level, and board
+- **Location:** `com.comp2042.gui.GuiController.newGame()`, `com.comp2042.gui.GuiController.confirmRestart()`
+
+#### 21. Created Control Keys and Scoring Rules Panel
+- Created using FXML in `gameLayout.fxml`
+- Displays keyboard controls and score values
+- Accessible from pause menu or main menu
+- Shows all game controls (movement, rotation, drop, hold, pause)
+- Shows all scoring rules (single, double, triple, Tetris, combo bonus)
+- Close button to return to previous screen
+- **Location:** `com.comp2042.gui.GuiController.showControlKeys()`, `gameLayout.fxml` controlPanel
+
+#### 22. Show Gameplay Scores on Pause Menu
+- Displays current score while game is paused
+- Score updates in real-time on pause panel
+- Allows players to check their progress during pause
+- **Location:** `com.comp2042.gui.GuiController.pauseGame()`, `gameLayout.fxml` pauseScoreLabel
+
+#### 23. Show Final Scores in Game Over
+- Displays final score when game ends
+- Score shown on game over panel
+- Allows players to see their final achievement
+- **Location:** `com.comp2042.gui.GuiController.gameOver()`, `gameLayout.fxml` gameOverScoreLabel
+
+#### 24. Implements 7-Bag Randomizer System
+- Prevents consecutive brick repeats by ensuring all 7 brick types appear before any type repeats
+- Provides fair and balanced brick distribution
+- **Location:** `com.comp2042.logic.bricks.RandomBrickGenerator`
+
+#### 25. Implements brick Color System
+- Color mapping for different brick types
+- Each brick type has a unique color for visual distinction
+- **Location:** `com.comp2042.gui.BrickColour`
 
 ### 3.2 Implemented but Not Working Properly
 
@@ -230,7 +307,7 @@ java -jar target/CW2025-1.0-SNAPSHOT.jar
 - The `Platform.exit()` method is called immediately after `buttonClickSFX.playSFX()`, which terminates the JavaFX application before the sound effect has time to play. The application closes too quickly for the audio to be heard.
 - Does not affect core functionality, only missing audio feedback on exit.
 - **Location:** `com.comp2042.gui.MenuController.exitGame()`
-
+  
 ### 3.3 Not Implemented
 
 #### 1. Settings Feature for Customizing Game Controls and Audio
